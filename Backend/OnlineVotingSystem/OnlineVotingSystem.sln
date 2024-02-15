@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{78829F4E-FE52-4F86-9AC7-25FCD73F6FDA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVotingSystem.Domain", "OnlineVotingSystem.Domain\OnlineVotingSystem.Domain.csproj", "{BCA12FB8-003F-4199-87E3-C8AED2347D90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVotingSystem.Application", "OnlineVotingSystem.Application\OnlineVotingSystem.Application.csproj", "{EDB75A55-CA32-477D-AD2D-7A95D4450348}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{C9183B5D-6E02-4E4E-BFEE-0529C7B11F2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVotingSystem.Persistence", "OnlineVotingSystem.Persistence\OnlineVotingSystem.Persistence.csproj", "{75282349-5A17-4991-A37D-E6715A6BBC56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{CDC9F739-916A-41E8-A1AB-6E8A8A2461C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineVotingSystem.WebAPI", "OnlineVotingSystem.WebAPI\OnlineVotingSystem.WebAPI.csproj", "{B841FF20-771F-4A4D-8717-0D4B277A19F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCA12FB8-003F-4199-87E3-C8AED2347D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA12FB8-003F-4199-87E3-C8AED2347D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA12FB8-003F-4199-87E3-C8AED2347D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA12FB8-003F-4199-87E3-C8AED2347D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB75A55-CA32-477D-AD2D-7A95D4450348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB75A55-CA32-477D-AD2D-7A95D4450348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB75A55-CA32-477D-AD2D-7A95D4450348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB75A55-CA32-477D-AD2D-7A95D4450348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75282349-5A17-4991-A37D-E6715A6BBC56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75282349-5A17-4991-A37D-E6715A6BBC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75282349-5A17-4991-A37D-E6715A6BBC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75282349-5A17-4991-A37D-E6715A6BBC56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B841FF20-771F-4A4D-8717-0D4B277A19F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B841FF20-771F-4A4D-8717-0D4B277A19F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B841FF20-771F-4A4D-8717-0D4B277A19F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B841FF20-771F-4A4D-8717-0D4B277A19F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BCA12FB8-003F-4199-87E3-C8AED2347D90} = {78829F4E-FE52-4F86-9AC7-25FCD73F6FDA}
+		{EDB75A55-CA32-477D-AD2D-7A95D4450348} = {78829F4E-FE52-4F86-9AC7-25FCD73F6FDA}
+		{75282349-5A17-4991-A37D-E6715A6BBC56} = {C9183B5D-6E02-4E4E-BFEE-0529C7B11F2A}
+		{B841FF20-771F-4A4D-8717-0D4B277A19F4} = {CDC9F739-916A-41E8-A1AB-6E8A8A2461C5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99788C5A-EC08-47C2-AFA3-CEE70390DD50}
+	EndGlobalSection
+EndGlobal

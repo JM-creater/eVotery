@@ -1,0 +1,6 @@
+@OnlineVotingSystem.WebAPI_HostAddress = http://localhost:5115
+
+GET {{OnlineVotingSystem.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
