@@ -1,0 +1,52 @@
+.login-main-container {
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+}
+
+.login-form-container {
+    width: 100vh;
+    margin: auto;
+    border: 1px solid blue;
+    padding: 10px;
+}
+
+.title-label {
+    text-align: center;
+}
+
+.login-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-register-container {
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-button {
+    width: 40vh;
+}
+
+.register-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-title {
+    margin-left: 5px;
+}
+
+.form-remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-form-forgot {
+    float: right; 
+    margin-left: auto; 
+}
