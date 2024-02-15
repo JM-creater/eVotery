@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
@@ -124,19 +123,25 @@ public class VoterService : IVoterService
             if (dto.VoterId.HasValue)
             {
                 voter = await context.Voters
-                                     .Where(v => v.VoterId.Equals(dto.VoterId))
+                                     .Where(v => v.VoterId.Equals(dto.VoterId.Value))
                                      .FirstOrDefaultAsync();
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(dto.Email))
             {
                 voter = await context.Voters
                                      .Where(v => v.Email.Equals(dto.Email))
                                      .FirstOrDefaultAsync();
             }
+            else
+            {
+                string errorMessage = "No valid identifier provided.";
+                response.ErrorMessage = errorMessage;
+                throw new ArgumentException(errorMessage);
+            }
 
             if (voter == null)
             {
-                string errorMessage = $"'{voter}' not yet registered.";
+                string errorMessage = "Voter not yet registered.";
                 response.ErrorMessage = errorMessage;
                 throw new KeyNotFoundException(errorMessage);
             }
@@ -172,6 +177,7 @@ public class VoterService : IVoterService
 
         return response;
     }
+
 
     public async Task<ApiResponse> Validate(int id)
     {
@@ -300,7 +306,6 @@ public class VoterService : IVoterService
             context.Voters.Update(updatedVoterProfile);
             await context.SaveChangesAsync();
 
-            response.ResponseCode = 200;
         }
         catch (Exception e)
         {

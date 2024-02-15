@@ -12,8 +12,8 @@ using OnlineVotingSystem.Persistence.Context;
 namespace OnlineVotingSystem.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240215025118_ChangeVerificationStatus")]
-    partial class ChangeVerificationStatus
+    [Migration("20240215134108_initialcreate")]
+    partial class initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,12 @@ namespace OnlineVotingSystem.Persistence.Migrations
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsValidate")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
