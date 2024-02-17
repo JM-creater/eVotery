@@ -26,7 +26,7 @@ public class VoterController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id/{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var response = await service.GetById(id);
