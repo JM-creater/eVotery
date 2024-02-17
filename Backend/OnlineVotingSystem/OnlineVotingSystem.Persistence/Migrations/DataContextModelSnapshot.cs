@@ -86,6 +86,28 @@ namespace OnlineVotingSystem.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Voters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("48c9a98c-a3b2-4d74-8ed0-437657a5e331"),
+                            Address = "123 Main Street",
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(2024, 2, 17, 6, 34, 5, 523, DateTimeKind.Utc).AddTicks(1007),
+                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "garadojosephmartin98@gmail.com",
+                            FirstName = "Joseph Martin",
+                            Gender = 2,
+                            IsActive = true,
+                            IsValidate = true,
+                            LastName = "Garado",
+                            Password = "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=",
+                            PhoneNumber = "09199431060",
+                            Role = 2,
+                            VerificationStatus = 0,
+                            VoterId = 8741,
+                            VoterImages = "PathImages\\VoterImages\\admin picture.png"
+                        });
                 });
 #pragma warning restore 612, 618
         }

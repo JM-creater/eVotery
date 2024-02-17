@@ -1,0 +1,56 @@
+.register-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('../assets/samples/imageBG.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.register-form-container {
+    width: 100vh;
+    margin: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 255);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.register-title-label {
+    color: black;
+    text-align: center;
+    padding: 8px;
+    font-weight: 800;
+}
+
+.image-register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-register-container img {
+    max-width: 220px;
+    max-height: 220px;
+}
+
+.input-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; 
+}
+
+.input-grid-container > * {
+    flex: 1 1 45%;
+}
+
+.register-form-button {
+    width: 40vh;
+}
+
+.register-voter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

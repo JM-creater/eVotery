@@ -19,5 +19,8 @@ public static class ServiceExtensions
         services.AddScoped<IVoterService, VoterService>();
 
         services.AddAutoMapper(typeof(AutoMapperConfig));
+
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
     }
 }

@@ -23,11 +23,6 @@
     font-weight: 800;
 }
 
-.title-remember,
-.title-no-account {
-    color: black;
-}
-
 .image-container {
     display: flex;
     justify-content: center;

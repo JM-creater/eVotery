@@ -31,7 +31,7 @@ function App() {
         <Routes>
 
           <Route index element={ <Login/> } />
-          <Route path='/register' element={ <Register/> } />
+          <Route path='/register-page' element={ <Register/> } />
           <Route path='/forgot-password' element={ <Forgot_Password/> } />
 
           <Route path='/home-page' element={ <HomePage/> } />

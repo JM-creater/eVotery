@@ -102,6 +102,7 @@ public class VoterService : IVoterService
             context.Voters.Add(student);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
+            response.UserRole = UserRole.Voter;
         }
         catch (Exception e)
         {
