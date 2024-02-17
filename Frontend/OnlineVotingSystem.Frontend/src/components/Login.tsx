@@ -58,12 +58,10 @@ const Login: React.FC = () => {
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
-                        toast.success('Login successful.');
                         await delay(2000);
                         navigate('/home-page');
                         break;
                     case 2: 
-                        toast.success('Login successful.');
                         await delay(2000);
                         navigate('/admin-dashboard');
                         break;
