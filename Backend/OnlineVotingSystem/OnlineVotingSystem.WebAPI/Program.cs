@@ -4,7 +4,6 @@ using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Persistence;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.WebAPI.Extensions;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,17 +22,6 @@ var app = builder.Build();
 var serviceScope = app.Services.CreateScope();
 var dataContext = serviceScope.ServiceProvider.GetService<DataContext>();
 await dataContext?.Database.MigrateAsync();
-
-//string logpath = builder.Configuration.GetSection("Logging:Logpath").Value;
-
-//var _logger = new LoggerConfiguration()
-//    .MinimumLevel.Information()
-//    .MinimumLevel.Override("microsoft", Serilog.Events.LogEventLevel.Warning)
-//    .Enrich.FromLogContext()
-//    .WriteTo.File(logpath)
-//    .CreateLogger();
-
-//builder.Logging.AddSerilog(_logger);
 
 app.ConfigureApplication(builder.Configuration);
 

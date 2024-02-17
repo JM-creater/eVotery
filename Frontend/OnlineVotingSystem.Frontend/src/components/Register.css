@@ -54,3 +54,14 @@
     align-items: center;
     margin-top: 20px;
 }
+
+.menu-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-item-label {
+    float: right; 
+    margin-left: auto; 
+}

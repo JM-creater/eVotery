@@ -49,4 +49,6 @@ public class Voter : BaseEntity
     public bool IsActive { get; set; }
     public VerifyStatus VerificationStatus { get; set; } 
     public UserRole Role { get; set; }
+
+    public ICollection<Vote> Votes { get; set; } = new List<Vote>();
 }
