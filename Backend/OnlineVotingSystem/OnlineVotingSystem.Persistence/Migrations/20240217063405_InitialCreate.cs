@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineVotingSystem.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,6 +37,11 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Voters", x => x.Id);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Voters",
+                columns: new[] { "Id", "Address", "DateCreated", "DateOfBirth", "DateUpdated", "Email", "FirstName", "Gender", "IsActive", "IsValidate", "LastName", "Password", "PhoneNumber", "Role", "VerificationStatus", "VoterId", "VoterImages" },
+                values: new object[] { new Guid("48c9a98c-a3b2-4d74-8ed0-437657a5e331"), "123 Main Street", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 17, 6, 34, 5, 523, DateTimeKind.Utc).AddTicks(1007), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "garadojosephmartin98@gmail.com", "Joseph Martin", 2, true, true, "Garado", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "09199431060", 2, 0, 8741, "PathImages\\VoterImages\\admin picture.png" });
         }
 
         /// <inheritdoc />

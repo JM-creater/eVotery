@@ -5,7 +5,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Logo from '../assets/Title.png';
+import Logo from '../assets/samples/Logo.png';
 
 const LOGIN_URL = 'https://localhost:7196/Voter/login';
 
@@ -151,7 +151,7 @@ const Login: React.FC = () => {
                         <div className="register-button-container">
                             <span className='title-no-account'>No account?</span>
                             
-                            <Link to={'/register'}>
+                            <Link to={'/register-page'}>
                                 <a className='register-title'>Register now!</a>
                             </Link>
                         </div>
