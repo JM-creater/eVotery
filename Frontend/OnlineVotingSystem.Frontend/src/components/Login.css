@@ -1,18 +1,42 @@
 .login-main-container {
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: fit-content;
+    height: 100vh;
+    background: url('../assets/samples/imageBG.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .login-form-container {
     width: 100vh;
     margin: auto;
-    border: 1px solid blue;
-    padding: 10px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 255);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .title-label {
+    color: black;
     text-align: center;
+    padding: 8px;
+    font-weight: 800;
+}
+
+.title-remember,
+.title-no-account {
+    color: black;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    max-width: 220px;
+    max-height: 220px;
 }
 
 .login-button-container {

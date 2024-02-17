@@ -1,10 +1,11 @@
 import { Button, Checkbox, Form, Input } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import '../components/Login.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Logo from '../assets/Title.png';
 
 const LOGIN_URL = 'https://localhost:7196/Voter/login';
 
@@ -24,12 +25,14 @@ const onFinishFailed = (errorInfo: unknown) => {
 };
 
 const Login: React.FC = () => {
-
+    
     const navigate = useNavigate();
+    const [loadings, setLoadings] = useState<boolean>(false);
 
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const handleLogin = async (values: VoterType) => {
+        setLoadings(true);
 
         const loginRequest: LoginType = {
             password: values.password,
@@ -51,10 +54,23 @@ const Login: React.FC = () => {
                 },
             });
 
+
             if (response.data.responseCode === 200) {
-                toast.success('Login successful.');
-                await delay(2000);
-                navigate('/home-page');
+                switch(response.data.userRole) {
+                    case 1: 
+                        toast.success('Login successful.');
+                        await delay(2000);
+                        navigate('/home-page');
+                        break;
+                    case 2: 
+                        toast.success('Login successful.');
+                        await delay(2000);
+                        navigate('/admin-dashboard');
+                        break;
+                    default:
+                        console.log("Unknown role");
+                        break;
+                } 
             } else if (response.data.responseCode === 400) {
                 toast.error('Login failed. Incorrect username or password.');
             } else {
@@ -63,6 +79,8 @@ const Login: React.FC = () => {
     
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoadings(false);
         }
     };
 
@@ -77,8 +95,12 @@ const Login: React.FC = () => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
+                
+                <div className="image-container">
+                    <img src={Logo} alt="eVotery-logo" />
+                </div>
                 <h1 className="title-label">
-                    eVotery - Online Voting System
+                    LOGIN
                 </h1>
 
                 <Form.Item<VoterType>
@@ -102,7 +124,7 @@ const Login: React.FC = () => {
                 <Form.Item>
                     <div className="form-remember-forgot">
                         <Form.Item noStyle>
-                            <Checkbox>Remember me</Checkbox>
+                            <Checkbox className='title-remember'>Remember me</Checkbox>
                         </Form.Item>
 
                         <Link to={'/forgot-password'}>
@@ -116,13 +138,18 @@ const Login: React.FC = () => {
                 <Form.Item>
                     <div className="login-register-container">
                         <div className="login-button-container">
-                            <Button type="primary" htmlType="submit" className="login-form-button">
+                            <Button 
+                                type="primary" 
+                                htmlType="submit" 
+                                className="login-form-button"
+                                loading={loadings}
+                            >
                                 Log in
                             </Button>
                         </div>
                         
                         <div className="register-button-container">
-                            <span>No account?</span>
+                            <span className='title-no-account'>No account?</span>
                             
                             <Link to={'/register'}>
                                 <a className='register-title'>Register now!</a>

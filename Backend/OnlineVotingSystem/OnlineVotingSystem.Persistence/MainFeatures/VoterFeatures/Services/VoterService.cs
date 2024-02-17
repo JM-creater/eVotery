@@ -168,6 +168,7 @@ public class VoterService : IVoterService
             }
 
             response.ResponseCode = 200;
+            response.UserRole = voter.Role;
         }
         catch (Exception e)
         {
