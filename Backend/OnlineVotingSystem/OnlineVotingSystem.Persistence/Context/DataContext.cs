@@ -12,7 +12,7 @@ public partial class DataContext : DbContext
 
     }
 
-    public DbSet<Voter> Voters { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Candidate> Candidates { get; set; }
     public DbSet<Vote> Votes { get; set; }
     public DbSet<Election> Elections { get; set; }
@@ -37,8 +37,8 @@ public partial class DataContext : DbContext
         Guid Position_ID12 = Guid.NewGuid();
         Guid Position_ID13 = Guid.NewGuid();
 
-        modelBuilder.Entity<Voter>().HasData(
-            new Voter
+        modelBuilder.Entity<User>().HasData(
+            new User
             {
                 Id = Guid.NewGuid(),
                 VoterId = Tokens.GenerateVoterID(),

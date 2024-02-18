@@ -8,9 +8,13 @@ public class AutoMapperConfig : Profile
 {
     public AutoMapperConfig()
     {
-        CreateMap<CreateVoterDto, Voter>();
-        CreateMap<UpdateVoterDto, Voter>()
+        // Voter
+        CreateMap<CreateVoterDto, User>();
+        CreateMap<UpdateVoterDto, User>()
             .ForMember(dest => dest.VoterImages, opt => opt.Ignore())
             .ForMember(dest => dest.Password, opt => opt.Ignore());
+
+        // Candidate
+        CreateMap<CreateCandidateDto, Candidate>();
     }
 }
