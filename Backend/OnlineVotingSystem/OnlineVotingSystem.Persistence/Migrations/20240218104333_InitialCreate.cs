@@ -46,7 +46,7 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Voters",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -64,12 +64,14 @@ namespace OnlineVotingSystem.Persistence.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     VerificationStatus = table.Column<int>(type: "int", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Voters", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,9 +150,9 @@ namespace OnlineVotingSystem.Persistence.Migrations
                         principalTable: "Candidates",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Votes_Voters_VoterId",
+                        name: "FK_Votes_Users_VoterId",
                         column: x => x.VoterId,
-                        principalTable: "Voters",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -159,25 +161,25 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("04b402d2-a581-47b5-a136-560e68134d38"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2578), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Captain" },
-                    { new Guid("249c37ad-0c36-4092-9991-b7dcfca1da6f"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2579), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Kagawad" },
-                    { new Guid("55311263-4c66-4f82-801a-4ade4699e51a"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2569), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Senator" },
-                    { new Guid("583b12f9-b763-4509-a1ae-32c1d315996e"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2573), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Mayor" },
-                    { new Guid("5f9e3b50-46dd-4f08-afa2-51b6911ac2f5"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2570), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Member of the House of Representatives" },
-                    { new Guid("78cc0564-ff78-4a28-9587-5f7ad2e2a713"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2567), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice President" },
-                    { new Guid("7b8c7ac2-7d11-4151-9dcd-d00b864ddc8a"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2572), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Governor" },
-                    { new Guid("8c289ffa-16c5-4366-92fc-a831ce833a8e"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2576), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Mayor" },
-                    { new Guid("9909b105-2272-4ff0-b007-0127c9837552"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2582), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Kagawad" },
-                    { new Guid("9925cc11-a753-4c31-b792-7599586ad4a1"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2555), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "President" },
-                    { new Guid("c9ec2926-375f-48ac-9666-60b855c0a5f7"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2577), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Councilor" },
-                    { new Guid("dfcec5df-d2ef-4105-9fa6-cbed1b85cd60"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2581), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Chairperson" },
-                    { new Guid("e40d1b96-c3e0-465d-8d37-0575b27debe4"), new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2574), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Governor" }
+                    { new Guid("2c7e614d-80a6-423c-9eab-dd6ca84b1979"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7671), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Senator" },
+                    { new Guid("3972b0e7-175c-4a90-a900-385f54ebe6b2"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7680), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Kagawad" },
+                    { new Guid("5b25eed3-7da1-42ab-a0b6-4f9ab77df936"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7660), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "President" },
+                    { new Guid("64939090-8a63-4681-b1f5-f1462d7b4b92"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7670), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice President" },
+                    { new Guid("784d1fc9-cbe0-445e-9982-68de07440627"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7681), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Chairperson" },
+                    { new Guid("89ecb9f7-ea68-46db-8765-4903b98c7ca3"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7672), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Member of the House of Representatives" },
+                    { new Guid("8deb12e2-0275-4891-80be-07bb7c7a4f4d"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7678), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Councilor" },
+                    { new Guid("944524cb-e51f-4777-96f5-37ce27d6b879"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7674), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Governor" },
+                    { new Guid("985f457c-fed2-44b6-82c3-b5bc43505469"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7676), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Governor" },
+                    { new Guid("aa64c7ac-a520-491c-bdce-31c2a3e972a7"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7675), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Mayor" },
+                    { new Guid("d36ed6e8-be2d-4c20-8396-edf5e3fa9009"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7677), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Mayor" },
+                    { new Guid("d73f87f4-562c-4a7b-b305-9bfe37b7fac7"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7679), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Captain" },
+                    { new Guid("dcd3480d-1eff-424a-9b4a-d5f52c077635"), new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7682), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Kagawad" }
                 });
 
             migrationBuilder.InsertData(
-                table: "Voters",
-                columns: new[] { "Id", "Address", "DateCreated", "DateOfBirth", "DateUpdated", "Email", "FirstName", "Gender", "IsActive", "IsValidate", "LastName", "Password", "PhoneNumber", "Role", "VerificationStatus", "VoterId", "VoterImages" },
-                values: new object[] { new Guid("ea11545e-c4fd-4174-a0a5-5898f3264477"), "123 Main Street", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 17, 13, 11, 58, 138, DateTimeKind.Utc).AddTicks(2402), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "garadojosephmartin98@gmail.com", "Joseph Martin", 2, true, true, "Garado", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", "09199431060", 2, 0, 3265, "PathImages\\VoterImages\\admin picture.png" });
+                table: "Users",
+                columns: new[] { "Id", "Address", "DateCreated", "DateOfBirth", "DateUpdated", "Email", "FirstName", "Gender", "IsActive", "IsValidate", "LastName", "Password", "PasswordResetToken", "PhoneNumber", "ResetTokenExpires", "Role", "VerificationStatus", "VoterId", "VoterImages" },
+                values: new object[] { new Guid("9985b7c2-803e-4beb-be93-a18816bde423"), "123 Main Street", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 18, 10, 43, 32, 690, DateTimeKind.Utc).AddTicks(7482), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "garadojosephmartin98@gmail.com", "Joseph Martin", 2, true, true, "Garado", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", null, "09199431060", null, 2, 0, 3280, "PathImages\\VoterImages\\admin picture.png" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ballots_BallotId",
@@ -220,7 +222,7 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 name: "Candidates");
 
             migrationBuilder.DropTable(
-                name: "Voters");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Ballots");

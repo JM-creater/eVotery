@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineVotingSystem.Domain.Entity;
 
-public class Voter : BaseEntity
+public class User : BaseEntity
 {
     [Required]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -49,6 +49,8 @@ public class Voter : BaseEntity
     public bool IsActive { get; set; }
     public VerifyStatus VerificationStatus { get; set; } 
     public UserRole Role { get; set; }
+    public string? PasswordResetToken { get; set; }
+    public DateTime? ResetTokenExpires { get; set; }
 
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
 }

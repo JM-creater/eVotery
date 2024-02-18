@@ -1,37 +1,43 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OnlineVotingSystem.Application.Email.Config;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Domain.Enum;
 using OnlineVotingSystem.Domain.Responses;
 using OnlineVotingSystem.Persistence.Context;
+using OnlineVotingSystem.Persistence.Helpers.EmailContent;
 using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 using OnlineVotingSystem.Persistence.Helpers.Security;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 
 namespace OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
 
-public class VoterService : IVoterService
+public class UserService : IUserService
 {
     private readonly DataContext context;
     private readonly IMapper mapper;
-    private readonly ILogger<VoterService> logger;
-    public VoterService(DataContext _context, IMapper _mapper, ILogger<VoterService> _logger)
+    private readonly ILogger<UserService> logger;
+    private readonly IConfiguration configuration;
+    public UserService(DataContext _context, IMapper _mapper, ILogger<UserService> _logger, IConfiguration _configuration)
     {
         context = _context;
         mapper = _mapper;
         logger = _logger;
+        configuration = _configuration;
     }
 
-    public async Task<List<Voter>> GetAll()
-     => await context.Voters
+    public async Task<List<User>> GetAll()
+     => await context.Users
                      .OrderByDescending(v => v.DateCreated)
                      .ToListAsync();
 
-    public async Task<Voter> GetById(int id)
-     => await context.Voters
+    public async Task<User> GetById(int id)
+     => await context.Users
                      .Where(v => v.VoterId.Equals(id))
                      .FirstOrDefaultAsync();
 
@@ -41,9 +47,9 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter existingFirstName = await context.Voters
-                                                   .Where(v => v.FirstName.Equals(dto.FirstName))
-                                                   .FirstOrDefaultAsync();
+            User existingFirstName = await context.Users
+                                                  .Where(v => v.FirstName.Equals(dto.FirstName))
+                                                  .FirstOrDefaultAsync();
 
             if (existingFirstName != null)
             {
@@ -52,7 +58,7 @@ public class VoterService : IVoterService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            Voter existingLastName = await context.Voters
+            User existingLastName = await context.Users
                                                   .Where(v => v.LastName.Equals(dto.LastName))
                                                   .FirstOrDefaultAsync();
 
@@ -63,7 +69,7 @@ public class VoterService : IVoterService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            Voter existingEmail = await context.Voters
+            User existingEmail = await context.Users
                                                .Where(v => v.Email.Equals(dto.Email))
                                                .FirstOrDefaultAsync();
 
@@ -74,7 +80,7 @@ public class VoterService : IVoterService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            Voter existingPhoneNumber = await context.Voters
+            User existingPhoneNumber = await context.Users
                                                      .Where(v => v.PhoneNumber.Equals(dto.PhoneNumber))
                                                      .FirstOrDefaultAsync();
 
@@ -89,7 +95,7 @@ public class VoterService : IVoterService
             var generateVoterID = Tokens.GenerateVoterID();
             var passwordEncrypt = PasswordHasher.EncryptPassword(dto.Password);
 
-            var student = mapper.Map<Voter>(dto);
+            var student = mapper.Map<User>(dto);
             student.VoterImages = voterImagePath;
             student.VoterId = generateVoterID;
             student.Password = passwordEncrypt;
@@ -99,7 +105,7 @@ public class VoterService : IVoterService
             student.VerificationStatus = VerifyStatus.Pending;
             student.Role = UserRole.Voter;
 
-            context.Voters.Add(student);
+            context.Users.Add(student);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
             response.UserRole = UserRole.Voter;
@@ -119,17 +125,17 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter voter = null;
+            User voter = null;
 
             if (dto.VoterId.HasValue)
             {
-                voter = await context.Voters
+                voter = await context.Users
                                      .Where(v => v.VoterId.Equals(dto.VoterId.Value))
                                      .FirstOrDefaultAsync();
             }
             else if (!string.IsNullOrWhiteSpace(dto.Email))
             {
-                voter = await context.Voters
+                voter = await context.Users
                                      .Where(v => v.Email.Equals(dto.Email))
                                      .FirstOrDefaultAsync();
             }
@@ -187,7 +193,7 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter voter = await context.Voters
+            User voter = await context.Users
                                        .Where(v => v.VoterId.Equals(id))
                                        .FirstOrDefaultAsync();
 
@@ -200,7 +206,7 @@ public class VoterService : IVoterService
 
             voter.IsValidate = true;
 
-            context.Voters.Update(voter);
+            context.Users.Update(voter);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
         }
@@ -219,7 +225,7 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter voter = await context.Voters
+            User voter = await context.Users
                                        .Where(v => v.VoterId.Equals(id))
                                        .FirstOrDefaultAsync();
 
@@ -232,7 +238,7 @@ public class VoterService : IVoterService
 
             voter.IsActive = false;
 
-            context.Voters.Update(voter);
+            context.Users.Update(voter);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
         }
@@ -251,7 +257,7 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter voter = await context.Voters
+            User voter = await context.Users
                                        .Where(v => v.VoterId.Equals(id))
                                        .FirstOrDefaultAsync();
 
@@ -264,7 +270,7 @@ public class VoterService : IVoterService
 
             voter.IsActive = true;
 
-            context.Voters.Update(voter);
+            context.Users.Update(voter);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
         }
@@ -283,8 +289,8 @@ public class VoterService : IVoterService
 
         try
         {
-            Voter voter = await context.Voters
-                                       .Where(v => v.VoterId == id)
+            User voter = await context.Users
+                                       .Where(v => v.VoterId.Equals(id))
                                        .FirstOrDefaultAsync();
 
             if (voter == null)
@@ -305,8 +311,10 @@ public class VoterService : IVoterService
             }
 
             var updatedVoterProfile = mapper.Map(dto, voter);
-            context.Voters.Update(updatedVoterProfile);
+            context.Users.Update(updatedVoterProfile);
             await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
 
         }
         catch (Exception e)
@@ -318,5 +326,77 @@ public class VoterService : IVoterService
         return response;
     }
 
+    public async Task<ApiResponse> ForgotPassword(string email)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            User user = await context.Users
+                                     .Where(u => u.Email.Equals(email))
+                                     .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                string errorMessage = "Email not yet registered.";
+                response.ErrorMessage = errorMessage;
+                throw new KeyNotFoundException(errorMessage);
+            }
+
+            user.PasswordResetToken = Tokens.GenerateToken(user, configuration);
+            user.ResetTokenExpires = DateTime.Now.AddHours(24);
+
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            var emailProvider = new EmailContentProvider(configuration);
+            await emailProvider.SendPasswordResetEmail(user.Email, user.PasswordResetToken);
+
+            response.ResponseCode = 200;
+
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse> ResetPassword(ResetPasswordDto dto)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            User user = await context.Users
+                                     .Where(u => u.PasswordResetToken.Equals(dto.Token))
+                                     .FirstOrDefaultAsync();
+
+            if (user == null || user.ResetTokenExpires < DateTime.Now)
+            {
+                string errorMessage = "Invalid Token.";
+                response.ErrorMessage = errorMessage;
+                throw new KeyNotFoundException(errorMessage);
+            }
+
+            user.Password = PasswordHasher.EncryptPassword(dto.NewPassword);
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 
 }

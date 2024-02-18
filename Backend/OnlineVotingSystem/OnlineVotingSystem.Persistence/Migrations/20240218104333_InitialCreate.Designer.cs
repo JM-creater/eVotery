@@ -12,7 +12,7 @@ using OnlineVotingSystem.Persistence.Context;
 namespace OnlineVotingSystem.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240217131158_InitialCreate")]
+    [Migration("20240218104333_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -156,141 +156,111 @@ namespace OnlineVotingSystem.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9925cc11-a753-4c31-b792-7599586ad4a1"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2555),
+                            Id = new Guid("5b25eed3-7da1-42ab-a0b6-4f9ab77df936"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7660),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "President"
                         },
                         new
                         {
-                            Id = new Guid("78cc0564-ff78-4a28-9587-5f7ad2e2a713"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2567),
+                            Id = new Guid("64939090-8a63-4681-b1f5-f1462d7b4b92"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7670),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Vice President"
                         },
                         new
                         {
-                            Id = new Guid("55311263-4c66-4f82-801a-4ade4699e51a"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2569),
+                            Id = new Guid("2c7e614d-80a6-423c-9eab-dd6ca84b1979"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7671),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Senator"
                         },
                         new
                         {
-                            Id = new Guid("5f9e3b50-46dd-4f08-afa2-51b6911ac2f5"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2570),
+                            Id = new Guid("89ecb9f7-ea68-46db-8765-4903b98c7ca3"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7672),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Member of the House of Representatives"
                         },
                         new
                         {
-                            Id = new Guid("7b8c7ac2-7d11-4151-9dcd-d00b864ddc8a"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2572),
+                            Id = new Guid("944524cb-e51f-4777-96f5-37ce27d6b879"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7674),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Governor"
                         },
                         new
                         {
-                            Id = new Guid("583b12f9-b763-4509-a1ae-32c1d315996e"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2573),
+                            Id = new Guid("aa64c7ac-a520-491c-bdce-31c2a3e972a7"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7675),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Mayor"
                         },
                         new
                         {
-                            Id = new Guid("e40d1b96-c3e0-465d-8d37-0575b27debe4"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2574),
+                            Id = new Guid("985f457c-fed2-44b6-82c3-b5bc43505469"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7676),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Vice Governor"
                         },
                         new
                         {
-                            Id = new Guid("8c289ffa-16c5-4366-92fc-a831ce833a8e"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2576),
+                            Id = new Guid("d36ed6e8-be2d-4c20-8396-edf5e3fa9009"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7677),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Vice Mayor"
                         },
                         new
                         {
-                            Id = new Guid("c9ec2926-375f-48ac-9666-60b855c0a5f7"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2577),
+                            Id = new Guid("8deb12e2-0275-4891-80be-07bb7c7a4f4d"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7678),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Councilor"
                         },
                         new
                         {
-                            Id = new Guid("04b402d2-a581-47b5-a136-560e68134d38"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2578),
+                            Id = new Guid("d73f87f4-562c-4a7b-b305-9bfe37b7fac7"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7679),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Barangay Captain"
                         },
                         new
                         {
-                            Id = new Guid("249c37ad-0c36-4092-9991-b7dcfca1da6f"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2579),
+                            Id = new Guid("3972b0e7-175c-4a90-a900-385f54ebe6b2"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7680),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Barangay Kagawad"
                         },
                         new
                         {
-                            Id = new Guid("dfcec5df-d2ef-4105-9fa6-cbed1b85cd60"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2581),
+                            Id = new Guid("784d1fc9-cbe0-445e-9982-68de07440627"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7681),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Sangguniang Kabataan Chairperson"
                         },
                         new
                         {
-                            Id = new Guid("9909b105-2272-4ff0-b007-0127c9837552"),
-                            DateCreated = new DateTime(2024, 2, 17, 21, 11, 58, 138, DateTimeKind.Local).AddTicks(2582),
+                            Id = new Guid("dcd3480d-1eff-424a-9b4a-d5f52c077635"),
+                            DateCreated = new DateTime(2024, 2, 18, 18, 43, 32, 690, DateTimeKind.Local).AddTicks(7682),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             Name = "Sangguniang Kabataan Kagawad"
                         });
                 });
 
-            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.Vote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CandidateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("VotedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("VoterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CandidateId");
-
-                    b.HasIndex("VoterId");
-
-                    b.ToTable("Votes");
-                });
-
-            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.Voter", b =>
+            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -334,9 +304,15 @@ namespace OnlineVotingSystem.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(12)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -353,15 +329,15 @@ namespace OnlineVotingSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Voters");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ea11545e-c4fd-4174-a0a5-5898f3264477"),
+                            Id = new Guid("9985b7c2-803e-4beb-be93-a18816bde423"),
                             Address = "123 Main Street",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateTime(2024, 2, 17, 13, 11, 58, 138, DateTimeKind.Utc).AddTicks(2402),
+                            DateOfBirth = new DateTime(2024, 2, 18, 10, 43, 32, 690, DateTimeKind.Utc).AddTicks(7482),
                             DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "garadojosephmartin98@gmail.com",
                             FirstName = "Joseph Martin",
@@ -373,9 +349,39 @@ namespace OnlineVotingSystem.Persistence.Migrations
                             PhoneNumber = "09199431060",
                             Role = 2,
                             VerificationStatus = 0,
-                            VoterId = 3265,
+                            VoterId = 3280,
                             VoterImages = "PathImages\\VoterImages\\admin picture.png"
                         });
+                });
+
+            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.Vote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("VotedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("VoterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("VoterId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.Ballot", b =>
@@ -420,7 +426,7 @@ namespace OnlineVotingSystem.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("OnlineVotingSystem.Domain.Entity.Voter", "Voter")
+                    b.HasOne("OnlineVotingSystem.Domain.Entity.User", "Voter")
                         .WithMany("Votes")
                         .HasForeignKey("VoterId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -453,7 +459,7 @@ namespace OnlineVotingSystem.Persistence.Migrations
                     b.Navigation("Candidates");
                 });
 
-            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.Voter", b =>
+            modelBuilder.Entity("OnlineVotingSystem.Domain.Entity.User", b =>
                 {
                     b.Navigation("Votes");
                 });

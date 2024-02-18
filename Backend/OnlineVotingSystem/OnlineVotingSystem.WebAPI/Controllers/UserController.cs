@@ -5,10 +5,10 @@ using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 namespace OnlineVotingSystem.WebAPI.Controllers;
 
 [ApiController, Route("[controller]")]
-public class VoterController : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly IVoterService service;
-    public VoterController(IVoterService _service)
+    private readonly IUserService service;
+    public UserController(IUserService _service)
     {
         service = _service;
     }
@@ -44,6 +44,11 @@ public class VoterController : ControllerBase
     {
         var response = await service.Register(dto);
 
+        if (response == null)
+        {
+            return NotFound();
+        }
+
         return Ok(response);
     }
 
@@ -51,6 +56,37 @@ public class VoterController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
     {
         var response = await service.Login(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        var response = await service.ForgotPassword(email);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPut("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        var response = await service.ResetPassword(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
 
         return Ok(response);
     }
