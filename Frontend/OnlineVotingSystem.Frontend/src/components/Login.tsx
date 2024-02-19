@@ -7,7 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Logo from '../assets/samples/Logo.png';
 
-const LOGIN_URL = 'https://localhost:7196/Voter/login';
+const LOGIN_URL = 'https://localhost:7196/User/login';
 
 type VoterType = {
     voterIdOrEmail?: string;
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [loadings, setLoadings] = useState<boolean>(false);
 
-    const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
+    //const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const handleLogin = async (values: VoterType) => {
         setLoadings(true);
@@ -58,11 +58,11 @@ const Login: React.FC = () => {
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
-                        await delay(2000);
+                        //await delay(2000);
                         navigate('/home-page');
                         break;
                     case 2: 
-                        await delay(2000);
+                        //await delay(2000);
                         navigate('/admin-dashboard');
                         break;
                     default:

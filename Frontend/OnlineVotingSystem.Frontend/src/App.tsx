@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './components/Login'
 import Register from './components/Register'
 import HomePage from './components/voter/HomePage'
-import Admin_Dashboard from './components/admin/Admin_Dashboard'
+import Admin_Main from './components/admin/Admin_Main'
 import Forgot_Password from './components/Forgot_Password'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, Zoom } from 'react-toastify'
@@ -38,7 +38,7 @@ function App() {
 
           <Route path='/home-page' element={ <HomePage/> } />
 
-          <Route path='/admin-dashboard' element={ <Admin_Dashboard/> } />
+          <Route path='/admin-main' element={ <Admin_Main/> } />
 
         </Routes>
       </BrowserRouter>
