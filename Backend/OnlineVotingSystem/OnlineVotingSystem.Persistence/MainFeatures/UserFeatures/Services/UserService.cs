@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OnlineVotingSystem.Application.Email.Config;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;

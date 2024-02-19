@@ -47,7 +47,7 @@ public class UserController : ControllerBase
         return Ok(new { isValid });
     }
 
-    [HttpPost("create")]
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
     {
         var response = await service.Register(dto);

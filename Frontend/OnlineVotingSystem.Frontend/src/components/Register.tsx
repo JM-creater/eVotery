@@ -24,7 +24,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
-const REGISTER_URL = 'https://localhost:7196/Voter/create';
+const REGISTER_URL = 'https://localhost:7196/User/register';
 
 type VoterType = {
     firstName?: string;
