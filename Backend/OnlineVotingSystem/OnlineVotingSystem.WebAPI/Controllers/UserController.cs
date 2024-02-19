@@ -39,6 +39,14 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("validate-reset-token")]
+    public async Task<IActionResult> ValidateResetToken([FromQuery] string token)
+    {
+        var isValid = await service.IsResetTokenValid(token);
+
+        return Ok(new { isValid });
+    }
+
     [HttpPost("create")]
     public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
     {
@@ -65,7 +73,7 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("forgot-password")]
+    [HttpPut("forgot-password")]
     public async Task<IActionResult> ForgotPassword(string email)
     {
         var response = await service.ForgotPassword(email);

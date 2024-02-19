@@ -16,4 +16,5 @@ public interface IUserService
     Task<ApiResponse> UpdateVoterProfile(int id, UpdateVoterDto dto);
     Task<ApiResponse> ForgotPassword(string email);
     Task<ApiResponse> ResetPassword(ResetPasswordDto dto);
+    Task<bool> IsResetTokenValid(string token);
 }

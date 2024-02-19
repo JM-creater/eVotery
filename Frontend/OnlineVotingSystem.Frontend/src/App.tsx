@@ -8,6 +8,7 @@ import Admin_Dashboard from './components/admin/Admin_Dashboard'
 import Forgot_Password from './components/Forgot_Password'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, Zoom } from 'react-toastify'
+import Reset_Password from './components/Reset_Password'
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
 
           <Route index element={ <Login/> } />
           <Route path='/register-page' element={ <Register/> } />
+          <Route path='/reset-password' element={ <Reset_Password/> } />
           <Route path='/forgot-password' element={ <Forgot_Password/> } />
 
           <Route path='/home-page' element={ <HomePage/> } />
