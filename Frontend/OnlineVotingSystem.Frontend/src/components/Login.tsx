@@ -37,7 +37,7 @@ const Login: React.FC = () => {
         const loginRequest: LoginType = {
             password: values.password,
         };
-    
+
         if (values.voterIdOrEmail?.includes('@')) {
             loginRequest.email = values.voterIdOrEmail;
         } else {
@@ -46,7 +46,7 @@ const Login: React.FC = () => {
                 loginRequest.voterId = voterId;
             }
         }
-    
+
         try {
             const response = await axios.post(LOGIN_URL, loginRequest, {
                 headers: {
@@ -125,9 +125,11 @@ const Login: React.FC = () => {
                             <Checkbox className='title-remember'>Remember me</Checkbox>
                         </Form.Item>
 
-                        <a className="login-form-forgot">
-                            Forgot password
-                        </a>
+                        <Link to={'/reset-password'}>
+                            <a className="login-form-forgot">
+                                Forgot password
+                            </a>
+                        </Link>
                     </div>
                 </Form.Item>
 

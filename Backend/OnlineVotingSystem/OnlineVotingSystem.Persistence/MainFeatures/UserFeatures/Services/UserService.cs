@@ -333,20 +333,20 @@ public class UserService : IUserService
         try
         {
             User user = await context.Users
-                                     .Where(u => u.Email.Equals(email))
+                                     .Where(u => u.Email == email)
                                      .FirstOrDefaultAsync();
 
             if (user == null)
             {
                 string errorMessage = "Email not yet registered.";
                 response.ErrorMessage = errorMessage;
-                throw new KeyNotFoundException(errorMessage);
+                throw new InvalidOperationException(errorMessage);
             }
 
             user.PasswordResetToken = Tokens.GenerateToken(user, configuration);
             user.ResetTokenExpires = DateTime.Now.AddHours(24);
 
-            context.Users.Add(user);
+            context.Users.Update(user);
             await context.SaveChangesAsync();
 
             var emailProvider = new EmailContentProvider(configuration);
@@ -371,17 +371,17 @@ public class UserService : IUserService
         try
         {
             User user = await context.Users
-                                     .Where(u => u.PasswordResetToken.Equals(dto.Token))
+                                     .Where(u => u.PasswordResetToken == dto.Token) 
                                      .FirstOrDefaultAsync();
 
             if (user == null || user.ResetTokenExpires < DateTime.Now)
             {
                 string errorMessage = "Invalid Token.";
                 response.ErrorMessage = errorMessage;
-                throw new KeyNotFoundException(errorMessage);
+                throw new InvalidOperationException(errorMessage);
             }
 
-            user.Password = PasswordHasher.EncryptPassword(dto.NewPassword);
+            user.Password = PasswordHasher.EncryptPassword(dto.NewPassword);  
             user.PasswordResetToken = null;
             user.ResetTokenExpires = null;
 
@@ -399,4 +399,24 @@ public class UserService : IUserService
         return response;
     }
 
+
+    public async Task<bool> IsResetTokenValid(string token)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(token))
+                return false;
+
+            var user = await context.Users
+                                    .Where(u => u.PasswordResetToken == token
+                                            && u.ResetTokenExpires > DateTime.UtcNow)
+                                    .FirstOrDefaultAsync();
+
+            return user != null;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException(e.Message);
+        }
+    }
 }
