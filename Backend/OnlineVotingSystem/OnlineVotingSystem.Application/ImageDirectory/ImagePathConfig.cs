@@ -29,7 +29,7 @@ public class ImagePathConfig
             await imageFile.CopyToAsync(stream);
         }
 
-        return Path.Combine("FolderImages", "VoterImages", fileName);
+        return Path.Combine("PathImages", "VoterImages", fileName);
     }
 
     public async Task<string?> SaveCandidateImages(IFormFile? imageFile)
@@ -57,6 +57,6 @@ public class ImagePathConfig
             await imageFile.CopyToAsync(stream);
         }
 
-        return Path.Combine("FolderImages", "CandidateImage", fileName);
+        return Path.Combine("PathImages", "CandidateImage", fileName);
     }
 }

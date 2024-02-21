@@ -14,6 +14,10 @@ public class Candidate : BaseEntity
     [Column(TypeName = "nvarchar(15)")]
     public string LastName { get; set; } = string.Empty;
 
+    [Required]
+    [Column(TypeName = "nvarchar(MAX)")]
+    public string Image { get; set; } = string.Empty;
+
     public Guid BallotId { get; set; }
     public virtual Ballot Ballot { get; set; }
     public Guid PositionId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Domain.Responses;
@@ -46,7 +47,10 @@ public class CandidateService : ICandidateService
                 throw new InvalidOperationException(errorMessage);
             }
 
+            var candidateImagePath = await new ImagePathConfig().SaveCandidateImages(dto.Image);
+
             var candidate = mapper.Map<Candidate>(dto);
+            candidate.Image = candidateImagePath;
             candidate.DateCreated = DateTime.Now;
             context.Candidates.Add(candidate);
             await context.SaveChangesAsync();

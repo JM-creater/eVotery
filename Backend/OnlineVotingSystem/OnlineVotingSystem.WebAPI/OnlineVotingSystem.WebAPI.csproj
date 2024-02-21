@@ -24,4 +24,8 @@
     <ProjectReference Include="..\OnlineVotingSystem.Persistence\OnlineVotingSystem.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PathImages\CandidateImage\" />
+  </ItemGroup>
+
 </Project>

@@ -74,6 +74,12 @@ const Register: React.FC = () => {
     const handleRegister = async (values: VoterType) => {
         setLoadings(true);
 
+        if (values.password !== values.confirmPassword) {
+            toast.error('Passwords do not match.');
+            setLoadings(false);
+            return;
+        }
+
         try {
 
             const formData = new FormData();
@@ -260,7 +266,17 @@ const Register: React.FC = () => {
                     <Form.Item<VoterType>
                         label="Confirm Password"
                         name="confirmPassword"
-                        rules={[{ required: true, message: 'Confirm your password.' }]}
+                        rules={[
+                            { required: true, message: 'Please confirm your password.' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('The two passwords that you entered do not match.'));
+                                },
+                            }),
+                        ]}
                     >
                         <Input
                             maxLength={8}

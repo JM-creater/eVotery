@@ -31,6 +31,7 @@ public class UserService : IUserService
 
     public async Task<List<User>> GetAll()
      => await context.Users
+                     .Where(u => u.Role == UserRole.Voter)
                      .OrderByDescending(v => v.DateCreated)
                      .ToListAsync();
 
