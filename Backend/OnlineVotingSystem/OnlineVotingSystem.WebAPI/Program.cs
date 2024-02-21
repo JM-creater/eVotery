@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineVotingSystem.Application;
-using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Persistence;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.WebAPI.Extensions;
@@ -15,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<ImagePathOptions>(builder.Configuration.GetSection("ImagePath"));
+//builder.Services.Configure<ImagePathOptions>(builder.Configuration.GetSection("ImagePath"));
 
 var app = builder.Build();
 

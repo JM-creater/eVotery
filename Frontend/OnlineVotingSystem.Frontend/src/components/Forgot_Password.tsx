@@ -99,6 +99,7 @@ const Forgot_Password: React.FC = () => {
             >
                 <div className='main-forgot'>
                     <div className="forgot-content-left">
+                        
                         <img src={ForgotPasswordImage} alt="forgot-password-image" className='forgot-image' />
                     </div>
 

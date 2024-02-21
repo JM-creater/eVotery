@@ -14,7 +14,7 @@ public class CandidateController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Create(CreateCandidateDto dto)
+    public async Task<IActionResult> Create([FromForm] CreateCandidateDto dto)
     {
         var response = await servvice.Create(dto);
 
@@ -35,7 +35,7 @@ public class CandidateController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await servvice.GetById(id);
 

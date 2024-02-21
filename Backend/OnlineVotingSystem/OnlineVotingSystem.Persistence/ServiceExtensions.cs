@@ -7,10 +7,14 @@ using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.Helpers.EmailContent;
 using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 using OnlineVotingSystem.Persistence.Helpers.MapperProfile;
+using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
+using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.CandidateFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.CandidateFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.Services;
+using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.IServices;
+using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
 using System.Text;
@@ -28,6 +32,8 @@ public static class ServiceExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICandidateService, CandidateService>();
         services.AddScoped<IPositionService, PositionService>();
+        services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<ISearchService, SearchService>();
 
         services.AddScoped<Tokens>();
         services.AddScoped<EmailContentProvider>();

@@ -1,0 +1,22 @@
+.search-container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.search-content {
+    width: 20%;
+}
+
+/* Modal Section*/
+
+.modal-main-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.div-information-container {
+    width: 50%; 
+    padding: 0 20px;
+}
