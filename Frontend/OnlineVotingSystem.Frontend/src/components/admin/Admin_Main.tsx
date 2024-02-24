@@ -23,7 +23,7 @@ import Admin_ElectionTitle from './Admin_ElectionTitle';
 import Admin_Profile from './Admin_Profile';
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const Admin_Main: React.FC = () => {
 
@@ -167,13 +167,13 @@ const Admin_Main: React.FC = () => {
             {renderComponent()}
           </div>
         </Content>
-        <Footer 
+        {/* <Footer 
           style={{ 
             textAlign: 'center'
           }}
         >
           eVotery ©{new Date().getFullYear()} Created by Joseph Martin Garado
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );

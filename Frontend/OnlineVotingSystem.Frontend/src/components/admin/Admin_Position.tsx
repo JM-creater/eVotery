@@ -1,4 +1,4 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Popconfirm, Space, Spin, Table } from 'antd';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
@@ -84,12 +84,18 @@ const Admin_Position: React.FC = () => {
             key: 'name',
             render: (text: string, record: PositionType) => (
                 changeInput === record.name ? (
-                    <Input
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onPressEnter={() => handleEditConfirm(record.id as string)}
-                        onBlur={() => handleEditConfirm(record.id as string)}
-                    />
+                    <React.Fragment>
+                        <div className="input-div-container">
+                            <Input
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onPressEnter={() => handleEditConfirm(record.id as string)}
+                                onBlur={() => handleEditConfirm(record.id as string)}
+                            />
+                            
+                            <CloseOutlined onClick={closeInput} className='close-outline-div' /> 
+                        </div>
+                    </React.Fragment>
                 ) : (
                     text
                 )
@@ -146,6 +152,10 @@ const Admin_Position: React.FC = () => {
             )
         },
     ];
+
+    const closeInput = () => {
+        setChangeInput(null);
+    };
 
     const showModal = () => {
         setIsModalOpen(true);
