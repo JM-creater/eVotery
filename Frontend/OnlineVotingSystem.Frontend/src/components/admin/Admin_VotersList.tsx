@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../admin/Admin_VotersList.css'
 import axios from 'axios';
-import { Button, Space, Table, Spin, Tooltip, Modal, Image, Form, Input } from 'antd';
+import { Button, Space, Table, Spin, Tooltip, Modal, Image, Form, Input, Switch } from 'antd';
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import Search from 'antd/es/input/Search';
@@ -10,6 +10,8 @@ const GETALLVOTERS_URL = 'https://localhost:7196/User/get-all';
 const GETBYVOTERSID_URL = 'https://localhost:7196/User/get-by-id/';
 const VALIDATION_URL = 'https://localhost:7196/User/validate/';
 const SEARCHVOTER_URL = 'https://localhost:7196/search-voter?searchQuery=';
+const ACTIVATE_URL = 'https://localhost:7196/User/activated/';
+const DEACTIVATE_URL = 'https://localhost:7196/User/deactivated/';
 
 type VoterType = {
     key?: string;
@@ -24,14 +26,13 @@ type VoterType = {
     isValidate?: boolean;
 }
 
-
 const Admin_VotersList: React.FC = () => {
 
     const [voters, setVoters] = useState<VoterType[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [filteredVoters, setFilteredVoters] = useState<VoterType[]>([]);
     const [selectedVoter, setSelectedVoter] = useState<VoterType | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
     
@@ -166,12 +167,14 @@ const Admin_VotersList: React.FC = () => {
 
         try {
             const response = await axios.get(`${GETBYVOTERSID_URL}${voterId}`);
-            
-            console.log(response.data);
 
             if (response.status === 200) { 
                 setSelectedVoter(response.data); 
-            }  
+            } else if (response.status === 404) {
+                toast.error('Voters Id not found.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
         } catch (error) {
             console.error(error);
         }
@@ -233,6 +236,42 @@ const Admin_VotersList: React.FC = () => {
         }
     };
 
+    const handleActivate = async (voterId: VoterType) => {
+        try {
+            const response = await axios.put(`${ACTIVATE_URL}${voterId}`);
+
+            if (response.data.responseCode === 200) {
+                setSelectedVoter(prevVoter => ({ ...prevVoter, isActive: true }));
+                toast.success('Account activated successfully.');
+            } else if (response.data.responseCode === 400) {
+                toast.error('Voters Id not found.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDeactivate = async (voterId: VoterType) => {
+        try {
+            const response = await axios.put(`${DEACTIVATE_URL}${voterId}`);
+
+            if (response.data.responseCode === 200) {
+                setSelectedVoter(prevVoter => ({ ...prevVoter, isActive: false }));
+                toast.success('Account deactivated successfully.');
+            } else if (response.data.responseCode === 400) {
+                toast.error('Voters Id not found.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <React.Fragment>
 
@@ -252,7 +291,6 @@ const Admin_VotersList: React.FC = () => {
                         <div className="loading-container">
                             <div className="loading-content">
                                 <Spin indicator={antIcon} />
-                                <h1 className="loading-title">Loading Data</h1>
                             </div>
                         </div>
                     ) : (
@@ -319,6 +357,23 @@ const Admin_VotersList: React.FC = () => {
                                             label="Phone Number:"
                                         >
                                             <Input value={selectedVoter.phoneNumber} readOnly />
+                                        </Form.Item>
+
+                                        <Form.Item<VoterType> 
+                                            label={
+                                                selectedVoter.isActive 
+                                                ? 'Activated Account:' 
+                                                : 'Deactivated Account:'
+                                            }
+                                        >
+                                            <Switch 
+                                                checked={selectedVoter?.isActive} 
+                                                onChange={(checked: boolean) => 
+                                                    checked 
+                                                    ? handleActivate(selectedVoter.voterId as VoterType) 
+                                                    : handleDeactivate(selectedVoter.voterId as VoterType)
+                                                } 
+                                            />
                                         </Form.Item>
 
                                     </Form>

@@ -23,4 +23,17 @@ public class SearchController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("search-position")]
+    public async Task<IActionResult> SearchPosition(string searchQuery)
+    {
+        var response = await service.SearchPositionName(searchQuery);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
 }

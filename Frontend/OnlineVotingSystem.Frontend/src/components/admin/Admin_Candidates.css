@@ -1,0 +1,62 @@
+h1 {
+    margin: auto;
+    text-align: center;
+    color: black;
+    font-size: 40px;
+    max-width: 600px;
+    position: relative;
+}
+
+h1:before {
+    content: "";
+    display: block;
+    width: 160px;
+    height: 5px;
+    background: #191970;
+    left: 0;
+    top: 50%;
+    position: absolute;
+}
+
+h1:after {
+    content: "";
+    display: block;
+    width: 160px;
+    height: 5px;
+    background: #191970;
+    right: 0;
+    top: 50%;
+    position: absolute;
+}
+
+.card-main-candidate {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.add-candidate-container {
+    width: 300px;
+    height: 325px;  
+    padding: 50px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: aliceblue;
+    transition: background-color 0.3s; 
+}
+
+.add-candidate-container:hover {
+    background-color: lightgrey; 
+}
+
+.plus-icon-container {
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
+.div-title-container h3 {
+    font-size: 25px;
+    font-weight: 300px;
+}

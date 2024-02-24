@@ -23,7 +23,7 @@ import Admin_ElectionTitle from './Admin_ElectionTitle';
 import Admin_Profile from './Admin_Profile';
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const Admin_Main: React.FC = () => {
 
@@ -100,7 +100,7 @@ const Admin_Main: React.FC = () => {
           </Menu.SubMenu>
 
           <Menu.SubMenu key="settings" title="Settings">
-            <Menu.Item key="6"><InboxOutlined /> Ballot Position</Menu.Item>
+            <Menu.Item key="6"><InboxOutlined /> Ballot</Menu.Item>
             <Menu.Item key="7"><FontColorsOutlined /> Election Title</Menu.Item>
             <Menu.Item key="8"><UserOutlined /> Profile</Menu.Item>
           </Menu.SubMenu>
@@ -141,7 +141,7 @@ const Admin_Main: React.FC = () => {
           )}
           {selectedItemMenu === '6' && (
               <React.Fragment>
-                  <Breadcrumb.Item>Ballot Position</Breadcrumb.Item>
+                  <Breadcrumb.Item>Ballot</Breadcrumb.Item>
               </React.Fragment>
           )}
           {selectedItemMenu === '7' && (
@@ -167,13 +167,13 @@ const Admin_Main: React.FC = () => {
             {renderComponent()}
           </div>
         </Content>
-        <Footer 
+        {/* <Footer 
           style={{ 
             textAlign: 'center'
           }}
         >
           eVotery ©{new Date().getFullYear()} Created by Joseph Martin Garado
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );

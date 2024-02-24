@@ -154,21 +154,21 @@ public class UserService : IUserService
 
             if (!voter.IsValidate)
             {
-                string errorMessage = "Waiting for validation";
+                string errorMessage = "Voter registration is pending validation.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
 
             if (!voter.IsActive)
             {
-                string errorMessage = "Account is deactivated";
+                string errorMessage = "Account has been deactivated.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
 
             if (!PasswordHasher.VerifyPassword(dto.Password, voter.Password))
             {
-                string errorMessage = "Incorrect Password";
+                string errorMessage = "Incorrect password entered.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
