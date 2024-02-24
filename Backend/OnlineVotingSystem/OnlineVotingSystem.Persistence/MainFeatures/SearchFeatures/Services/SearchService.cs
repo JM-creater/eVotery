@@ -28,4 +28,18 @@ public class SearchService : ISearchService
         return search;
     }
 
+    public async Task<Position> SearchPositionName(string searchQuery)
+    {
+        var search = await context.Positions
+                                  .Where(u => u.Name.Contains(searchQuery.ToLower()))
+                                  .FirstOrDefaultAsync();
+
+        if (search == null)
+        {
+            throw new InvalidOperationException("Position not found with the given search query.");
+        }
+
+        return search;
+    }
+
 }

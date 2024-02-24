@@ -1,0 +1,21 @@
+.search-position-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-position-content {
+    width: 20%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.button-add-content {
+    background-color: limegreen;
+    color: white;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+}

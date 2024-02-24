@@ -9,6 +9,8 @@ using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 using OnlineVotingSystem.Persistence.Helpers.MapperProfile;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.Services;
+using OnlineVotingSystem.Persistence.MainFeatures.BallotFeatures.IServices;
+using OnlineVotingSystem.Persistence.MainFeatures.BallotFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.CandidateFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.CandidateFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.IServices;
@@ -34,6 +36,7 @@ public static class ServiceExtensions
         services.AddScoped<IPositionService, PositionService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<ISearchService, SearchService>();
+        services.AddScoped<IBallotService, BallotService>();
 
         services.AddScoped<Tokens>();
         services.AddScoped<EmailContentProvider>();

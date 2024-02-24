@@ -100,7 +100,7 @@ const Admin_Main: React.FC = () => {
           </Menu.SubMenu>
 
           <Menu.SubMenu key="settings" title="Settings">
-            <Menu.Item key="6"><InboxOutlined /> Ballot Position</Menu.Item>
+            <Menu.Item key="6"><InboxOutlined /> Ballot</Menu.Item>
             <Menu.Item key="7"><FontColorsOutlined /> Election Title</Menu.Item>
             <Menu.Item key="8"><UserOutlined /> Profile</Menu.Item>
           </Menu.SubMenu>
@@ -141,7 +141,7 @@ const Admin_Main: React.FC = () => {
           )}
           {selectedItemMenu === '6' && (
               <React.Fragment>
-                  <Breadcrumb.Item>Ballot Position</Breadcrumb.Item>
+                  <Breadcrumb.Item>Ballot</Breadcrumb.Item>
               </React.Fragment>
           )}
           {selectedItemMenu === '7' && (

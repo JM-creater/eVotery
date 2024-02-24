@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input } from 'antd'
+import { Alert, Button, Checkbox, Form, Input } from 'antd'
 import React, { useState } from 'react'
 import '../components/Login.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -28,6 +28,7 @@ const Login: React.FC = () => {
     
     const navigate = useNavigate();
     const [loadings, setLoadings] = useState<boolean>(false);
+    const [errorField, setErrorField] = useState<string>("");
 
     //const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -58,11 +59,9 @@ const Login: React.FC = () => {
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
-                        //await delay(2000);
                         navigate('/home-page');
                         break;
                     case 2: 
-                        //await delay(2000);
                         navigate('/admin-dashboard');
                         break;
                     default:
@@ -70,7 +69,8 @@ const Login: React.FC = () => {
                         break;
                 } 
             } else if (response.data.responseCode === 400) {
-                toast.error('Login failed. Incorrect username or password.');
+                const errorMessage = response.data.errorMessage;
+                setErrorField(errorMessage);
             } else {
                 toast.error('An error occurred. Please try again later.');
             }
@@ -100,6 +100,16 @@ const Login: React.FC = () => {
                 <h1 className="title-label">
                     LOGIN
                 </h1>
+
+                {
+                    errorField && (
+                        <Alert 
+                            className="alert-container"
+                            message={errorField}
+                            type="error"
+                        />
+                    )
+                }
 
                 <Form.Item<VoterType>
                     name="voterIdOrEmail"
