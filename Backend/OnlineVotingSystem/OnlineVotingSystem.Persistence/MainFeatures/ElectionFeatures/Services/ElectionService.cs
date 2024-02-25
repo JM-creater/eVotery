@@ -4,46 +4,45 @@ using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Domain.Responses;
 using OnlineVotingSystem.Persistence.Context;
-using OnlineVotingSystem.Persistence.MainFeatures.BallotFeatures.IServices;
+using OnlineVotingSystem.Persistence.MainFeatures.ElectionFeatures.IServices;
 
-namespace OnlineVotingSystem.Persistence.MainFeatures.BallotFeatures.Services;
+namespace OnlineVotingSystem.Persistence.MainFeatures.ElectionFeatures.Services;
 
-public class BallotService : IBallotService
+public class ElectionService : IElectionService
 {
     private readonly DataContext context;
     private readonly IMapper mapper;
-    public BallotService(DataContext _context, IMapper _mapper)
+    public ElectionService(DataContext _context, IMapper _mapper)
     {
         context = _context;
-        mapper = _mapper;
+        mapper = _mapper;   
     }
 
-    public async Task<ApiResponse> Create(CreateBallotDto dto)
+    public async Task<ApiResponse> Create(CreateElectionDto dto)
     {
         ApiResponse response = new ApiResponse();
 
         try
         {
-            var existingName = await context.Ballots
+            var existingName = await context.Elections
                                             .Where(e => e.Name == dto.Name)
                                             .FirstOrDefaultAsync();
 
-            if (existingName != null)
+            if (existingName != null) 
             {
                 string errorMessage = $"A election with the name '{dto.Name}' already exists.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
 
-            var ballot = mapper.Map<Ballot>(dto);
-            ballot.IsActive = true;
-            ballot.DateCreated = DateTime.Now;
+            var election = mapper.Map<Election>(dto);
+            election.DateCreated = DateTime.Now;
+            election.IsActive = true;
 
-            context.Ballots.Add(ballot);
+            context.Elections.Add(election);
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
-
         }
         catch (Exception e)
         {
@@ -54,13 +53,13 @@ public class BallotService : IBallotService
         return response;
     }
 
-    public async Task<List<Ballot>> GetAll()
-        => await context.Ballots
-                        .OrderByDescending(b => b.DateCreated)
+    public async Task<List<Election>> GetAll()
+        => await context.Elections
+                        .OrderByDescending(e => e.DateCreated)
                         .ToListAsync();
 
-    public async Task<Ballot> GetById(Guid id)
-        => await context.Ballots
-                        .Where(b => b.Id == id)
+    public async Task<Election> GetById(Guid id)
+        => await context.Elections
+                        .Where(e => e.Id == id)
                         .FirstOrDefaultAsync();
 }

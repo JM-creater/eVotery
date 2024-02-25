@@ -9,7 +9,7 @@ import Search from 'antd/es/input/Search';
 const GETALLVOTERS_URL = 'https://localhost:7196/User/get-all';
 const GETBYVOTERSID_URL = 'https://localhost:7196/User/get-by-id/';
 const VALIDATION_URL = 'https://localhost:7196/User/validate/';
-const SEARCHVOTER_URL = 'https://localhost:7196/search-voter?searchQuery=';
+const SEARCHVOTER_URL = 'https://localhost:7196/Search/search-voter?searchQuery=';
 const ACTIVATE_URL = 'https://localhost:7196/User/activated/';
 const DEACTIVATE_URL = 'https://localhost:7196/User/deactivated/';
 

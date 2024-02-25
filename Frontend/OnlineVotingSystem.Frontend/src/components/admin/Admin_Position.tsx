@@ -6,12 +6,12 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import '../admin/Admin_Position.css'
 
-const GETALLPOSITION_URL = 'https://localhost:7196/get-all';
-const SEARCHPOSITION_URL = 'https://localhost:7196/search-position?searchQuery=';
-const GETCOUNTCANDIDATES_URL = 'https://localhost:7196/get-count-by-name';
-const ADD_POSITION_URL = 'https://localhost:7196/create-position?name=';
-const UPDATE_POSITION_URL = 'https://localhost:7196/update-position/';
-const DELETE_POSITION_URL = 'https://localhost:7196/delete-position/';
+const GETALLPOSITION_URL = 'https://localhost:7196/Position/get-all';
+const SEARCHPOSITION_URL = 'https://localhost:7196/Search/search-position?searchQuery=';
+const GETCOUNTCANDIDATES_URL = 'https://localhost:7196/Position/get-count-by-name';
+const ADD_POSITION_URL = 'https://localhost:7196/Position/create-position?name=';
+const UPDATE_POSITION_URL = 'https://localhost:7196/Position/update-position/';
+const DELETE_POSITION_URL = 'https://localhost:7196/Position/delete-position/';
 
 type PositionType = {
     id?: string;

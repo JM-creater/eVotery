@@ -1,4 +1,4 @@
-h1 {
+.title-candidate-content {
     margin: auto;
     text-align: center;
     color: black;
@@ -7,7 +7,7 @@ h1 {
     position: relative;
 }
 
-h1:before {
+.title-candidate-content:before {
     content: "";
     display: block;
     width: 160px;
@@ -18,7 +18,7 @@ h1:before {
     position: absolute;
 }
 
-h1:after {
+.title-candidate-content:after {
     content: "";
     display: block;
     width: 160px;
