@@ -3,6 +3,7 @@ using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
 
+[ApiController, Route("[controller]")]
 public class SearchController : ControllerBase
 {
     private readonly ISearchService service;

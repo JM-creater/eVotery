@@ -16,5 +16,11 @@ public class AutoMapperConfig : Profile
 
         // Candidate
         CreateMap<CreateCandidateDto, Candidate>();
+
+        // Ballot
+        CreateMap<CreateBallotDto, Ballot>();
+
+        // Election
+        CreateMap<CreateElectionDto, Election>();
     }
 }

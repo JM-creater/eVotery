@@ -4,6 +4,7 @@ using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
 
+[ApiController, Route("[controller]")]
 public class PositionController : ControllerBase
 {
     private readonly IPositionService service;
