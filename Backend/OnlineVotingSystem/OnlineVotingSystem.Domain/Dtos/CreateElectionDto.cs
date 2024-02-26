@@ -5,7 +5,7 @@ namespace OnlineVotingSystem.Domain.Dtos;
 public class CreateElectionDto
 {
     [Required]
-    public string Name { get; set; } 
+    public string ElectionName { get; set; } 
     [Required]
     public DateTime StartDate { get; set; }
     [Required]

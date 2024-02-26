@@ -8,11 +8,11 @@ public class PartyAffiliation : BaseEntity
 {
     [Required]
     [Column(TypeName = "nvarchar(100)")]
-    public string Name { get; set; }
+    public string PartyName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
-    public string Image { get; set; }
+    public string LogoImage { get; set; }
     public bool IsActive { get; set; }
 
     public ICollection<Candidate> Candidates { get; set; } = new List<Candidate>();
