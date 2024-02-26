@@ -7,21 +7,21 @@ namespace OnlineVotingSystem.Domain.Dtos;
 public class CreateVoterDto
 {
     [Required]
-    public string FirstName { get; set; } = string.Empty;
+    public string FirstName { get; set; } 
     [Required]
-    public string LastName { get; set; } = string.Empty;
+    public string LastName { get; set; } 
     [Required]
     public DateTime DateOfBirth { get; set; }
     [Required]
-    public string Email { get; set; } = string.Empty;
+    public string Email { get; set; }
     [Required]
-    public string Password { get; set; } = string.Empty;
+    public string Password { get; set; } 
     [Required]
-    public string Address { get; set; } = string.Empty;
+    public string Address { get; set; }
     [Required]
-    public string PhoneNumber { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } 
     [Required]
     public Gender Gender { get; set; }
     [Required]
-    public IFormFile? VoterImages { get; set; }
+    public IFormFile VoterImages { get; set; }
 }

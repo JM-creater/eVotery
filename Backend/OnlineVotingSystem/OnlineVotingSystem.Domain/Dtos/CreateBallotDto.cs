@@ -6,7 +6,7 @@ namespace OnlineVotingSystem.Domain.Dtos;
 public class CreateBallotDto
 {
     [Required]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } 
     [Required]
     public Guid ElectionId { get; set; }
     [Required]

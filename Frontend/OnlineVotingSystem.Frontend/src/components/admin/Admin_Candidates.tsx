@@ -155,6 +155,7 @@ const Admin_Candidates:React.FC = () => {
             if (response.data.responseCode === 200) {
                 toast.success('Successfully Created a Candidate.');
                 setOpen(false);
+                setCandidates(prevCandidates => [...prevCandidates, response.data.newCandidates])
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a candidate failed.');
             } else {
@@ -166,6 +167,11 @@ const Admin_Candidates:React.FC = () => {
         }
     };
 
+    const getPositionName = (positionId: string) => {
+        const position = positions.find(p => p.id == positionId)  
+        return position ? position.name : 'No Position Found';
+    };
+
     return (
         <React.Fragment>
 
@@ -175,16 +181,16 @@ const Admin_Candidates:React.FC = () => {
 
             <div className="card-main-candidate">
                 
-                <div className="add-candidate-container" onClick={showDrawer}>
+                {/* <div className="add-candidate-container" onClick={showDrawer}>
                     <div className="plus-icon-container">
                         <div className="plus-icon-content">
-                            <PlusOutlined style={{ fontSize: '800%'}} />
+                            <PlusOutlined style={{ fontSize: '800%', color: 'white'}} />
                         </div>
                         <div className="div-title-container">
                             <h3>Add Candidate</h3>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {
                     candidates.map(
@@ -192,12 +198,24 @@ const Admin_Candidates:React.FC = () => {
                             <Card
                                 key={candidate.id}
                                 hoverable
-                                style={{ width: 300 }}
+                                style={{ width: 240 }}
                                 cover={
-                                    <img
-                                        alt="candidate-image"
-                                        src={`https://localhost:7196/${candidate.image}`}
-                                    />
+                                    <div 
+                                        style={{ 
+                                            height: 160,
+                                            overflow: 'hidden'
+                                        }}
+                                    >
+                                        <img
+                                            alt="candidate-image"
+                                            src={`https://localhost:7196/${candidate.image}`}
+                                            style={{ 
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover'
+                                            }}
+                                        />
+                                    </div>
                                 }
                                 actions={[
                                     <SettingOutlined key="setting" />,
@@ -208,7 +226,7 @@ const Admin_Candidates:React.FC = () => {
                                 <Meta
                                     avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
                                     title={`${candidate.firstName} ${candidate.lastName}`}
-                                    description="This is the description"
+                                    description={getPositionName(candidate.positionId as string)}
                                 />
                             </Card>
                         )

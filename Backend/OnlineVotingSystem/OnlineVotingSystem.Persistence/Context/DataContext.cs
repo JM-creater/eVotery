@@ -18,6 +18,7 @@ public partial class DataContext : DbContext
     public DbSet<Election> Elections { get; set; }
     public DbSet<Ballot> Ballots { get; set; }
     public DbSet<Position> Positions { get; set; }
+    public DbSet<PartyAffiliation> PartyAffiliations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -179,6 +180,12 @@ public partial class DataContext : DbContext
             .HasOne(c => c.Position)
             .WithMany(p => p.Candidates)
             .HasForeignKey(c => c.PositionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Candidate>()
+            .HasOne(c => c.PartyAffiliation)
+            .WithMany(pa => pa.Candidates)
+            .HasForeignKey(c => c.PartyAffiliationId)
             .OnDelete(DeleteBehavior.NoAction);
 
     }
