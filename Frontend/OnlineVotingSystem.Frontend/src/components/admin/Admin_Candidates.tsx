@@ -1,4 +1,10 @@
-import { EditOutlined, EllipsisOutlined, PlusOutlined, SettingOutlined, UploadOutlined } from '@ant-design/icons'
+import { 
+    EditOutlined, 
+    EllipsisOutlined, 
+    PlusOutlined, 
+    SettingOutlined, 
+    UploadOutlined 
+} from '@ant-design/icons'
 import { 
     Avatar, 
     Button, 
@@ -7,6 +13,7 @@ import {
     Drawer, 
     Form, 
     Input, 
+    Radio, 
     Row, 
     Select, 
     Space, 
@@ -23,8 +30,14 @@ const CREATE_CANDIDATE_URL = 'https://localhost:7196/Candidate/create';
 const GETALL_CANDIDATE_URL = 'https://localhost:7196/Candidate/get-all';
 const GETALL_POSITION_URL = 'https://localhost:7196/Position/get-all';
 const GETALL_BALLOTS_URL = 'https://localhost:7196/Ballot/getall-ballots';
+const GETALL_PARTYAFFILIATION_URL = 'https://localhost:7196/PartyAffiliation/getall-party';
 
 const { Meta } = Card;
+
+enum GenderType {
+    Female = 1,
+    Male = 2,
+}
 
 type CandidateType = {
     id?: string;
@@ -33,6 +46,9 @@ type CandidateType = {
     image?: FileType[];
     ballotId?: string;
     positionId?: string;
+    partyAffiliationId?: string;
+    gender?: GenderType;
+    biography?: string;
 }
 
 type FileType = {
@@ -49,7 +65,12 @@ type PositionType = {
 
 type BallotType = {
     id?: string;
-    name?: string;
+    ballotName?: string;
+}
+
+type PartyAffiliationType = {
+    id?: string;
+    partyName?: string;
 }
 
 const props: UploadProps = {
@@ -75,10 +96,13 @@ const onFinishFailed = (errorInfo: unknown) => {
 
 const Admin_Candidates:React.FC = () => {
 
-    const [candidates, setCandidates] = useState<CandidateType[]>([]);
     const [open, setOpen] = useState<boolean>(false);
+    const [candidates, setCandidates] = useState<CandidateType[]>([]);
     const [positions, setPositions] = useState<PositionType[]>([]);
     const [ballots, setBallots] = useState<BallotType[]>([]);
+    const [affiliate, setAffiliate] = useState<PartyAffiliationType[]>([]);
+
+    const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const showDrawer = () => {
         setOpen(true);
@@ -127,13 +151,29 @@ const Admin_Candidates:React.FC = () => {
         fetchBallots();
     }, []);
 
+    useEffect(() => {
+        const fetchPartyAffiliation = async () => {
+            try {
+                const response = await axios.get(GETALL_PARTYAFFILIATION_URL);
+                setAffiliate(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchPartyAffiliation();
+    }, []);
+
+
     const handleCreateCandidate = async (values: CandidateType) => {
 
         try {
             const formData = new FormData();
 
             Object.entries(values).forEach(([key, value]) => {
-                if (key !== 'image' && value !== undefined) {
+                if (key === 'gender' && value !== undefined) {
+                    formData.append(key, GenderType[value as keyof typeof GenderType].toString());
+                } else if (key !== 'image' && value !== undefined) {
                     formData.append(key, value.toString());
                 }
             });
@@ -155,7 +195,8 @@ const Admin_Candidates:React.FC = () => {
             if (response.data.responseCode === 200) {
                 toast.success('Successfully Created a Candidate.');
                 setOpen(false);
-                setCandidates(prevCandidates => [...prevCandidates, response.data.newCandidates])
+                await delay(100);
+                window.location.reload();
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a candidate failed.');
             } else {
@@ -181,7 +222,7 @@ const Admin_Candidates:React.FC = () => {
 
             <div className="card-main-candidate">
                 
-                {/* <div className="add-candidate-container" onClick={showDrawer}>
+                <div className="add-candidate-container" onClick={showDrawer}>
                     <div className="plus-icon-container">
                         <div className="plus-icon-content">
                             <PlusOutlined style={{ fontSize: '800%', color: 'white'}} />
@@ -190,7 +231,7 @@ const Admin_Candidates:React.FC = () => {
                             <h3>Add Candidate</h3>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
                 {
                     candidates.map(
@@ -198,7 +239,7 @@ const Admin_Candidates:React.FC = () => {
                             <Card
                                 key={candidate.id}
                                 hoverable
-                                style={{ width: 240 }}
+                                style={{ width: 300 }}
                                 cover={
                                     <div 
                                         style={{ 
@@ -284,56 +325,81 @@ const Admin_Candidates:React.FC = () => {
 
                         <Row gutter={16}>
                             <Col span={12}>
-                            <Form.Item<CandidateType>
-                                name="ballotId"
-                                label="Ballot"
-                                rules={[{ required: true, message: 'Please select a ballot' }]}
-                            >
-                                <Select 
-                                    placeholder="Please select a ballot"
+                                <Form.Item<CandidateType>
+                                    name="ballotId"
+                                    label="Ballot"
+                                    rules={[{ required: true, message: 'Please select a ballot' }]}
                                 >
-                                    {
-                                        ballots.map(
-                                            ballot => (
-                                                <Select.Option 
-                                                    key={ballot.id}
-                                                    value={ballot.id}
-                                                >
-                                                    {ballot.name}
-                                                </Select.Option>
+                                    <Select 
+                                        placeholder="Please select a ballot"
+                                    >
+                                        {
+                                            ballots.map(
+                                                ballot => (
+                                                    <Select.Option 
+                                                        key={ballot.id}
+                                                        value={ballot.id}
+                                                    >
+                                                        {ballot.ballotName}
+                                                    </Select.Option>
+                                                )
                                             )
-                                        )
-                                    }
-                                </Select>
-                            </Form.Item>
+                                        }
+                                    </Select>
+                                </Form.Item>
                             </Col>
+
                             <Col span={12}>
-                            <Form.Item<CandidateType>
-                                name="positionId"
-                                label="Select Position"
-                                rules={[{ required: true, message: 'Please choose position' }]}
-                            >
-                                <Select 
-                                    placeholder="Please choose position"
+                                <Form.Item<CandidateType>
+                                    name="positionId"
+                                    label="Select Position"
+                                    rules={[{ required: true, message: 'Please choose position' }]}
                                 >
-                                    {
-                                        positions.map(
-                                            position => (
-                                                <Select.Option 
-                                                    key={position.id}
-                                                    value={position.id}
-                                                >
-                                                    {position.name}
-                                                </Select.Option>
+                                    <Select 
+                                        placeholder="Please choose position"
+                                    >
+                                        {
+                                            positions.map(
+                                                position => (
+                                                    <Select.Option 
+                                                        key={position.id}
+                                                        value={position.id}
+                                                    >
+                                                        {position.name}
+                                                    </Select.Option>
+                                                )
                                             )
-                                        )
-                                    }
-                                </Select>
-                            </Form.Item>
+                                        }
+                                    </Select>
+                                </Form.Item>
                             </Col>
                         </Row>
 
                         <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="partyAffiliationId"
+                                    label="Select Party Affiliate"
+                                    rules={[{ required: true, message: 'Please choose party' }]}
+                                >
+                                    <Select 
+                                        placeholder="Please choose party"
+                                    >
+                                        {
+                                            affiliate.map(
+                                                partyAffiliate => (
+                                                    <Select.Option 
+                                                        key={partyAffiliate.id}
+                                                        value={partyAffiliate.id}
+                                                    >
+                                                        {partyAffiliate.partyName}
+                                                    </Select.Option>
+                                                )
+                                            )
+                                        }
+                                    </Select>
+                                </Form.Item>
+                            </Col>
                             <Col span={12}>
                                 <Form.Item<CandidateType>
                                     name="image"
@@ -352,6 +418,34 @@ const Admin_Candidates:React.FC = () => {
                                     <Upload {...props} listType="picture">
                                         <Button icon={<UploadOutlined/>}>Upload Image</Button>
                                     </Upload>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="biography"
+                                    label="Biography"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'please enter biography',
+                                        },
+                                    ]}
+                                >
+                                    <Input.TextArea rows={4} placeholder="please enter biography" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="gender"
+                                    label="Gender"
+                                    rules={[{ required: true, message: 'Please select gender' }]}
+                                >
+                                    <Radio.Group>
+                                        <Radio value="1"> Female </Radio>
+                                        <Radio value="2"> Male </Radio>
+                                    </Radio.Group>
                                 </Form.Item>
                             </Col>
                         </Row>

@@ -22,5 +22,8 @@ public class AutoMapperConfig : Profile
 
         // Election
         CreateMap<CreateElectionDto, Election>();
+
+        // Party Affiliation
+        CreateMap<CreatePartyAffiliationDto, PartyAffiliation>();   
     }
 }

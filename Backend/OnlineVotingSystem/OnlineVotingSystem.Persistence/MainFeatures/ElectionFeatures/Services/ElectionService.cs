@@ -25,12 +25,12 @@ public class ElectionService : IElectionService
         try
         {
             var existingName = await context.Elections
-                                            .Where(e => e.Name == dto.Name)
+                                            .Where(e => e.ElectionName == dto.ElectionName)
                                             .FirstOrDefaultAsync();
 
             if (existingName != null) 
             {
-                string errorMessage = $"A election with the name '{dto.Name}' already exists.";
+                string errorMessage = $"A election with the name '{dto.ElectionName}' already exists.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }

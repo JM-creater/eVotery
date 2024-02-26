@@ -12,7 +12,7 @@
     justify-content: start;
 }
 
-/* .add-candidate-container {
+.add-candidate-container {
     width: 300px;
     height: 325px;  
     padding: 50px;
@@ -37,4 +37,4 @@
     font-size: 25px;
     font-weight: 300px;
     color: white;
-} */
+}

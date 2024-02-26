@@ -24,6 +24,7 @@ using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace OnlineVotingSystem.Persistence;
 
@@ -72,5 +73,10 @@ public static class ServiceExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
                 };
             });
-        }
+
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+    }
 }
