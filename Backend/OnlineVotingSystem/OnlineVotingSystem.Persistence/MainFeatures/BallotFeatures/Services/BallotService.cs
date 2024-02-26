@@ -43,7 +43,6 @@ public class BallotService : IBallotService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
-
         }
         catch (Exception e)
         {

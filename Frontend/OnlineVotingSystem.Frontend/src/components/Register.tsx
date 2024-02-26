@@ -64,6 +64,10 @@ const props: UploadProps = {
     },
 };
 
+const onFinishFailed = (errorInfo: unknown) => {
+    console.log('Failed:', errorInfo);
+};
+
 const Register: React.FC = () => {
 
     const [loadings, setLoadings] = useState<boolean>(false);
@@ -122,10 +126,6 @@ const Register: React.FC = () => {
         } finally {
             setLoadings(false);
         }
-    };
-
-    const onFinishFailed = (errorInfo: unknown) => {
-        console.log('Failed:', errorInfo);
     };
 
     return (

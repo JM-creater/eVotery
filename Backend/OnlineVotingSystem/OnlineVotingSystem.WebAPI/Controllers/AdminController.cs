@@ -12,7 +12,7 @@ public class AdminController : ControllerBase
         service = _service;
     }
 
-    [HttpGet("GetUsersForAdmin/{voterId}")]
+    [HttpGet("getusers-admin/{voterId}")]
     public async Task<IActionResult> GetUsersForAdmin(int voterId)
     {
         var response = await service.GetUsersForAdmin(voterId);
