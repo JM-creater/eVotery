@@ -52,6 +52,8 @@ public class CandidateService : ICandidateService
             var candidate = mapper.Map<Candidate>(dto);
             candidate.Image = candidateImagePath;
             candidate.DateCreated = DateTime.Now;
+            candidate.Status = Domain.Enum.CandidateStatus.Active;
+
             context.Candidates.Add(candidate);
             await context.SaveChangesAsync();
 
