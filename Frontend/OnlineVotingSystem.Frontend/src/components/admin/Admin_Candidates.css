@@ -1,40 +1,7 @@
-.title-candidate-content {
-    color: black;
-    font-size: 40px;
-    display: flex;
-}
-
 .card-main-candidate {
     display: flex;
     gap: 30px;
     margin-top: 30px;
     flex-wrap: wrap;
     justify-content: start;
-}
-
-.add-candidate-container {
-    width: 300px;
-    height: 325px;  
-    padding: 50px;
-    box-sizing: border-box;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: rgb(0, 82, 154);
-    transition: background-color 0.3s; 
-}
-
-.add-candidate-container:hover {
-    background-color: rgb(99, 172, 250); 
-}
-
-.plus-icon-container {
-    justify-content: center;
-    align-items: center;
-    height: 100%; 
-}
-
-.div-title-container h3 {
-    font-size: 25px;
-    font-weight: 300px;
-    color: white;
 }

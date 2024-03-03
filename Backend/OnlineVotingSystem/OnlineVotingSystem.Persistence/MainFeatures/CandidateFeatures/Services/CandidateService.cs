@@ -78,4 +78,21 @@ public class CandidateService : ICandidateService
         => await context.Candidates
                         .Where(c => c.Id == id)
                         .FirstOrDefaultAsync(); 
+
+    public async Task<ApiResponse> Update(UpdateCandidateDto dto)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 }

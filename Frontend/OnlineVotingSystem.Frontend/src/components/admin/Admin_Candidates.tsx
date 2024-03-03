@@ -97,6 +97,7 @@ const onFinishFailed = (errorInfo: unknown) => {
 const Admin_Candidates:React.FC = () => {
 
     const [open, setOpen] = useState<boolean>(false);
+    const [editOpen, setEditOpen] = useState<boolean>(false); 
     const [candidates, setCandidates] = useState<CandidateType[]>([]);
     const [positions, setPositions] = useState<PositionType[]>([]);
     const [ballots, setBallots] = useState<BallotType[]>([]);
@@ -110,6 +111,14 @@ const Admin_Candidates:React.FC = () => {
 
     const closeDrawer = () => {
         setOpen(false);
+    };
+
+    const showEditDrawer = () => {
+        setEditOpen(true);
+    };
+
+    const closeEditDrawer = () => {
+        setEditOpen(false);
     };
 
     useEffect(() => {
@@ -216,22 +225,27 @@ const Admin_Candidates:React.FC = () => {
     return (
         <React.Fragment>
 
-            <div className="title-candidate-container">
-                <h3 className='title-candidate-content'>Candidates</h3>
-            </div>
+            <React.Fragment>
+                <Row justify="space-between" align="middle">
+                    <Col>
+                        <Button 
+                            type="primary" 
+                            icon={<PlusOutlined />} 
+                            onClick={showDrawer}
+                        >
+                            Add Candidate
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Input.Search 
+                            placeholder="Search..." 
+                            style={{ width: 300 }} 
+                        />
+                    </Col>
+                </Row>
+            </React.Fragment>
 
             <div className="card-main-candidate">
-                
-                <div className="add-candidate-container" onClick={showDrawer}>
-                    <div className="plus-icon-container">
-                        <div className="plus-icon-content">
-                            <PlusOutlined style={{ fontSize: '800%', color: 'white'}} />
-                        </div>
-                        <div className="div-title-container">
-                            <h3>Add Candidate</h3>
-                        </div>
-                    </div>
-                </div>
 
                 {
                     candidates.map(
@@ -260,12 +274,22 @@ const Admin_Candidates:React.FC = () => {
                                 }
                                 actions={[
                                     <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
+                                    <EditOutlined 
+                                        key="edit" 
+                                        onClick={showEditDrawer} 
+                                    />,
                                     <EllipsisOutlined key="ellipsis" />,
                                 ]}
                             >
                                 <Meta
-                                    avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
+                                    avatar={
+                                        <Avatar 
+                                            src={
+                                                candidate.gender === GenderType.Female 
+                                                ? "https://api.dicebear.com/7.x/miniavs/svg?seed=9" 
+                                                : "https://api.dicebear.com/7.x/miniavs/svg?seed=8"} 
+                                            />
+                                    }
                                     title={`${candidate.firstName} ${candidate.lastName}`}
                                     description={getPositionName(candidate.positionId as string)}
                                 />
@@ -274,6 +298,7 @@ const Admin_Candidates:React.FC = () => {
                     )
                 }
 
+                {/* For Add */}
                 <Drawer 
                     title="Create a new candidate" 
                     onClose={closeDrawer} 
@@ -451,6 +476,186 @@ const Admin_Candidates:React.FC = () => {
                         </Row>
                     </Form>
                 </Drawer>
+
+                {/* For Edit */}
+                <Drawer 
+                    title="Create a new candidate" 
+                    onClose={closeEditDrawer} 
+                    open={editOpen}
+                    width={720}
+                    styles={{
+                        body: {
+                            paddingBottom: 80,
+                        },
+                    }}
+                    footer={
+                        <Space style={{ float: 'right', paddingBottom: 8 }}>
+                            <Button onClick={closeEditDrawer} type="primary" danger>
+                                Cancel
+                            </Button>
+                            <Button form="create-candidate-form" key="submit" htmlType="submit" type="primary">
+                                Create
+                            </Button>
+                        </Space>
+                    }
+                >
+                    <Form 
+                        id="create-candidate-form" 
+                        onFinish={handleCreateCandidate}
+                        onFinishFailed={onFinishFailed}
+                        layout="vertical"
+                    >
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="firstName"
+                                    label="First Name"
+                                    rules={[{ required: true, message: 'Please enter first name' }]}
+                                >
+                                    <Input placeholder="Please enter first name" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="lastName"
+                                    label="Last Name"
+                                    rules={[{ required: true, message: 'Please enter last name' }]}
+                                >
+                                    <Input placeholder="Please enter last name" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="ballotId"
+                                    label="Ballot"
+                                    rules={[{ required: true, message: 'Please select a ballot' }]}
+                                >
+                                    <Select 
+                                        placeholder="Please select a ballot"
+                                    >
+                                        {
+                                            ballots.map(
+                                                ballot => (
+                                                    <Select.Option 
+                                                        key={ballot.id}
+                                                        value={ballot.id}
+                                                    >
+                                                        {ballot.ballotName}
+                                                    </Select.Option>
+                                                )
+                                            )
+                                        }
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="positionId"
+                                    label="Select Position"
+                                    rules={[{ required: true, message: 'Please choose position' }]}
+                                >
+                                    <Select 
+                                        placeholder="Please choose position"
+                                    >
+                                        {
+                                            positions.map(
+                                                position => (
+                                                    <Select.Option 
+                                                        key={position.id}
+                                                        value={position.id}
+                                                    >
+                                                        {position.name}
+                                                    </Select.Option>
+                                                )
+                                            )
+                                        }
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="partyAffiliationId"
+                                    label="Select Party Affiliate"
+                                    rules={[{ required: true, message: 'Please choose party' }]}
+                                >
+                                    <Select 
+                                        placeholder="Please choose party"
+                                    >
+                                        {
+                                            affiliate.map(
+                                                partyAffiliate => (
+                                                    <Select.Option 
+                                                        key={partyAffiliate.id}
+                                                        value={partyAffiliate.id}
+                                                    >
+                                                        {partyAffiliate.partyName}
+                                                    </Select.Option>
+                                                )
+                                            )
+                                        }
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="image"
+                                    label="Image"
+                                    rules={[{ 
+                                        required: true, message: 'Please upload an image.' 
+                                    }]}
+                                    valuePropName="fileList"
+                                    getValueFromEvent={(e) => {
+                                        if (Array.isArray(e)) {
+                                            return e;
+                                        } 
+                                        return e && e.fileList;
+                                    }}
+                                >
+                                    <Upload {...props} listType="picture">
+                                        <Button icon={<UploadOutlined/>}>Upload Image</Button>
+                                    </Upload>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="biography"
+                                    label="Biography"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'please enter biography',
+                                        },
+                                    ]}
+                                >
+                                    <Input.TextArea rows={4} placeholder="please enter biography" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item<CandidateType>
+                                    name="gender"
+                                    label="Gender"
+                                    rules={[{ required: true, message: 'Please select gender' }]}
+                                >
+                                    <Radio.Group>
+                                        <Radio value="1"> Female </Radio>
+                                        <Radio value="2"> Male </Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Drawer>
+
             </div>
 
         </React.Fragment>
