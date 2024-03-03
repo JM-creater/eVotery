@@ -9,4 +9,5 @@ public interface ICandidateService
     Task<ApiResponse> Create(CreateCandidateDto dto);
     Task<List<Candidate>> GetAll();
     Task<Candidate> GetById(Guid id);
+    Task<ApiResponse> Update(UpdateCandidateDto dto);
 }
