@@ -54,7 +54,7 @@ public partial class DataContext : DbContext
                 IsValidate = true,
                 Role = Domain.Enum.UserRole.Admin,
                 Address = "123 Main Street",
-                Gender = Domain.Enum.Gender.Male
+                Gender = "Male"
             }
         );
 

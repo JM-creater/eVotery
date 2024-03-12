@@ -11,6 +11,7 @@ import {
     Card, 
     Col, 
     Drawer, 
+    FloatButton, 
     Form, 
     Input, 
     Radio, 
@@ -228,13 +229,15 @@ const Admin_Candidates:React.FC = () => {
             <React.Fragment>
                 <Row justify="space-between" align="middle">
                     <Col>
-                        <Button 
-                            type="primary" 
-                            icon={<PlusOutlined />} 
+                        <FloatButton 
+                            icon={<PlusOutlined/>} 
+                            type='primary' 
+                            style={{ 
+                                width: '60px', 
+                                height: '60px' 
+                            }} 
                             onClick={showDrawer}
-                        >
-                            Add Candidate
-                        </Button>
+                        />
                     </Col>
                     <Col>
                         <Input.Search 

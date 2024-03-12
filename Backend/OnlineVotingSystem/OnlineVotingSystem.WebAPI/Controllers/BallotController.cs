@@ -46,4 +46,12 @@ public class BallotController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpDelete("delete-ballot/{id}")]
+    public async Task<IActionResult> DeleteBallot([FromRoute] Guid id)
+    {
+        var response = await service.Delete(id);
+
+        return Ok(response);
+    }
 }

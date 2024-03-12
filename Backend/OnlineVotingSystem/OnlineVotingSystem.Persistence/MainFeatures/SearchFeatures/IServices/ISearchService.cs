@@ -6,4 +6,5 @@ public interface ISearchService
 {
     Task<User> SearchQuery(string searchQuery);
     Task<Position> SearchPositionName(string searchQuery);
+    Task<Ballot> SearchBallotName(string searchQuery);
 }

@@ -42,4 +42,18 @@ public class SearchService : ISearchService
         return search;
     }
 
+    public async Task<Ballot> SearchBallotName(string searchQuery)
+    {
+        var search = await context.Ballots
+                                  .Where(b => b.BallotName.Contains(searchQuery.ToLower()))
+                                  .FirstOrDefaultAsync();
+
+        if (search == null)
+        {
+            throw new InvalidOperationException("Ballot not found with the given search query.");
+        }
+
+        return search;
+    }
+
 }

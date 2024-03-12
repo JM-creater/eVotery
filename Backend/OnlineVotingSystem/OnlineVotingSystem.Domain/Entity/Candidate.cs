@@ -21,7 +21,7 @@ public class Candidate : BaseEntity
 
     [Required]
     [Column(TypeName = "nvarchar(10)")]
-    public Gender Gender { get; set; }
+    public string Gender { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
