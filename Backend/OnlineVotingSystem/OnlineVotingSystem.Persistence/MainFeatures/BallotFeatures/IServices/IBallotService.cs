@@ -9,4 +9,5 @@ public interface IBallotService
     Task<ApiResponse> Create(CreateBallotDto dto);
     Task<List<Ballot>> GetAll();
     Task<Ballot> GetById(Guid id);
+    Task<ApiResponse> Delete(Guid id);
 }

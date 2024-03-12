@@ -21,6 +21,7 @@ import Admin_Candidates from './Admin_Candidates';
 import Admin_BallotPosition from './Admin_BallotPosition';
 import Admin_ElectionTitle from './Admin_ElectionTitle';
 import Admin_Profile from './Admin_Profile';
+import Admin_Party from './Admin_Party';
 
 
 const { Header, Content, Sider } = Layout;
@@ -55,10 +56,12 @@ const Admin_Main: React.FC = () => {
       case '5':
         return <Admin_Candidates/>
       case '6':
-        return <Admin_BallotPosition/>
+        return <Admin_Party/>
       case '7':
-        return <Admin_ElectionTitle/>
+        return <Admin_BallotPosition/>
       case '8':
+        return <Admin_ElectionTitle/>
+      case '9':
         return <Admin_Profile/>
       default:
         return null;
@@ -97,15 +100,16 @@ const Admin_Main: React.FC = () => {
             <Menu.Item key="3"><GroupOutlined /> Voters</Menu.Item>
             <Menu.Item key="4"><UnorderedListOutlined /> Position</Menu.Item>
             <Menu.Item key="5"><UsergroupAddOutlined /> Candidates</Menu.Item>
+            <Menu.Item key="6"><UsergroupAddOutlined/> Party</Menu.Item>
           </Menu.SubMenu>
 
           <Menu.SubMenu key="settings" title="Settings">
-            <Menu.Item key="6"><InboxOutlined /> Ballot</Menu.Item>
-            <Menu.Item key="7"><FontColorsOutlined /> Election Title</Menu.Item>
-            <Menu.Item key="8"><UserOutlined /> Profile</Menu.Item>
+            <Menu.Item key="7"><InboxOutlined /> Ballot</Menu.Item>
+            <Menu.Item key="8"><FontColorsOutlined /> Election</Menu.Item>
+            <Menu.Item key="9"><UserOutlined /> Profile</Menu.Item>
           </Menu.SubMenu>
 
-          <Menu.Item key="9" onClick={handleLogout} icon={<LogoutOutlined />}>
+          <Menu.Item key="10" onClick={handleLogout} icon={<LogoutOutlined />}>
             Logout
           </Menu.Item>
         </Menu>
@@ -141,15 +145,20 @@ const Admin_Main: React.FC = () => {
           )}
           {selectedItemMenu === '6' && (
               <React.Fragment>
-                  <Breadcrumb.Item>Ballot</Breadcrumb.Item>
+                  <Breadcrumb.Item>Party</Breadcrumb.Item>
               </React.Fragment>
           )}
           {selectedItemMenu === '7' && (
               <React.Fragment>
-                  <Breadcrumb.Item>Election Title</Breadcrumb.Item>
+                  <Breadcrumb.Item>Ballot</Breadcrumb.Item>
               </React.Fragment>
           )}
           {selectedItemMenu === '8' && (
+              <React.Fragment>
+                  <Breadcrumb.Item>Election</Breadcrumb.Item>
+              </React.Fragment>
+          )}
+          {selectedItemMenu === '9' && (
               <React.Fragment>
                   <Breadcrumb.Item>Profile</Breadcrumb.Item>
               </React.Fragment>

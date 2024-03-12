@@ -21,7 +21,7 @@ public class CreateVoterDto
     [Required]
     public string PhoneNumber { get; set; } 
     [Required]
-    public Gender Gender { get; set; }
+    public string Gender { get; set; }
     [Required]
     public IFormFile VoterImages { get; set; }
 }

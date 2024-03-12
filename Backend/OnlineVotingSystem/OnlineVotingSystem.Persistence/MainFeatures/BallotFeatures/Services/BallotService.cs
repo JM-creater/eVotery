@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.EntityFrameworkCore;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
@@ -62,4 +63,36 @@ public class BallotService : IBallotService
         => await context.Ballots
                         .Where(b => b.Id == id)
                         .FirstOrDefaultAsync();
+
+
+    public async Task<ApiResponse> Delete(Guid id)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            var ballot = await context.Ballots
+                                      .Where(b => b.Id == id)
+                                      .FirstOrDefaultAsync();    
+            
+            if (ballot == null)
+            {
+                string errorMessage = $"No Ballot Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            context.Ballots.Remove(ballot);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 }

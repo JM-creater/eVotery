@@ -37,4 +37,17 @@ public class SearchController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("search-ballot")]
+    public async Task<IActionResult> SearchBallot(string searchQuery)
+    {
+        var response = await service.SearchBallotName(searchQuery);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
 }

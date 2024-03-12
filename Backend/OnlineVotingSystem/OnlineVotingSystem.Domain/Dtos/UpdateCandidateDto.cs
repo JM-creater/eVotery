@@ -19,7 +19,7 @@ public class UpdateCandidateDto
     [Required]
     public Guid PartyAffiliationId { get; set; }
     [Required]
-    public Gender Gender { get; set; }
+    public string Gender { get; set; }
     [Required]
     public string Biography { get; set; }
 }

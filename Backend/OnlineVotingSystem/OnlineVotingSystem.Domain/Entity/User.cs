@@ -40,7 +40,7 @@ public class User : BaseEntity
     public string PhoneNumber { get; set; } = string.Empty;
 
     [Required]
-    public Gender Gender { get; set; }
+    public string Gender { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]

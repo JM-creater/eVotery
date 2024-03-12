@@ -1,0 +1,26 @@
+.search-ballot-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-ballot-content {
+    width: 20%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.button-addBallot-content {
+    background-color: limegreen;
+    color: white;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+}
+
+.name-title-container,
+.date-title-container {
+    padding: 8px;
+}
