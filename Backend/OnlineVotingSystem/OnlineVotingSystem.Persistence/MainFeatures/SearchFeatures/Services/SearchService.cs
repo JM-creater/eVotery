@@ -56,4 +56,18 @@ public class SearchService : ISearchService
         return search;
     }
 
+    public async Task<Election> SearchElectionName(string searchQuery)
+    {
+        var search = await context.Elections
+                                  .Where(b => b.ElectionName.Contains(searchQuery.ToLower()))
+                                  .FirstOrDefaultAsync();
+
+        if (search == null)
+        {
+            throw new InvalidOperationException("Election not found with the given search query.");
+        }
+
+        return search;
+    }
+
 }

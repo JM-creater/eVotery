@@ -47,6 +47,14 @@ public class BallotController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPut("update-ballot/{id}")]
+    public async Task<IActionResult> UpdateBallot([FromRoute] Guid id, [FromBody] UpdateBallotDto dto)
+    {
+        var response = await service.Update(id, dto);
+
+        return Ok(response);
+    }
+
     [HttpDelete("delete-ballot/{id}")]
     public async Task<IActionResult> DeleteBallot([FromRoute] Guid id)
     {

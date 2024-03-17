@@ -24,7 +24,8 @@ const GETBALLOT_URL = 'https://localhost:7196/Ballot/getall-ballots';
 const CREATE_BALLOT_URL = 'https://localhost:7196/Ballot/create-ballot';
 const DELETE_BALLOT_URL = 'https://localhost:7196/Ballot/delete-ballot/'
 const GETALLELECTION_URL = 'https://localhost:7196/Election/getall-elections';
-const SEARCHBALLOT_URL = 'https://localhost:7196/Search/search-ballot?searchQuery='
+const SEARCHBALLOT_URL = 'https://localhost:7196/Search/search-ballot?searchQuery=';
+const UPDATE_BALLOT_URL = 'https://localhost:7196/Ballot/update-ballot/';
 
 type BallotType = {
     id?: string;
@@ -43,19 +44,37 @@ const Admin_BallotPosition:React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [ballot, setBallot] = useState<BallotType[]>([]);
+    const [filteredBallots, setFilteredBallots] = useState<BallotType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [election, setElection] = useState<ElectionType[]>([]);
+    const [selectedBallot, setSelectedBallot] = useState<BallotType | null>(null);
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
-
-    const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
         const fetchBallot = async () => {
             try {
                 const response = await axios.get(GETBALLOT_URL);
                 setIsLoading(true);
-                setBallot(response.data);
+                setBallot(
+                    response.data.map(
+                        (
+                            row: {
+                                ballotName: BallotType;
+                                startDate: BallotType;
+                                endDate: BallotType;
+                            }
+                        ) => (
+                            {
+                                ballotName: row.ballotName,
+                                startDate: row.startDate,
+                                endDate: row.endDate,
+                            }
+                        )
+                    )
+                );
+                setFilteredBallots(response.data);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -95,6 +114,15 @@ const Admin_BallotPosition:React.FC = () => {
         setIsModalOpen(false);
     };
 
+    const showEditModal = (record: BallotType) => {
+        setSelectedBallot(record);
+        setIsEditModalOpen(true);
+    };
+
+    const exitEditModal = () => {
+        setIsEditModalOpen(false);
+    };
+
     const onFinishFailed = (errorInfo: unknown) => {
         console.log('Failed:', errorInfo);
     };
@@ -126,7 +154,12 @@ const Admin_BallotPosition:React.FC = () => {
             key: 'action',
             render: (record: BallotType) => (
                 <Space size='middle'>
-                    <Button type='primary'>Edit</Button>
+                    <Button 
+                        type='primary'
+                        onClick={() => showEditModal(record as BallotType)}
+                    >
+                        Edit
+                    </Button>
                     <Popconfirm
                         title="Delete Ballot"
                         description="Are you sure you want to delete this ballot?"
@@ -152,10 +185,12 @@ const Admin_BallotPosition:React.FC = () => {
             });
 
             if (response.data.responseCode === 200) {
+                const newBallot = response.data;
+                setBallot(prevBallots => [...prevBallots, newBallot]);
+                setFilteredBallots(prevBallots => [...prevBallots, newBallot]);
+
                 toast.success('Successfully Created a Ballot.');
                 setIsModalOpen(false);
-                await delay(100);
-                window.location.reload();
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a ballot failed.');
             } else {
@@ -173,8 +208,7 @@ const Admin_BallotPosition:React.FC = () => {
 
             if (response.data.responseCode === 200) {
                 toast.success('Successfully Deleted a Ballot');
-                const updatedElections = election.filter(p => p.id !== id);
-                setBallot(updatedElections);
+                setFilteredBallots(prevBallots =>  prevBallots.filter(ballot => ballot.id == id));
             } else if (response.data.responseCode === 400) {
                 toast.error('Failed to delete the ballot.');
             } else {
@@ -186,25 +220,68 @@ const Admin_BallotPosition:React.FC = () => {
         }
     };
 
-    const handleSearchEnter = async (searchQuery: string) => {
-        if (!searchQuery.trim()) {
-            setBallot(election);
-            return;
-        }
-        setIsLoading(true); 
+    const handleUpdateBallot = async (id: string, values: BallotType) => {
         try {
-            const response = await axios.get(`${SEARCHBALLOT_URL}${encodeURIComponent(searchQuery)}`);
-            if (response.data && !Array.isArray(response.data)) {
-                setBallot([response.data]);
+            const updatedValues = {
+                ...values,
+                startDate: values.startDate ? values.startDate.format('YYYY-MM-DDTHH:mm:ss') : null,
+                endDate: values.endDate ? values.endDate.format('YYYY-MM-DDTHH:mm:ss') : null
+            };
+    
+            const response = await axios.put(`${UPDATE_BALLOT_URL}${id}`, updatedValues, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (response.data.responseCode === 200) {
+                const updatedResponse = await axios.get(GETBALLOT_URL);
+                setBallot(updatedResponse.data);
+                setFilteredBallots(updatedResponse.data);
+    
+                toast.success('Successfully Updated a Ballot.');
+                setIsEditModalOpen(false);
+            } else if (response.data.responseCode === 400) {
+                toast.error('Update a ballot failed.');
             } else {
-                setBallot([]);
-                toast.info('No voters found matching the search criteria.');
+                toast.error('An error occurred. Please try again later.');
             }
+    
         } catch (error) {
             console.error(error);
+        }
+    };
+    
+    
+    const handleSearchEnter = async (searchQuery: string) => {
+        if (!searchQuery) return setFilteredBallots([]);
+
+        if (!searchQuery.trim()) {
+            setFilteredBallots(ballot);
+            return;
+        }
+
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        setIsLoading(true); 
+        try {
+            const response = await axios.get(`${SEARCHBALLOT_URL}${encodeURIComponent(searchQuery)}`, { signal });
+            if (response.data && !Array.isArray(response.data)) {
+                setFilteredBallots([response.data]);
+            } else {
+                setFilteredBallots([]);
+                toast.info('No ballot found matching the search criteria.');
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.name !== 'AbortError') {
+                console.error(error);
+            }
         } finally {
             setIsLoading(false); 
         }
+
+        return () => controller.abort();
     };
     
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -242,13 +319,15 @@ const Admin_BallotPosition:React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <Table columns={columns} dataSource={ballot} />
+                        <Table columns={columns} dataSource={filteredBallots} />
                     )
                 }
             </React.Fragment>
             
+            {/* Add Modal */}
+
             <Modal
-                title="Ballot"
+                title="Add Ballot"
                 open={isModalOpen}
                 onCancel={exitModal}
                 centered
@@ -257,7 +336,7 @@ const Admin_BallotPosition:React.FC = () => {
                         <Button onClick={exitModal}>
                             Cancel
                         </Button>
-                        <Button form="create-candidate-form" type="primary" key='submit' htmlType="submit">
+                        <Button form="create-ballot-form" type="primary" key='submit' htmlType="submit">
                             Submit
                         </Button>
                     </Space>
@@ -266,11 +345,11 @@ const Admin_BallotPosition:React.FC = () => {
             >
 
                 <Form
-                    id="create-candidate-form" 
+                    id="create-ballot-form" 
                     onFinish={handleCreateBallot}
                     onFinishFailed={onFinishFailed}
                 >
-
+                    
                     <React.Fragment>
                         <Row gutter={16}>
                             <Col span={12}>
@@ -364,6 +443,132 @@ const Admin_BallotPosition:React.FC = () => {
                 </Form>
             </Modal>
 
+            {/* Edit Modal */}
+
+            <Modal
+                title="Edit Ballot"
+                open={isEditModalOpen}
+                onCancel={exitEditModal}
+                centered
+                footer={
+                    <Space>
+                        <Button onClick={exitEditModal}>
+                            Cancel
+                        </Button>
+                        <Button form="update-candidate-form" type="primary" key='submit' htmlType="submit">
+                            Update
+                        </Button>
+                    </Space>
+                }
+                width={800}
+            >
+
+                <React.Fragment>
+                {
+                    selectedBallot && (
+                        <Form
+                            id="update-candidate-form" 
+                            onFinish={(values: BallotType) => handleUpdateBallot(selectedBallot.id as string, values)}
+                            onFinishFailed={onFinishFailed}
+                        >
+                            
+                                    <React.Fragment>
+                                        <Row gutter={16}>
+                                            <Col span={12}>
+                                                <div className="name-title-container">
+                                                    <h4>Enter Ballot Name</h4>
+                                                </div>
+                                                <Form.Item<BallotType>
+                                                    name='ballotName'
+                                                    label='Ballot Name'
+                                                    initialValue={selectedBallot.ballotName}
+                                                    rules={[{ 
+                                                        required: true, 
+                                                        message: 'Please enter ballot name' 
+                                                    }]}
+                                                >
+                                                    <Input
+                                                        placeholder='Ballot Name'
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={12}>
+                                                <div className="name-title-container">
+                                                    <h4>Select Election</h4>
+                                                </div>
+                                                <Form.Item<BallotType>
+                                                    name='electionId'
+                                                    label='Election'
+                                                    initialValue={selectedBallot.electionId}
+                                                    rules={[{ 
+                                                        required: true, 
+                                                        message: 'Please select a election' 
+                                                    }]}
+                                                >
+                                                    <Select
+                                                        placeholder="Election"
+                                                    >
+                                                        {
+                                                            election.map(
+                                                                elections => (
+                                                                    <Select.Option
+                                                                        key={elections.id}
+                                                                        value={elections.id}
+                                                                    >
+                                                                        {elections.electionName}
+                                                                    </Select.Option>
+                                                                )
+                                                            )
+                                                        }
+                                                    </Select>
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                        
+                                        <div className="date-title-container">
+                                            <h4>Please select the start and end dates</h4>
+                                        </div>
+                                        
+                                        <Row gutter={16}>
+                                            <Col span={9}>
+                                                <Form.Item<BallotType>
+                                                name='startDate'
+                                                label='Start Date'
+                                                initialValue={selectedBallot.startDate ? moment(selectedBallot.startDate) : null}
+                                                rules={[{ 
+                                                    required: true, 
+                                                    message: 'Please enter a starting date' 
+                                                }]}
+                                                >
+                                                    <DatePicker 
+                                                        placeholder='Start Date'
+                                                    />
+                                                </Form.Item>
+                                                
+                                            </Col>
+                                            <Col span={9}>
+                                                <Form.Item<BallotType>
+                                                    name='endDate'
+                                                    label='End Date'
+                                                    initialValue={selectedBallot.endDate ? moment(selectedBallot.endDate) : null}
+                                                    rules={[{ 
+                                                        required: true, 
+                                                        message: 'Please enter a ending date' 
+                                                    }]}
+                                                >
+                                                    <DatePicker 
+                                                        placeholder='End Date'
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </React.Fragment>
+
+                        </Form>
+                    )
+                }
+                </React.Fragment>
+            </Modal>
         </React.Fragment>
         
     )
