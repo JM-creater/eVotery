@@ -1,0 +1,26 @@
+.search-election-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-election-content {
+    width: 20%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.button-addElection-content {
+    background-color: limegreen;
+    color: white;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+}
+
+.title-election-container,
+.date-election-container {
+    padding: 8px;
+}

@@ -62,4 +62,83 @@ public class ElectionService : IElectionService
         => await context.Elections
                         .Where(e => e.Id == id)
                         .FirstOrDefaultAsync();
+
+    public async Task<ApiResponse> Update(Guid id, UpdateElectionDto dto)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            var election = await context.Elections
+                                        .Where(e => e.Id == id)
+                                        .FirstOrDefaultAsync();
+
+            if (election == null)
+            {
+                string errorMessage = $"No Election Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.ElectionName))
+            {
+                election.ElectionName = dto.ElectionName;
+            }
+
+            if (dto.StartDate.HasValue)
+            {
+                election.StartDate = dto.StartDate.Value;
+            }
+
+            if (dto.EndDate.HasValue)
+            {
+                election.EndDate = dto.EndDate.Value;
+            }
+
+            mapper.Map(dto, election);
+            election.DateUpdated = DateTime.Now;
+            context.Elections.Update(election);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse> Delete(Guid id)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            var election = await context.Elections
+                                        .Where(e => e.Id == id)
+                                        .FirstOrDefaultAsync();
+
+            if (election == null)
+            {
+                string errorMessage = $"No Election Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            context.Elections.Remove(election);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 }

@@ -20,9 +20,13 @@ public class AutoMapperConfig : Profile
 
         // Ballot
         CreateMap<CreateBallotDto, Ballot>();
+        CreateMap<UpdateBallotDto, Ballot>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
         // Election
         CreateMap<CreateElectionDto, Election>();
+        CreateMap<UpdateElectionDto, Election>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
         // Party Affiliation
         CreateMap<CreatePartyAffiliationDto, PartyAffiliation>();   

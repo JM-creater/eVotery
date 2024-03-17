@@ -50,4 +50,17 @@ public class SearchController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("search-election")]
+    public async Task<IActionResult> SearchElection(string searchQuery)
+    {
+        var response = await service.SearchElectionName(searchQuery);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
 }

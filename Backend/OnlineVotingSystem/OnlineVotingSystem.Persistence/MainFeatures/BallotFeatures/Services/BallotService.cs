@@ -64,6 +64,67 @@ public class BallotService : IBallotService
                         .Where(b => b.Id == id)
                         .FirstOrDefaultAsync();
 
+    public async Task<ApiResponse> Update(Guid id, UpdateBallotDto dto)
+    {
+        ApiResponse response = new ApiResponse();
+
+        try
+        {
+            var ballot = await context.Ballots
+                                      .Where(b => b.Id == id)
+                                      .FirstOrDefaultAsync();
+
+            if (ballot == null)
+            {
+                string errorMessage = $"No Ballot Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.BallotName))
+            {
+                ballot.BallotName = dto.BallotName;
+            }
+
+            if (dto.ElectionId != Guid.Empty)
+            {
+                var electionExist = await context.Elections.FindAsync(dto.ElectionId);
+
+                if (electionExist == null)
+                {
+                    ballot.ElectionId = Guid.Empty;
+                }
+                else
+                {
+                   ballot.ElectionId = dto.ElectionId;
+                }
+            }
+
+            if (dto.StartDate.HasValue)
+            {
+                ballot.StartDate = dto.StartDate.Value;
+            }
+
+            if (dto.EndDate.HasValue)
+            {
+                ballot.EndDate = dto.EndDate.Value;
+            }
+
+            mapper.Map(dto, ballot);
+            ballot.DateUpdated = DateTime.Now;
+            context.Ballots.Update(ballot);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 
     public async Task<ApiResponse> Delete(Guid id)
     {

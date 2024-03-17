@@ -14,6 +14,7 @@ public class ElectionController : ControllerBase
     }
 
     [HttpPost("create-election")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateElectionDto dto)
     {
         var response = await service.Create(dto);
@@ -43,6 +44,24 @@ public class ElectionController : ControllerBase
         {
             return NotFound();
         }
+
+        return Ok(response);
+    }
+
+    [HttpPut("update-election/{id}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateElection(Guid id, UpdateElectionDto dto)
+    {
+        var response = await service.Update(id, dto);
+    
+        return Ok(response);
+    }
+
+    [HttpDelete("delete-election/{id}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteElection(Guid id)
+    {
+        var response = await service.Delete(id);
 
         return Ok(response);
     }
