@@ -6,6 +6,7 @@ using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Domain.Responses;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.IServices;
+using static System.Collections.Specialized.BitVector32;
 
 namespace OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.Services;
 
@@ -19,9 +20,9 @@ public class PartyAffiliationService : IPartyAffiliationService
         mapper = _mapper;
     }
 
-    public async Task<ApiResponse> Create(CreatePartyAffiliationDto dto)
+    public async Task<ApiResponse<PartyAffiliation>> Create(CreatePartyAffiliationDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<PartyAffiliation> response = new ApiResponse<PartyAffiliation>();
 
         try
         {
@@ -47,6 +48,7 @@ public class PartyAffiliationService : IPartyAffiliationService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
+            response.Result = party;
         }
         catch (Exception e)
         {
@@ -67,4 +69,78 @@ public class PartyAffiliationService : IPartyAffiliationService
                         .Where(pa => pa.Id == id)
                         .FirstOrDefaultAsync();
 
+    public async Task<ApiResponse<PartyAffiliation>> Update(Guid id, UpdatePartyAffiliationDto dto)
+    {
+        ApiResponse<PartyAffiliation> response = new ApiResponse<PartyAffiliation>();
+
+        try
+        {
+            var party = await context.PartyAffiliations
+                                     .Where(pa => pa.Id == id)
+                                     .FirstOrDefaultAsync();
+
+            if (party == null)
+            {
+                string errorMessage = $"No Party Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.PartyName))
+            {
+                party.PartyName = dto.PartyName;
+            }
+
+            if (dto.LogoImage != null)
+            {
+                var imagePath = await new ImagePathConfig().SaveLogoImages(dto.LogoImage);
+                party.LogoImage = imagePath;
+            }
+
+            mapper.Map(dto, party);
+            party.DateUpdated = DateTime.Now;
+            context.PartyAffiliations.Update(party);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<PartyAffiliation>> Delete(Guid id)
+    {
+        ApiResponse<PartyAffiliation> response = new ApiResponse<PartyAffiliation>();
+
+        try
+        {
+            var party = await context.PartyAffiliations
+                                        .Where(e => e.Id == id)
+                                        .FirstOrDefaultAsync();
+
+            if (party == null)
+            {
+                string errorMessage = $"No Party Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            context.PartyAffiliations.Remove(party);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 }

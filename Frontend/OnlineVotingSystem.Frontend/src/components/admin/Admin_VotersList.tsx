@@ -209,13 +209,19 @@ const Admin_VotersList: React.FC = () => {
     };
 
     const handleSearchEnter = async (searchQuery: string) => {
+        if (!searchQuery) return setFilteredVoters([]);
+
         if (!searchQuery.trim()) {
             setFilteredVoters(voters);
             return;
         }
+
+        const controller = new AbortController();
+        const { signal } = controller;
+
         setIsLoading(true); 
         try {
-            const response = await axios.get(`${SEARCHVOTER_URL}${encodeURIComponent(searchQuery)}`);
+            const response = await axios.get(`${SEARCHVOTER_URL}${encodeURIComponent(searchQuery)}`, { signal });
             if (response.data && !Array.isArray(response.data)) {
                 setFilteredVoters([response.data]);
             } else {
@@ -223,10 +229,14 @@ const Admin_VotersList: React.FC = () => {
                 toast.info('No voters found matching the search criteria.');
             }
         } catch (error) {
-            console.error(error);
+            if (axios.isAxiosError(error) && error.name !== 'AbortError') {
+                console.error(error);
+            }
         } finally {
             setIsLoading(false); 
         }
+
+        return () => controller.abort();
     };
     
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

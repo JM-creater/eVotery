@@ -6,7 +6,9 @@ namespace OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.I
 
 public interface IPartyAffiliationService
 {
-    Task<ApiResponse> Create(CreatePartyAffiliationDto dto);
+    Task<ApiResponse<PartyAffiliation>> Create(CreatePartyAffiliationDto dto);
     Task<List<PartyAffiliation>> GetAll();
     Task<PartyAffiliation> GetById(Guid id);
+    Task<ApiResponse<PartyAffiliation>> Update(Guid id, UpdatePartyAffiliationDto dto);
+    Task<ApiResponse<PartyAffiliation>> Delete(Guid id);
 }

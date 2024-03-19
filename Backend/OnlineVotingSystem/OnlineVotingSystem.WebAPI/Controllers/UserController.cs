@@ -48,6 +48,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
     {
         var response = await service.Register(dto);
@@ -61,6 +63,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
     {
         var response = await service.Login(dto);
@@ -74,6 +78,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("forgot-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ForgotPassword(string email)
     {
         var response = await service.ForgotPassword(email);
@@ -87,6 +93,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("reset-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
         var response = await service.ResetPassword(dto);
@@ -100,6 +108,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("validate/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Validate([FromRoute] int id)
     {
         var response = await service.Validate(id);
@@ -113,6 +123,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("deactivated/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Deactivated([FromRoute] int id)
     {
         var response = await service.Deactivated(id);
@@ -126,6 +138,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("activated/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Activated([FromRoute] int id)
     {
         var response = await service.Activated(id);

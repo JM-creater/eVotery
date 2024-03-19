@@ -18,9 +18,9 @@ public class ElectionService : IElectionService
         mapper = _mapper;   
     }
 
-    public async Task<ApiResponse> Create(CreateElectionDto dto)
+    public async Task<ApiResponse<Election>> Create(CreateElectionDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Election> response = new ApiResponse<Election>();
 
         try
         {
@@ -43,6 +43,7 @@ public class ElectionService : IElectionService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
+            response.Result = election;
         }
         catch (Exception e)
         {
@@ -63,9 +64,9 @@ public class ElectionService : IElectionService
                         .Where(e => e.Id == id)
                         .FirstOrDefaultAsync();
 
-    public async Task<ApiResponse> Update(Guid id, UpdateElectionDto dto)
+    public async Task<ApiResponse<Election>> Update(Guid id, UpdateElectionDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Election> response = new ApiResponse<Election>();
 
         try
         {
@@ -111,9 +112,9 @@ public class ElectionService : IElectionService
         return response;
     }
 
-    public async Task<ApiResponse> Delete(Guid id)
+    public async Task<ApiResponse<Election>> Delete(Guid id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Election> response = new ApiResponse<Election>();
 
         try
         {

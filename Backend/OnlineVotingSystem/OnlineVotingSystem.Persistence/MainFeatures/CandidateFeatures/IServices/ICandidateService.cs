@@ -6,8 +6,8 @@ namespace OnlineVotingSystem.Persistence.MainFeatures.CandidateFeatures.IService
 
 public interface ICandidateService
 {
-    Task<ApiResponse> Create(CreateCandidateDto dto);
+    Task<ApiResponse<Candidate>> Create(CreateCandidateDto dto);
     Task<List<Candidate>> GetAll();
     Task<Candidate> GetById(Guid id);
-    Task<ApiResponse> Update(UpdateCandidateDto dto);
+    Task<ApiResponse<Candidate>> Update(UpdateCandidateDto dto);
 }

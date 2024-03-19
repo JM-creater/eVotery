@@ -19,9 +19,9 @@ public class CandidateService : ICandidateService
         mapper = _mapper;
     }
 
-    public async Task<ApiResponse> Create(CreateCandidateDto dto)
+    public async Task<ApiResponse<Candidate>> Create(CreateCandidateDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Candidate> response = new ApiResponse<Candidate>();
 
         try
         {
@@ -79,9 +79,9 @@ public class CandidateService : ICandidateService
                         .Where(c => c.Id == id)
                         .FirstOrDefaultAsync(); 
 
-    public async Task<ApiResponse> Update(UpdateCandidateDto dto)
+    public async Task<ApiResponse<Candidate>> Update(UpdateCandidateDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Candidate> response = new ApiResponse<Candidate>();
 
         try
         {

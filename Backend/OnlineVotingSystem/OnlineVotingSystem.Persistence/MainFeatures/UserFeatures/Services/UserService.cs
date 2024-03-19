@@ -40,9 +40,9 @@ public class UserService : IUserService
                      .Where(v => v.VoterId.Equals(id))
                      .FirstOrDefaultAsync();
 
-    public async Task<ApiResponse> Register(CreateVoterDto dto)
+    public async Task<ApiResponse<User>> Register(CreateVoterDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -118,9 +118,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> Login(LoginVoterDto dto)
+    public async Task<ApiResponse<User>> Login(LoginVoterDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -186,9 +186,9 @@ public class UserService : IUserService
     }
 
 
-    public async Task<ApiResponse> Validate(int id)
+    public async Task<ApiResponse<User>> Validate(int id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -218,9 +218,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> Deactivated(int id)
+    public async Task<ApiResponse<User>> Deactivated(int id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -250,9 +250,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> Activated(int id)
+    public async Task<ApiResponse<User>> Activated(int id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -282,9 +282,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> UpdateVoterProfile(int id, UpdateVoterDto dto)
+    public async Task<ApiResponse<User>> UpdateVoterProfile(int id, UpdateVoterDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -325,9 +325,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> ForgotPassword(string email)
+    public async Task<ApiResponse<User>> ForgotPassword(string email)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
@@ -363,9 +363,9 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse> ResetPassword(ResetPasswordDto dto)
+    public async Task<ApiResponse<User>> ResetPassword(ResetPasswordDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {

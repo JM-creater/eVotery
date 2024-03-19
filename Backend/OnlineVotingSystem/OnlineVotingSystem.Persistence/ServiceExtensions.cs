@@ -78,5 +78,10 @@ public static class ServiceExtensions
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
+
+        services.AddAntiforgery(options =>
+        {
+            options.Cookie.Name = "X-XSRF-TOKEN";
+        });
     }
 }
