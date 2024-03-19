@@ -13,6 +13,8 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("search-voter")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchQuery(string searchQuery)
     {
         var response = await service.SearchQuery(searchQuery);
@@ -26,6 +28,8 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("search-position")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchPosition(string searchQuery)
     {
         var response = await service.SearchPositionName(searchQuery);
@@ -39,6 +43,8 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("search-ballot")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchBallot(string searchQuery)
     {
         var response = await service.SearchBallotName(searchQuery);
@@ -52,6 +58,8 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("search-election")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchElection(string searchQuery)
     {
         var response = await service.SearchElectionName(searchQuery);

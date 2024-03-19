@@ -14,7 +14,9 @@ public class ElectionController : ControllerBase
     }
 
     [HttpPost("create-election")]
-    [ValidateAntiForgeryToken]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateElectionDto dto)
     {
         var response = await service.Create(dto);
@@ -23,6 +25,9 @@ public class ElectionController : ControllerBase
     }
 
     [HttpGet("getall-elections")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
@@ -36,7 +41,8 @@ public class ElectionController : ControllerBase
     }
 
     [HttpGet("getById-election/{id}")]
-    public async Task<IActionResult> GetById(Guid id)
+    //[ValidateAntiForgeryToken]
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await service.GetById(id);
 
@@ -49,8 +55,10 @@ public class ElectionController : ControllerBase
     }
 
     [HttpPut("update-election/{id}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateElection(Guid id, UpdateElectionDto dto)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateElection([FromRoute] Guid id, [FromBody] UpdateElectionDto dto)
     {
         var response = await service.Update(id, dto);
     
@@ -58,8 +66,10 @@ public class ElectionController : ControllerBase
     }
 
     [HttpDelete("delete-election/{id}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteElection(Guid id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteElection([FromRoute] Guid id)
     {
         var response = await service.Delete(id);
 

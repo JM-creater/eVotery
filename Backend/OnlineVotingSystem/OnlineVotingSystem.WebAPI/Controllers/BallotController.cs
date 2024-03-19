@@ -14,6 +14,8 @@ public class BallotController : ControllerBase
     }
 
     [HttpPost("create-ballot")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateBallotDto dto)
     {
         var response = await service.Create(dto);
@@ -48,6 +50,8 @@ public class BallotController : ControllerBase
     }
 
     [HttpPut("update-ballot/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBallot([FromRoute] Guid id, [FromBody] UpdateBallotDto dto)
     {
         var response = await service.Update(id, dto);
@@ -56,6 +60,8 @@ public class BallotController : ControllerBase
     }
 
     [HttpDelete("delete-ballot/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteBallot([FromRoute] Guid id)
     {
         var response = await service.Delete(id);

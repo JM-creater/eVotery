@@ -14,6 +14,8 @@ public class PositionController : ControllerBase
     }
 
     [HttpPost("create-position")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(string name)
     {
         var response = await service.Create(name);
@@ -56,6 +58,8 @@ public class PositionController : ControllerBase
     }
 
     [HttpPut("update-position/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdatePositionDto dto)
     {
         var response = await service.Update(id, dto);
@@ -69,6 +73,8 @@ public class PositionController : ControllerBase
     }
 
     [HttpDelete("delete-position/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var response = await service.Delete(id);

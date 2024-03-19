@@ -138,7 +138,7 @@ const Admin_Position: React.FC = () => {
                     <Popconfirm
                         title="Delete Position"
                         description="Are you sure you want to delete this position?"
-                        onConfirm={() => handleDelatePosition(record.id as string)}
+                        onConfirm={() => handleDeletePosition(record.id as string)}
                         onCancel={handleCancel}
                         okText="Confirm"
                         cancelText="Cancel"
@@ -261,13 +261,19 @@ const Admin_Position: React.FC = () => {
     };
 
     const handleSearchEnter = async (searchQuery: string) => {
+        if (!searchQuery) return setFilteredPosition([]);
+
         if (!searchQuery.trim()) {
             setFilteredPosition(positions);
             return;
         }
+
+        const controller = new AbortController();
+        const { signal } = controller;
+
         setIsLoading(true); 
         try {
-            const response = await axios.get(`${SEARCHPOSITION_URL}${encodeURIComponent(searchQuery)}`);
+            const response = await axios.get(`${SEARCHPOSITION_URL}${encodeURIComponent(searchQuery)}`, { signal });
             if (response.data && !Array.isArray(response.data)) {
                 setFilteredPosition([response.data]);
             } else {
@@ -275,10 +281,14 @@ const Admin_Position: React.FC = () => {
                 toast.info('No voters found matching the search criteria.');
             }
         } catch (error) {
-            console.error(error);
+            if (axios.isAxiosError(error) && error.name !== 'AbortError') {
+                console.error(error);
+            }
         } finally {
             setIsLoading(false); 
         }
+
+        return () => controller.abort();
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -288,7 +298,7 @@ const Admin_Position: React.FC = () => {
         }
     };
 
-    const handleDelatePosition = async (id: string) => {
+    const handleDeletePosition = async (id: string) => {
         try {   
             const response = await axios.delete(`${DELETE_POSITION_URL}${id}`);
 

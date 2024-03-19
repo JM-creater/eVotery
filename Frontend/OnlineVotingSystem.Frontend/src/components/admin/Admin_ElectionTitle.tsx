@@ -9,9 +9,9 @@ import moment from 'moment'
 
 const GETALL_ELECTION_URL = 'https://localhost:7196/Election/getall-elections';
 const CREATE_ELECTION_URL = 'https://localhost:7196/Election/create-election';
-const UPDATE_ELECTION_URL = 'https://localhost:7196/Election/update-election'
+const UPDATE_ELECTION_URL = 'https://localhost:7196/Election/update-election/'
 const SEARCH_ELECTION_URL = 'https://localhost:7196/Search/search-election?searchQuery=';
-const DELETE_ELECTION_URL = 'https://localhost:7196/Election/delete-election';
+const DELETE_ELECTION_URL = 'https://localhost:7196/Election/delete-election/';
 
 type ElectionType = {
     id?: string;
@@ -152,7 +152,7 @@ const Admin_ElectionTitle:React.FC = () => {
             });
 
             if (response.data.responseCode === 200) {
-                const newElection = response.data;
+                const newElection = response.data.result;
                 setElection(prevElections => [...prevElections, newElection]);
                 setFilteredElections(prevElections => [...prevElections, newElection]);
 
@@ -208,7 +208,7 @@ const Admin_ElectionTitle:React.FC = () => {
             if (response.data.responseCode === 200) {
                 toast.success('Successfully Deleted a Election');
                 setFilteredElections(prevElections =>  prevElections.filter(election => election.id == id));
-            } else if (response.data.responseCode === 400) {
+            } else if (response.data.responseCode === 400 || response.data.responseCode === 500) {
                 toast.error('Failed to delete the election.');
             } else {
                 toast.error('An error occurred. Please try again later.');

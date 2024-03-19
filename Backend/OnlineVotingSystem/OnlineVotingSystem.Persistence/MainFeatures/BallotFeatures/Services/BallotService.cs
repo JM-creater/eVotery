@@ -19,9 +19,9 @@ public class BallotService : IBallotService
         mapper = _mapper;
     }
 
-    public async Task<ApiResponse> Create(CreateBallotDto dto)
+    public async Task<ApiResponse<Ballot>> Create(CreateBallotDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Ballot> response = new ApiResponse<Ballot>();
 
         try
         {
@@ -64,9 +64,9 @@ public class BallotService : IBallotService
                         .Where(b => b.Id == id)
                         .FirstOrDefaultAsync();
 
-    public async Task<ApiResponse> Update(Guid id, UpdateBallotDto dto)
+    public async Task<ApiResponse<Ballot>> Update(Guid id, UpdateBallotDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Ballot> response = new ApiResponse<Ballot>();
 
         try
         {
@@ -126,9 +126,9 @@ public class BallotService : IBallotService
         return response;
     }
 
-    public async Task<ApiResponse> Delete(Guid id)
+    public async Task<ApiResponse<Ballot>> Delete(Guid id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Ballot> response = new ApiResponse<Ballot>();
 
         try
         {

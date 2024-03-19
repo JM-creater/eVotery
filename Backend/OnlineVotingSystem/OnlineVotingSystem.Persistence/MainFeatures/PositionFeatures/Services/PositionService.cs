@@ -37,9 +37,9 @@ public class PositionService : IPositionService
         return counts;
     }
 
-    public async Task<ApiResponse> Create(string name)
+    public async Task<ApiResponse<Position>> Create(string name)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Position> response = new ApiResponse<Position>();
 
         try
         {
@@ -75,9 +75,9 @@ public class PositionService : IPositionService
         return response;
     }
 
-    public async Task<ApiResponse> Update(Guid id, UpdatePositionDto dto)
+    public async Task<ApiResponse<Position>> Update(Guid id, UpdatePositionDto dto)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Position> response = new ApiResponse<Position>();
 
         try
         {
@@ -117,9 +117,9 @@ public class PositionService : IPositionService
         return response;
     }
 
-    public async Task<ApiResponse> Delete(Guid id)
+    public async Task<ApiResponse<Position>> Delete(Guid id)
     {
-        ApiResponse response = new ApiResponse();
+        ApiResponse<Position> response = new ApiResponse<Position>();
 
         try
         {

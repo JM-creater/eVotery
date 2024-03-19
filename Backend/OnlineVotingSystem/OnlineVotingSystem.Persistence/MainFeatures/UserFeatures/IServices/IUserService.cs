@@ -8,13 +8,13 @@ public interface IUserService
 {
     Task<List<User>> GetAll();
     Task<User> GetById(int id);
-    Task<ApiResponse> Register(CreateVoterDto dto);
-    Task<ApiResponse> Login(LoginVoterDto dto);
-    Task<ApiResponse> Validate(int id);
-    Task<ApiResponse> Deactivated(int id);
-    Task<ApiResponse> Activated(int id);
-    Task<ApiResponse> UpdateVoterProfile(int id, UpdateVoterDto dto);
-    Task<ApiResponse> ForgotPassword(string email);
-    Task<ApiResponse> ResetPassword(ResetPasswordDto dto);
+    Task<ApiResponse<User>> Register(CreateVoterDto dto);
+    Task<ApiResponse<User>> Login(LoginVoterDto dto);
+    Task<ApiResponse<User>> Validate(int id);
+    Task<ApiResponse<User>> Deactivated(int id);
+    Task<ApiResponse<User>> Activated(int id);
+    Task<ApiResponse<User>> UpdateVoterProfile(int id, UpdateVoterDto dto);
+    Task<ApiResponse<User>> ForgotPassword(string email);
+    Task<ApiResponse<User>> ResetPassword(ResetPasswordDto dto);
     Task<bool> IsResetTokenValid(string token);
 }

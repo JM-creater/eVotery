@@ -30,5 +30,7 @@ public class AutoMapperConfig : Profile
 
         // Party Affiliation
         CreateMap<CreatePartyAffiliationDto, PartyAffiliation>();   
+        CreateMap<UpdatePartyAffiliationDto, PartyAffiliation>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

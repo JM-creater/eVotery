@@ -185,7 +185,7 @@ const Admin_BallotPosition:React.FC = () => {
             });
 
             if (response.data.responseCode === 200) {
-                const newBallot = response.data;
+                const newBallot = response.data.result;
                 setBallot(prevBallots => [...prevBallots, newBallot]);
                 setFilteredBallots(prevBallots => [...prevBallots, newBallot]);
 

@@ -14,6 +14,8 @@ public class CandidateController : ControllerBase
     }
 
     [HttpPost("create")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateCandidateDto dto)
     {
         var response = await servvice.Create(dto);
