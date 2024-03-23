@@ -39,6 +39,14 @@ public class PartyAffiliationController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("get-count-member/{id}")]
+    public async Task<IActionResult> GetCountMember([FromRoute] Guid id)
+    {
+        var response = await service.GetCountPartyMembers(id);
+
+        return Ok(response);
+    }
+
     [HttpPut("update-party/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

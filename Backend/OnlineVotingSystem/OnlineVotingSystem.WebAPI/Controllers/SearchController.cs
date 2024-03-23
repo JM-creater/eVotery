@@ -71,4 +71,19 @@ public class SearchController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("search-party")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SearchParty(string searchQuery)
+    {
+        var response = await service.SearchParty(searchQuery);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
 }

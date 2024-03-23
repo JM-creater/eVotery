@@ -253,10 +253,14 @@ const Admin_BallotPosition:React.FC = () => {
     };
     
     
-    const handleSearchEnter = async (searchQuery: string) => {
-        if (!searchQuery) return setFilteredBallots([]);
+    const handleSearchEnter = async (searchQuery: string | null | undefined) => {
+        if (searchQuery === null || searchQuery === undefined) {
+            return setFilteredBallots([]);
+        }
 
-        if (!searchQuery.trim()) {
+        const trimmedQuery = searchQuery.trim();
+
+        if (!trimmedQuery) {
             setFilteredBallots(ballot);
             return;
         }

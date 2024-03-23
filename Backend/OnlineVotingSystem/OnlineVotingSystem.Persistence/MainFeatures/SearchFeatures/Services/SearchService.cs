@@ -70,4 +70,17 @@ public class SearchService : ISearchService
         return search;
     }
 
+    public async Task<PartyAffiliation> SearchParty(string searchQuery)
+    {
+        var search = await context.PartyAffiliations
+                                  .Where(pa => pa.PartyName.Contains(searchQuery.ToLower()))    
+                                  .FirstOrDefaultAsync();
+
+        if (search == null)
+        {
+            throw new InvalidOperationException("Party not found with the given search query.");
+        }
+
+        return search;
+    }
 }

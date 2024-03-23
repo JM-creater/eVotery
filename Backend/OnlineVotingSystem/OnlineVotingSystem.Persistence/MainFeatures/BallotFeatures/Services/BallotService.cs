@@ -44,6 +44,8 @@ public class BallotService : IBallotService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
+
+            response.Result = ballot;
         }
         catch (Exception e)
         {
@@ -56,6 +58,7 @@ public class BallotService : IBallotService
 
     public async Task<List<Ballot>> GetAll()
         => await context.Ballots
+                        .Include(b => b.Candidates)
                         .OrderByDescending(b => b.DateCreated)
                         .ToListAsync();
 

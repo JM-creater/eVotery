@@ -8,4 +8,5 @@ public interface ISearchService
     Task<Position> SearchPositionName(string searchQuery);
     Task<Ballot> SearchBallotName(string searchQuery);
     Task<Election> SearchElectionName(string searchQuery);
+    Task<PartyAffiliation> SearchParty(string searchQuery);
 }

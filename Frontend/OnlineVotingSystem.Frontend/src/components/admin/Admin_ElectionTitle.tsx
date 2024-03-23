@@ -219,10 +219,14 @@ const Admin_ElectionTitle:React.FC = () => {
         }
     };
 
-    const handleSearchEnter = async (searchQuery: string) => {
-        if (!searchQuery) return setFilteredElections([]);
+    const handleSearchEnter = async (searchQuery: string | null | undefined) => {
+        if (searchQuery === null || searchQuery === undefined) {
+            return setFilteredElections([]);
+        }
+        
+        const trimmedQuery = searchQuery.trim();
 
-        if (!searchQuery.trim()) {
+        if (!trimmedQuery) {
             setFilteredElections(election);
             return;
         }
