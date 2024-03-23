@@ -208,10 +208,14 @@ const Admin_VotersList: React.FC = () => {
         }
     };
 
-    const handleSearchEnter = async (searchQuery: string) => {
-        if (!searchQuery) return setFilteredVoters([]);
+    const handleSearchEnter = async (searchQuery: string | null | undefined) => {
+        if (searchQuery === null || searchQuery === undefined) {
+            return setFilteredVoters([]);
+        }
 
-        if (!searchQuery.trim()) {
+        const trimmedQuery = searchQuery.trim();
+
+        if (!trimmedQuery) {
             setFilteredVoters(voters);
             return;
         }

@@ -25,6 +25,7 @@ public class CandidateService : ICandidateService
 
         try
         {
+
             var existingFirstName = await context.Candidates
                                                  .Where(c => c.FirstName == dto.FirstName)
                                                  .FirstOrDefaultAsync();
@@ -59,6 +60,8 @@ public class CandidateService : ICandidateService
 
             response.ResponseCode = 200;
 
+            response.Result = candidate;
+
         }
         catch (Exception e)
         {
@@ -71,6 +74,7 @@ public class CandidateService : ICandidateService
 
     public async Task<List<Candidate>> GetAll()
         => await context.Candidates
+                        .Include(c => c.PartyAffiliation)
                         .OrderByDescending(c => c.DateCreated)
                         .ToListAsync();
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.EntityFrameworkCore;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
@@ -68,6 +69,16 @@ public class PartyAffiliationService : IPartyAffiliationService
         => await context.PartyAffiliations
                         .Where(pa => pa.Id == id)
                         .FirstOrDefaultAsync();
+
+    public async Task<int> GetCountPartyMembers(Guid id)
+    {
+        var party = await context.PartyAffiliations.Include(pa => pa.Candidates)
+                                                   .Where(pa => pa.Id == id)
+                                                   .SelectMany(pa => pa.Candidates)
+                                                   .CountAsync();
+
+        return party;
+    }
 
     public async Task<ApiResponse<PartyAffiliation>> Update(Guid id, UpdatePartyAffiliationDto dto)
     {

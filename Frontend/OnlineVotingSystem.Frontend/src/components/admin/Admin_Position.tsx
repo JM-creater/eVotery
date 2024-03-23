@@ -260,10 +260,14 @@ const Admin_Position: React.FC = () => {
         setInputValue(position?.name || '');
     };
 
-    const handleSearchEnter = async (searchQuery: string) => {
-        if (!searchQuery) return setFilteredPosition([]);
+    const handleSearchEnter = async (searchQuery: string | null | undefined) => {
+        if (searchQuery === null || searchQuery === undefined) {
+            return setFilteredPosition([]);
+        }
 
-        if (!searchQuery.trim()) {
+        const trimmedQuery = searchQuery.trim();
+
+        if (!trimmedQuery) {
             setFilteredPosition(positions);
             return;
         }

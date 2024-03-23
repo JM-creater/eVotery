@@ -35,11 +35,6 @@ const GETALL_PARTYAFFILIATION_URL = 'https://localhost:7196/PartyAffiliation/get
 
 const { Meta } = Card;
 
-enum GenderType {
-    Female = 1,
-    Male = 2,
-}
-
 type CandidateType = {
     id?: string;
     firstName?: string;
@@ -48,7 +43,7 @@ type CandidateType = {
     ballotId?: string;
     positionId?: string;
     partyAffiliationId?: string;
-    gender?: GenderType;
+    gender?: string;
     biography?: string;
 }
 
@@ -181,9 +176,7 @@ const Admin_Candidates:React.FC = () => {
             const formData = new FormData();
 
             Object.entries(values).forEach(([key, value]) => {
-                if (key === 'gender' && value !== undefined) {
-                    formData.append(key, GenderType[value as keyof typeof GenderType].toString());
-                } else if (key !== 'image' && value !== undefined) {
+                if (key !== 'image' && value !== undefined) {
                     formData.append(key, value.toString());
                 }
             });
@@ -301,7 +294,8 @@ const Admin_Candidates:React.FC = () => {
                     )
                 }
 
-                {/* For Add */}
+                {/* Add Drawer */}
+
                 <Drawer 
                     title="Create a new candidate" 
                     onClose={closeDrawer} 
@@ -480,7 +474,8 @@ const Admin_Candidates:React.FC = () => {
                     </Form>
                 </Drawer>
 
-                {/* For Edit */}
+                {/* Edit Drawer */}
+
                 <Drawer 
                     title="Create a new candidate" 
                     onClose={closeEditDrawer} 

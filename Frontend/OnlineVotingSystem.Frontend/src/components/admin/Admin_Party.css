@@ -1,0 +1,26 @@
+.search-party-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-party-content {
+    width: 20%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.button-addParty-content {
+    background-color: limegreen;
+    color: white;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+}
+
+.title-party-container,
+.image-title-container {
+    padding: 8px;
+}

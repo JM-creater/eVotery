@@ -11,4 +11,5 @@ public interface IPartyAffiliationService
     Task<PartyAffiliation> GetById(Guid id);
     Task<ApiResponse<PartyAffiliation>> Update(Guid id, UpdatePartyAffiliationDto dto);
     Task<ApiResponse<PartyAffiliation>> Delete(Guid id);
+    Task<int> GetCountPartyMembers(Guid id);   
 }
