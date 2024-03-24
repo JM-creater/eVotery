@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
@@ -14,6 +13,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("admin-account")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAccountInfo()
     {
         var response = await service.GetAdminAccountInfo();

@@ -15,6 +15,7 @@ public class PositionController : ControllerBase
 
     [HttpPost("create-position")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(string name)
     {
@@ -24,6 +25,9 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet("get-all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
@@ -37,6 +41,9 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await service.GetById(id);
@@ -50,6 +57,9 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet("get-count-by-name")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Dictionary<string, int>>> GetCountCandidates()
     {
         var response = await service.GetNumberOfCandidatePosition();
@@ -59,6 +69,7 @@ public class PositionController : ControllerBase
 
     [HttpPut("update-position/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdatePositionDto dto)
     {
@@ -74,6 +85,7 @@ public class PositionController : ControllerBase
 
     [HttpDelete("delete-position/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {

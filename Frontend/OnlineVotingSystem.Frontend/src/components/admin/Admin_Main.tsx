@@ -23,12 +23,18 @@ import Admin_ElectionTitle from './Admin_ElectionTitle';
 import Admin_Profile from './Admin_Profile';
 import Admin_Party from './Admin_Party';
 
+type AdminType = {
+  image?: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 const { Header, Content, Sider } = Layout;
 
 const Admin_Main: React.FC = () => {
 
   const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
+  const [admin, setAdmin] = useState<AdminType | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -116,8 +122,17 @@ const Admin_Main: React.FC = () => {
       </Sider>
 
       <Layout style={{ marginLeft: 200 }}>
-        <Header style={{ padding: 0, background: '#001529' }}>
-          <p style={{ color: 'white' }}>test</p>
+        <Header style={{ background: '#001529' }}>
+          <div className="user-profile-container">
+            <img 
+              src="" 
+              alt="user-profile"
+              className='user-profile-content'
+            />
+            <div className='title-profile-container'>
+              <p>Admin Name</p>
+            </div>
+          </div>
         </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 

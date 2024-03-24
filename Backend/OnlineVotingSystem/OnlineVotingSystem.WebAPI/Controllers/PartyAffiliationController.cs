@@ -15,6 +15,7 @@ public class PartyAffiliationController : ControllerBase
 
     [HttpPost("create-party")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreatePartyAffiliationDto dto)
     {
@@ -24,6 +25,9 @@ public class PartyAffiliationController : ControllerBase
     }
 
     [HttpGet("getall-party")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
@@ -32,6 +36,9 @@ public class PartyAffiliationController : ControllerBase
     }
 
     [HttpGet("getbyid-party/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await service.GetById(id);
@@ -40,6 +47,9 @@ public class PartyAffiliationController : ControllerBase
     }
 
     [HttpGet("get-count-member/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCountMember([FromRoute] Guid id)
     {
         var response = await service.GetCountPartyMembers(id);
@@ -49,6 +59,7 @@ public class PartyAffiliationController : ControllerBase
 
     [HttpPut("update-party/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateParty([FromRoute] Guid id, [FromForm] UpdatePartyAffiliationDto dto)
     {
@@ -59,6 +70,7 @@ public class PartyAffiliationController : ControllerBase
 
     [HttpDelete("delete-party/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteParty([FromRoute] Guid id)
     {

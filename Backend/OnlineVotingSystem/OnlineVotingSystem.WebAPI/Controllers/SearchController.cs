@@ -14,6 +14,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-voter")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchQuery(string searchQuery)
     {
@@ -29,6 +30,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-position")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchPosition(string searchQuery)
     {
@@ -44,6 +46,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-ballot")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchBallot(string searchQuery)
     {
@@ -59,6 +62,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-election")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchElection(string searchQuery)
     {
@@ -74,6 +78,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-party")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchParty(string searchQuery)
     {
@@ -89,6 +94,7 @@ public class SearchController : ControllerBase
 
     [HttpGet("search-candidate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SearchCandidates(string searchQuery)
     {

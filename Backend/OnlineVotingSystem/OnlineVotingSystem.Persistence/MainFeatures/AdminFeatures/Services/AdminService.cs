@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineVotingSystem.Domain.Dtos;
-using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 
@@ -14,6 +15,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("get-all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
@@ -27,6 +31,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("get-by-id/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var response = await service.GetById(id);
@@ -40,6 +47,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("validate-reset-token")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ValidateResetToken([FromQuery] string token)
     {
         var isValid = await service.IsResetTokenValid(token);
@@ -47,8 +57,10 @@ public class UserController : ControllerBase
         return Ok(new { isValid });
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
     {
@@ -62,8 +74,10 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
     {
@@ -79,6 +93,7 @@ public class UserController : ControllerBase
 
     [HttpPut("forgot-password")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ForgotPassword(string email)
     {
@@ -94,6 +109,7 @@ public class UserController : ControllerBase
 
     [HttpPut("reset-password")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
     {
@@ -109,6 +125,7 @@ public class UserController : ControllerBase
 
     [HttpPut("validate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Validate([FromRoute] int id)
     {
@@ -124,6 +141,7 @@ public class UserController : ControllerBase
 
     [HttpPut("deactivated/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Deactivated([FromRoute] int id)
     {
@@ -139,6 +157,7 @@ public class UserController : ControllerBase
 
     [HttpPut("activated/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Activated([FromRoute] int id)
     {

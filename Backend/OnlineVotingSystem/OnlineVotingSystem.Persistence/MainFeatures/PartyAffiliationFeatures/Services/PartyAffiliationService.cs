@@ -114,6 +114,8 @@ public class PartyAffiliationService : IPartyAffiliationService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
+
+            response.UserRole = null;
         }
         catch (Exception e)
         {
