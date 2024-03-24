@@ -48,4 +48,24 @@ public class CandidateController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("update-candidate/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateCandidate([FromRoute] Guid id, [FromForm] UpdateCandidateDto dto)
+    {
+        var response = await servvice.Update(id, dto);
+
+        return Ok(response);
+    }
+
+    [HttpDelete("delete-candidate/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeleteCandidate([FromRoute] Guid id)
+    {
+        var response = await servvice.Delete(id);
+
+        return Ok(response);
+    }
 }

@@ -16,7 +16,8 @@ public class AutoMapperConfig : Profile
 
         // Candidate
         CreateMap<CreateCandidateDto, Candidate>();
-        CreateMap<UpdateCandidateDto, Candidate>();
+        CreateMap<UpdateCandidateDto, Candidate>()
+            .ForMember(dest => dest.Image, opt => opt.Ignore());
 
         // Ballot
         CreateMap<CreateBallotDto, Ballot>();
