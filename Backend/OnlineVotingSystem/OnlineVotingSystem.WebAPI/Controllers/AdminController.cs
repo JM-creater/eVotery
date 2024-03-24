@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
@@ -12,10 +13,10 @@ public class AdminController : ControllerBase
         service = _service;
     }
 
-    [HttpGet("getusers-admin/{voterId}")]
-    public async Task<IActionResult> GetUsersForAdmin(int voterId)
+    [HttpGet("admin-account")]
+    public async Task<IActionResult> GetAccountInfo()
     {
-        var response = await service.GetUsersForAdmin(voterId);
+        var response = await service.GetAdminAccountInfo();
 
         if (response == null)
         {

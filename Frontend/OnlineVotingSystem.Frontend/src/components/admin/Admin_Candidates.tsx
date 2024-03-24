@@ -38,6 +38,8 @@ const GETALL_PARTYAFFILIATION_URL = 'https://localhost:7196/PartyAffiliation/get
 const UPDATE_CANDIDATE_URL = 'https://localhost:7196/Candidate/update-candidate/';
 const DELETE_CANDIDATE_URL = 'https://localhost:7196/Candidate/delete-candidate/';
 const SEARCH_CANDIDATE_URL = 'https://localhost:7196/Search/search-candidate?searchQuery=';
+const ACTIVATE_CANDIDATE_URL = 'https://localhost:7196/Candidate/activate-candidate/';
+const DEACTIVATE_CANDIDATE_URL = 'https://localhost:7196/Candidate/deactivate-candidate/';
 
 const { Meta } = Card;
 
@@ -51,6 +53,7 @@ type CandidateType = {
     partyAffiliationId?: string;
     gender?: string;
     biography?: string;
+    status?: CandidateStataus[];
 }
 
 type FileType = {
@@ -73,6 +76,12 @@ type BallotType = {
 type PartyAffiliationType = {
     id?: string;
     partyName?: string;
+}
+
+enum CandidateStataus {
+    Active = 1,
+    Inactive = 2,
+    Disqualified = 3
 }
 
 const props: UploadProps = {
@@ -318,12 +327,31 @@ const Admin_Candidates:React.FC = () => {
         return () => controller.abort();
     };
 
+    const handleActivateCandidate = async (id: string) => {
+        try {
+            const response = await axios.put(`${ACTIVATE_CANDIDATE_URL}${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleDeactivateCandidate = async (id: string) => {
+        try {
+            const response = await axios.put(`${DEACTIVATE_CANDIDATE_URL}${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             const value = (event.currentTarget as HTMLInputElement).value;
             handleSearchCandidate(value);
         } 
     };
+    
 
     const getPositionName = (positionId: string) => {
         const position = positions.find(p => p.id == positionId)  
@@ -334,10 +362,7 @@ const Admin_Candidates:React.FC = () => {
         {
             key: "1",
             label: (
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a onClick={() => handleActivateCandidate(selectedCandidate?.id as string)}>
                     Activate
                 </a>
             ),
@@ -345,10 +370,7 @@ const Admin_Candidates:React.FC = () => {
         {
             key: "2",
             label: (
-                <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a onClick={() => handleDeactivateCandidate(selectedCandidate?.id as string)}>
                     Deactivate
                 </a>
             ),

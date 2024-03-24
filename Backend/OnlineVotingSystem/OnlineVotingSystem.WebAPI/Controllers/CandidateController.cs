@@ -59,6 +59,26 @@ public class CandidateController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPut("activate-candidate/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ActivateCandidate(Guid id)
+    {
+        var response = await servvice.ActivateCandidate(id);
+
+        return Ok(response);
+    }
+
+    [HttpPut("deactivate-candidate/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeactivateCandidate(Guid id)
+    {
+        var response = await servvice.DeactivateCandidate(id);
+
+        return Ok(response);
+    }
+
     [HttpDelete("delete-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
