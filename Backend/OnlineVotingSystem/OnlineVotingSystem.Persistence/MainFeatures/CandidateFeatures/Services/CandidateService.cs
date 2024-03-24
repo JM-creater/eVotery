@@ -209,4 +209,64 @@ public class CandidateService : ICandidateService
 
         return response;
     }
+
+    public async Task<ApiResponse<Candidate>> ActivateCandidate(Guid id)
+    {
+        ApiResponse<Candidate> response = new ApiResponse<Candidate>();
+
+        try
+        {
+            var candidate = await context.Candidates.FindAsync(id);
+
+            if (candidate == null)
+            {
+                string errorMessage = $"No Candidate Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            candidate.Status = Domain.Enum.CandidateStatus.Active;
+            context.Candidates.Update(candidate);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<Candidate>> DeactivateCandidate(Guid id)
+    {
+        ApiResponse<Candidate> response = new ApiResponse<Candidate>();
+
+        try
+        {
+            var candidate = await context.Candidates.FindAsync(id);
+
+            if (candidate == null)
+            {
+                string errorMessage = $"No Candidate Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            candidate.Status = Domain.Enum.CandidateStatus.InActive;
+            context.Candidates.Update(candidate);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 }

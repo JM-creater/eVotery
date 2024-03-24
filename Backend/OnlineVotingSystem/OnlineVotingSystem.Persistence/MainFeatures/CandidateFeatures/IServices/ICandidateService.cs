@@ -11,4 +11,6 @@ public interface ICandidateService
     Task<Candidate> GetById(Guid id);
     Task<ApiResponse<Candidate>> Update(Guid id, UpdateCandidateDto dto);
     Task<ApiResponse<Candidate>> Delete(Guid id);
+    Task<ApiResponse<Candidate>> ActivateCandidate(Guid id);
+    Task<ApiResponse<Candidate>> DeactivateCandidate(Guid id);
 }

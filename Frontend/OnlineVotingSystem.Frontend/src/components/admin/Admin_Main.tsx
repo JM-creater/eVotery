@@ -117,7 +117,7 @@ const Admin_Main: React.FC = () => {
 
       <Layout style={{ marginLeft: 200 }}>
         <Header style={{ padding: 0, background: '#001529' }}>
-
+          <p style={{ color: 'white' }}>test</p>
         </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 

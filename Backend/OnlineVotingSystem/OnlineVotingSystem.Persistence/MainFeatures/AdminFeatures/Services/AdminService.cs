@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
@@ -13,9 +15,27 @@ public class AdminService : IAdminService
         context = _context;
     }
 
-    public async Task<List<User>> GetUsersForAdmin(int voterId)
-        => await context.Users
-                        .Where(u => u.VoterId == voterId &&
-                                    u.Role == Domain.Enum.UserRole.Admin)
-                        .ToListAsync();
+    public async Task<IEnumerable<GetAdminAccount>> GetAdminAccountInfo()
+    {
+        var admin = await context.Users
+                                 .Where(u => u.Role == Domain.Enum.UserRole.Admin)
+                                 .ToListAsync();
+
+        var account = admin.Select(a => new GetAdminAccount
+        {
+            FirstName = a.FirstName,
+            LastName = a.LastName,
+            Email = a.Email,
+            Password = a.Password,
+            Address = a.Address,
+            PhoneNumber = a.PhoneNumber,
+            IsValidate = a.IsValidate,
+            IsActive = a.IsActive,
+            VerificationStatus = a.VerificationStatus,
+            Role = a.Role
+        });
+
+        return account;
+    }
+        
 }
