@@ -41,9 +41,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHealthChecks();
+
 builder.Services.Configure<ImagePathOptions>(builder.Configuration.GetSection("ImagePath"));
 
 var app = builder.Build();
+
+app.MapHealthChecks("/health");
 
 var serviceScope = app.Services.CreateScope();
 var dataContext = serviceScope.ServiceProvider.GetService<DataContext>();

@@ -20,13 +20,13 @@ import {
 import axios from 'axios';
 import Search from 'antd/es/input/Search';
 import { toast } from 'react-toastify';
+import AsyncPartyMemberCount from '../../context/PartyMemberCounts';
 
 const GET_ALL_PARTY = 'https://localhost:7196/PartyAffiliation/getall-party';
 const CREATE_PARTY_URL = 'https://localhost:7196/PartyAffiliation/create-party';
 const UPDATE_PARTY_URL = 'https://localhost:7196/PartyAffiliation/update-party/';
 const DELETE_PARTY_URL = 'https://localhost:7196/PartyAffiliation/delete-party/';
 const SEARCH_PARTY_URL = 'https://localhost:7196/Search/search-party?searchQuery=';
-const GET_PARTYMEMBERS_URL = 'https://localhost:7196/PartyAffiliation/get-count-member/'; 
 
 type PartyAffiliationType = {
     id?: string;
@@ -70,7 +70,6 @@ const Admin_Party: React.FC = () => {
     const[isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const[isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const[selectedParty, setSelectedParty] = useState<PartyAffiliationType | null>(null);
-    const[countMembers, setCountMembers] = useState<number>(0);
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
 
@@ -126,23 +125,6 @@ const Admin_Party: React.FC = () => {
     const exitEditModal = () => {
         setIsEditModalOpen(false);
     }
-
-    useEffect(() => {
-        const fetchPartyMembers = async () => {
-            try {
-                const response = await axios.get(`${GET_PARTYMEMBERS_URL}${selectedParty?.id}`);
-                setCountMembers(response.data); 
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    
-        if (selectedParty) {
-            fetchPartyMembers(); 
-        }
-        
-    }, [selectedParty]);
-    
 
     const handleAddParty = async (values: PartyAffiliationType) => {
         try {
@@ -281,6 +263,8 @@ const Admin_Party: React.FC = () => {
             console.error(error);
         }
     };
+
+
     
     const columns = [
         {
@@ -306,9 +290,11 @@ const Admin_Party: React.FC = () => {
         },
         {
             title: 'No. of Members',
-            dataIndex: 'members',
+            dataIndex: 'id',
             key: 'members',
-            render: () => countMembers || (selectedParty ? <Spin indicator={antIcon} /> : 0)
+            render: (id: string) => (
+                <AsyncPartyMemberCount id={id} />
+            )
         },
         {
             title: 'Action',

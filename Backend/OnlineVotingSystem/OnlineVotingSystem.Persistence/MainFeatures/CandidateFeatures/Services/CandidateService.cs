@@ -83,13 +83,123 @@ public class CandidateService : ICandidateService
                         .Where(c => c.Id == id)
                         .FirstOrDefaultAsync(); 
 
-    public async Task<ApiResponse<Candidate>> Update(UpdateCandidateDto dto)
+    public async Task<ApiResponse<Candidate>> Update(Guid id, UpdateCandidateDto dto)
     {
         ApiResponse<Candidate> response = new ApiResponse<Candidate>();
 
         try
         {
-            
+            var candidate = await context.Candidates
+                                         .Where(c => c.Id == id)
+                                         .FirstOrDefaultAsync();
+
+            if (candidate == null)
+            {
+                string errorMessage = $"No Candidate Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.FirstName))
+            {
+                candidate.FirstName = dto.FirstName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.LastName))
+            {
+                candidate.LastName = dto.LastName;
+            }
+
+            if(dto.Image != null)
+            {
+                var imagePath = await new ImagePathConfig().SaveCandidateImages(dto.Image);
+                candidate.Image = imagePath;
+            }
+
+            if(!string.IsNullOrWhiteSpace(dto.Gender))
+            {
+                candidate.Gender = dto.Gender;
+            }
+
+            if (dto.PartyAffiliationId != Guid.Empty)
+            {
+                var partyExist = await context.PartyAffiliations.FindAsync(dto.PartyAffiliationId);
+
+                if (partyExist == null)
+                {
+                    candidate.PartyAffiliationId = Guid.Empty;
+                }
+                else
+                {
+                    candidate.PartyAffiliationId = dto.PartyAffiliationId;
+                }
+            }
+
+            if (dto.BallotId != Guid.Empty)
+            {
+                var existBallot = await context.Ballots.FindAsync(dto.BallotId);
+
+                if (existBallot == null)
+                {
+                    candidate.BallotId = Guid.Empty;
+                }
+                else
+                {
+                    candidate.BallotId = dto.BallotId;
+                }
+            }
+
+            if (dto.PositionId != Guid.Empty) 
+            { 
+                var existPosition = await context.Positions.FindAsync(dto.PositionId);
+
+                if (existPosition == null)
+                {
+                    candidate.PositionId = Guid.Empty;
+                }
+                else
+                {
+                    candidate.PositionId = dto.PositionId;
+                }
+            }
+
+            mapper.Map(dto, candidate);
+            candidate.DateUpdated = DateTime.Now;
+            context.Candidates.Update(candidate);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
+
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<Candidate>> Delete(Guid id)
+    {
+        ApiResponse<Candidate> response = new ApiResponse<Candidate>();
+
+        try
+        {
+            var candidate = await context.Candidates.Where(c => c.Id == id)
+                                                    .FirstOrDefaultAsync();
+
+            if (candidate == null)
+            {
+                string errorMessage = $"No Candidate Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            context.Candidates.Remove(candidate);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;
         }
         catch (Exception e)
         {
