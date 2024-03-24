@@ -21,12 +21,14 @@ public class AdminService : IAdminService
 
         var account = admin.Select(a => new GetAdminAccount
         {
+            VoterId = a.VoterId,
             FirstName = a.FirstName,
             LastName = a.LastName,
             Email = a.Email,
             Password = a.Password,
             Address = a.Address,
             PhoneNumber = a.PhoneNumber,
+            VoterImages = a.VoterImages,
             IsValidate = a.IsValidate,
             IsActive = a.IsActive,
             VerificationStatus = a.VerificationStatus,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import '../admin/Admin_Main.css'
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +24,9 @@ import Admin_Profile from './Admin_Profile';
 import Admin_Party from './Admin_Party';
 
 type AdminType = {
-  image?: string;
   firstName?: string;
   lastName?: string;
+  voterImages?: string;
 }
 
 const { Header, Content, Sider } = Layout;
@@ -42,12 +42,22 @@ const Admin_Main: React.FC = () => {
   } = theme.useToken();
 
   const handleLogout = () => {
+    localStorage.removeItem('result');
     navigate('/');
   };
 
   const handleMenuClick = (menuItem: string) => {
     setSelectedItemMenu(menuItem);
   };
+
+  useEffect(() => {
+    const item = localStorage.getItem('result');
+
+    if (item) {
+      setAdmin(JSON.parse(item));
+    }
+    
+  }, []);
 
   const renderComponent = () => {
     switch (selectedItemMenu) {
@@ -123,16 +133,23 @@ const Admin_Main: React.FC = () => {
 
       <Layout style={{ marginLeft: 200 }}>
         <Header style={{ background: '#001529' }}>
-          <div className="user-profile-container">
-            <img 
-              src="" 
-              alt="user-profile"
-              className='user-profile-content'
-            />
-            <div className='title-profile-container'>
-              <p>Admin Name</p>
-            </div>
-          </div>
+          <React.Fragment>
+            {
+              admin && (
+                <div className="user-profile-container">
+                  <img 
+                    src={`https://localhost:7196/${admin.voterImages}`} 
+                    alt="user-profile"
+                    className='user-profile-content'
+                  />
+                  <div className='title-profile-container'>
+                    <p>{admin.firstName} {admin.lastName}</p>
+                  </div>
+                </div>
+              )
+            }
+          </React.Fragment>
+          
         </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 

@@ -5,9 +5,11 @@ import {
     Form, 
     Input, 
     Radio, 
+    Steps, 
     Upload, 
     UploadProps, 
-    message 
+    message, 
+    theme
 } from "antd";
 import { 
     ArrowLeftOutlined,
@@ -68,12 +70,39 @@ const onFinishFailed = (errorInfo: unknown) => {
     console.log('Failed:', errorInfo);
 };
 
+const steps = [
+    {
+        title: 'First',
+        content: 'First-content',
+    },
+    {
+        title: 'Second',
+        content: 'Second-content',
+    },
+    {
+        title: 'Last',
+        content: 'Last-content',
+    },
+];
+
 const Register: React.FC = () => {
 
     const [loadings, setLoadings] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { token } = theme.useToken();
+    const [current, setCurrent] = useState(0);
 
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const next = () => {
+        setCurrent(current + 1);
+    };
+    
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+
+    const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
     const handleRegister = async (values: VoterType) => {
         setLoadings(true);
@@ -130,6 +159,12 @@ const Register: React.FC = () => {
 
     return (
         <div className="register-main-container">
+            <div className="step-line-container">
+                <Steps current={current} items={items}>
+
+                </Steps>
+            </div>
+
             <Form
                 className="register-form-container"
                 initialValues={{ remember: true }}
