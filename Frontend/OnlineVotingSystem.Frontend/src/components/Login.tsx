@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     const [loadings, setLoadings] = useState<boolean>(false);
     const [errorField, setErrorField] = useState<string>("");
 
-    //const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
+    // const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const handleLogin = async (values: VoterType) => {
         setLoadings(true);
@@ -47,22 +47,25 @@ const Login: React.FC = () => {
                 loginRequest.voterId = voterId;
             }
         }
-
+        
         try {
             const response = await axios.post(LOGIN_URL, loginRequest, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
+            
+            const resultJson = JSON.stringify(response.data.result);
 
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
+                        localStorage.setItem('result', resultJson);
                         navigate('/home-page');
                         break;
                     case 2: 
-                        navigate('/admin-dashboard');
+                        localStorage.setItem('result', resultJson);
+                        navigate('/admin-main');
                         break;
                     default:
                         console.log("Unknown role");
@@ -97,9 +100,8 @@ const Login: React.FC = () => {
                 <div className="image-container">
                     <img src={Logo} alt="eVotery-logo" />
                 </div>
-                <h1 className="title-label">
-                    LOGIN
-                </h1>
+                
+                <h1 className="title-label">LOGIN</h1>
 
                 {
                     errorField && (

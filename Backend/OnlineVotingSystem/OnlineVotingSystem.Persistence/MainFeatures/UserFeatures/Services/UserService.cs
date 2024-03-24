@@ -175,6 +175,7 @@ public class UserService : IUserService
 
             response.ResponseCode = 200;
             response.UserRole = voter.Role;
+            response.Result = voter;
         }
         catch (Exception e)
         {

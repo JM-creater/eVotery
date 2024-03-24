@@ -9,6 +9,7 @@ import Forgot_Password from './components/Forgot_Password'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, Zoom } from 'react-toastify'
 import Reset_Password from './components/Reset_Password'
+import Not_FoundPage from './components/common/Not_FoundPage'
 
 function App() {
 
@@ -30,15 +31,24 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
+          
+          {/* Main */}
 
           <Route index element={ <Login/> } />
           <Route path='/register-page' element={ <Register/> } />
           <Route path='/reset-password' element={ <Reset_Password/> } />
           <Route path='/forgot-password' element={ <Forgot_Password/> } />
 
+          {/* User */}
+
           <Route path='/home-page' element={ <HomePage/> } />
 
+          {/* Admin */}
+
           <Route path='/admin-main' element={ <Admin_Main/> } />
+
+          {/* Error */}
+          <Route path="*" element={<Not_FoundPage />} />
 
         </Routes>
       </BrowserRouter>
