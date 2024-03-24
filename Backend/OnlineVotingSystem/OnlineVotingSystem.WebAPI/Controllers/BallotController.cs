@@ -15,6 +15,7 @@ public class BallotController : ControllerBase
 
     [HttpPost("create-ballot")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateBallotDto dto)
     {
@@ -24,6 +25,9 @@ public class BallotController : ControllerBase
     }
 
     [HttpGet("getall-ballots")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
@@ -37,6 +41,9 @@ public class BallotController : ControllerBase
     }
 
     [HttpGet("getById-ballot/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await service.GetById(id);
@@ -51,6 +58,7 @@ public class BallotController : ControllerBase
 
     [HttpPut("update-ballot/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBallot([FromRoute] Guid id, [FromBody] UpdateBallotDto dto)
     {
@@ -61,6 +69,7 @@ public class BallotController : ControllerBase
 
     [HttpDelete("delete-ballot/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteBallot([FromRoute] Guid id)
     {

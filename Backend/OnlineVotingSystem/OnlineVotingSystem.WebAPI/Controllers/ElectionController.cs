@@ -15,6 +15,7 @@ public class ElectionController : ControllerBase
 
     [HttpPost("create-election")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateElectionDto dto)
@@ -26,6 +27,7 @@ public class ElectionController : ControllerBase
 
     [HttpGet("getall-elections")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> GetAll()
@@ -41,6 +43,9 @@ public class ElectionController : ControllerBase
     }
 
     [HttpGet("getById-election/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -56,6 +61,7 @@ public class ElectionController : ControllerBase
 
     [HttpPut("update-election/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateElection([FromRoute] Guid id, [FromBody] UpdateElectionDto dto)
@@ -67,6 +73,7 @@ public class ElectionController : ControllerBase
 
     [HttpDelete("delete-election/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //[ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteElection([FromRoute] Guid id)

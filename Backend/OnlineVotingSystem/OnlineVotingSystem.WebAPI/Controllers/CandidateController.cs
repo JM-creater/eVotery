@@ -15,6 +15,7 @@ public class CandidateController : ControllerBase
 
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromForm] CreateCandidateDto dto)
     {
@@ -24,6 +25,9 @@ public class CandidateController : ControllerBase
     }
 
     [HttpGet("get-all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll()
     {
         var response = await servvice.GetAll();
@@ -37,6 +41,9 @@ public class CandidateController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await servvice.GetById(id);
@@ -51,6 +58,7 @@ public class CandidateController : ControllerBase
 
     [HttpPut("update-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateCandidate([FromRoute] Guid id, [FromForm] UpdateCandidateDto dto)
     {
@@ -61,6 +69,7 @@ public class CandidateController : ControllerBase
 
     [HttpPut("activate-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ActivateCandidate(Guid id)
     {
@@ -71,6 +80,7 @@ public class CandidateController : ControllerBase
 
     [HttpPut("deactivate-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeactivateCandidate(Guid id)
     {
@@ -81,6 +91,7 @@ public class CandidateController : ControllerBase
 
     [HttpDelete("delete-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteCandidate([FromRoute] Guid id)
     {
