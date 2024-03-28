@@ -2,22 +2,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     background: url('../assets/samples/imageBG.jpg') no-repeat center center;
     background-size: cover;
+    position: relative;
+}
+
+.register-main-container::before {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute; 
+    top: 0; 
+    right: 0;
+    bottom: 0; 
+    left: 0;
+}
+
+.step-line-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 100vh;
+    margin-bottom: 20px; 
 }
 
 .register-form-container {
     width: 100vh;
-    margin: auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 255);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
 }
 
 .register-title-label {
-    color: black;
+    color: white;
     text-align: center;
     padding: 8px;
     font-weight: 800;
@@ -27,6 +43,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.image-register-content, 
+.register-title-label {
+    z-index: 1; 
 }
 
 .image-register-container img {
@@ -44,7 +66,9 @@
     flex: 1 1 45%;
 }
 
-.register-form-button {
+.register-form-button, 
+.next-button-content,
+.prev-button-content {
     width: 40vh;
 }
 
@@ -64,4 +88,22 @@
 .menu-item-label {
     float: right; 
     margin-left: auto; 
+}
+
+[title="First Name"],
+[title="Last Name"],
+[title="Email"],
+[title="Date of Birth"],
+[title="Address"],
+[title="Address"],
+[title="Phone Number"],
+[title="Gender"],
+[title="Password"],
+[title="Confirm Password"],
+[title="Image"] {
+    color: #FFFFFF !important;
+}
+
+.ant-steps-item-title {
+    color: #FFFFFF !important;
 }

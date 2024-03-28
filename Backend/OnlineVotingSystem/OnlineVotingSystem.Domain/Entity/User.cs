@@ -45,6 +45,10 @@ public class User : BaseEntity
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
     public string VoterImages { get; set; } = string.Empty;
+
+    [Required]
+    public bool HasAgreedToTerms { get; set; }
+
     public bool IsValidate { get; set; }
     public bool IsActive { get; set; }
     public VerifyStatus VerificationStatus { get; set; } 
