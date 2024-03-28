@@ -24,7 +24,7 @@ import Logo from '../assets/samples/Logo.png';
 import '../components/Register.css'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const REGISTER_URL = 'https://localhost:7196/User/register';
 
@@ -70,21 +70,6 @@ const onFinishFailed = (errorInfo: unknown) => {
     console.log('Failed:', errorInfo);
 };
 
-const steps = [
-    {
-        title: 'First',
-        content: 'First-content',
-    },
-    {
-        title: 'Second',
-        content: 'Second-content',
-    },
-    {
-        title: 'Last',
-        content: 'Last-content',
-    },
-];
-
 const Register: React.FC = () => {
 
     const [loadings, setLoadings] = useState<boolean>(false);
@@ -94,15 +79,29 @@ const Register: React.FC = () => {
 
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
+    const handleBackLogin = () => {
+        navigate('/');
+    }
+
     const next = () => {
-        setCurrent(current + 1);
+        if (current < steps.length - 1) {
+            setCurrent(current + 1);
+        }
     };
     
     const prev = () => {
         setCurrent(current - 1);
     };
 
-    const items = steps.map((item) => ({ key: item.title, title: item.title }));
+    const contentStyle: React.CSSProperties = {
+        lineHeight: '260px',
+        textAlign: 'center',
+        color: token.colorTextTertiary,
+        backgroundColor: token.colorFillAlter,
+        borderRadius: token.borderRadiusLG,
+        border: `1px dashed ${token.colorBorder}`,
+        marginTop: 16,
+    };
 
     const handleRegister = async (values: VoterType) => {
         setLoadings(true);
@@ -157,189 +156,247 @@ const Register: React.FC = () => {
         }
     };
 
+    const steps = [
+        {
+            title: 'Step 1',
+            content: (
+                <React.Fragment>
+                    <Form
+                        className="register-form-container"
+                        initialValues={{ remember: true }}
+                        onFinish={handleRegister}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                    >
+                        <Button 
+                            className='link-back-content' 
+                            onClick={handleBackLogin}    
+                        >
+                            <ArrowLeftOutlined /> Back
+                        </Button> 
+        
+                        <div className="image-register-container">
+                            <img className="image-register-content" src={Logo} alt="eVotery-logo" />
+
+                            <h1 className="register-title-label">
+                                REGISTER
+                            </h1>
+                        </div>
+        
+                        <div className='input-grid-container'>
+        
+                            <Form.Item<VoterType>
+                                label="Image"
+                                name="voterImages"
+                                rules={[{ 
+                                    required: true, message: 'Please upload an image.' 
+                                }]}
+                                valuePropName="fileList"
+                                getValueFromEvent={(e) => {
+                                    if (Array.isArray(e)) {
+                                        return e;
+                                    } 
+                                    return e && e.fileList;
+                                }}
+                            >
+                                <Upload {...props} listType="picture">
+                                    <Button icon={<UploadOutlined/>}>Upload Image</Button>
+                                </Upload>
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="First Name"
+                                name="firstName"
+                                rules={[{ required: true, message: 'Enter your First Name.' }]}
+                            >
+                                <Input
+                                    maxLength={15}
+                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    placeholder="First Name"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Last Name"
+                                name="lastName"
+                                rules={[{ required: true, message: 'Enter your Last Name.' }]}
+                            >
+                                <Input
+                                    maxLength={15}
+                                    prefix={<UserOutlined className="site-form-item-icon" />}
+                                    placeholder="Last Name"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Email"
+                                name="email"
+                                rules={[{ required: true, message: 'Enter your Email.' }]}
+                            > 
+                                <Input
+                                    maxLength={30}
+                                    prefix={<MailOutlined className="site-form-item-icon" />}
+                                    type="email"
+                                    placeholder="Email"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Date of Birth"
+                                name="dateOfBirth"
+                                rules={[{ required: true, message: 'Enter your Date of Birth.' }]}
+                            > 
+                                <DatePicker format="MM-DD-YYYY" />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Address"
+                                name="address"
+                                rules={[{ required: true, message: 'Enter your Address.' }]}
+                            > 
+                                <Input
+                                    maxLength={30}
+                                    prefix={<HomeOutlined className="site-form-item-icon" />}
+                                    placeholder="Address"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Phone Number"
+                                name="phoneNumber"
+                                rules={[{ required: true, message: 'Enter your Phone Number.' }]}
+                            > 
+                                <Input
+                                    maxLength={11}
+                                    prefix={<PhoneOutlined className="site-form-item-icon" />}
+                                    placeholder="Phone Number"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Gender"
+                                name="gender"
+                                rules={[{ required: true, message: 'Select your gender.' }]}
+                                style={{ color: '#FFFFFF' }}
+                            >
+                                <Radio.Group>
+                                    <Radio value="1"> Female </Radio>
+                                    <Radio value="2"> Male </Radio>
+                                </Radio.Group>
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Password"
+                                name="password"
+                                rules={[{ required: true, message: 'Enter your Password.' }]}
+                            >
+                                <Input
+                                    maxLength={8}
+                                    prefix={<LockOutlined className="site-form-item-icon" />}
+                                    type="password"
+                                    placeholder="Password"
+                                />
+                            </Form.Item>
+        
+                            <Form.Item<VoterType>
+                                label="Confirm Password"
+                                name="confirmPassword"
+                                rules={[
+                                    { required: true, message: 'Please confirm your password.' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('The two passwords that you entered do not match.'));
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input
+                                    maxLength={8}
+                                    prefix={<LockOutlined className="site-form-item-icon" />}
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                />
+                            </Form.Item>
+                            
+                        </div>
+                    </Form>
+    
+                </React.Fragment>
+            ),
+        },
+        {
+            title: 'Step 2',
+            content: (
+                <React.Fragment>
+                    <div>
+                        second form
+                    </div>
+                </React.Fragment>
+            ),
+        },
+        {
+            title: 'Step 3',
+            content: (
+                <React.Fragment>
+                    <div>
+                        third form
+                    </div>
+                </React.Fragment>
+            ),
+        },
+    ];
+
+    const items = steps.map((item) => ({ key: item.title, title: item.title }));
+
     return (
         <div className="register-main-container">
             <div className="step-line-container">
                 <Steps current={current} items={items}>
-
+                    <div style={contentStyle}>{steps[current].content}</div>
                 </Steps>
             </div>
 
-            <Form
-                className="register-form-container"
-                initialValues={{ remember: true }}
-                onFinish={handleRegister}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-            >
-                <Link to={'/'}>
-                    <ArrowLeftOutlined /> Back
-                </Link> 
-
-                <div className="image-register-container">
-                    <img src={Logo} alt="eVotery-logo" />
-                </div>
-
-                <h1 className="register-title-label">
-                    REGISTER
-                </h1>
-
-                <div className='input-grid-container'>
-
-                <Form.Item<VoterType>
-                    label="Image"
-                    name="voterImages"
-                    rules={[{ 
-                        required: true, message: 'Please upload an image.' 
-                    }]}
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => {
-                        if (Array.isArray(e)) {
-                            return e;
-                        } 
-                        return e && e.fileList;
-                    }}
-                >
-                    <Upload {...props} listType="picture">
-                        <Button icon={<UploadOutlined/>}>Upload Image</Button>
-                    </Upload>
-                </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="First Name"
-                        name="firstName"
-                        rules={[{ required: true, message: 'Enter your First Name.' }]}
-                    >
-                        <Input
-                            maxLength={15}
-                            prefix={<UserOutlined className="site-form-item-icon" />}
-                            placeholder="First Name"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Last Name"
-                        name="lastName"
-                        rules={[{ required: true, message: 'Enter your Last Name.' }]}
-                    >
-                        <Input
-                            maxLength={15}
-                            prefix={<UserOutlined className="site-form-item-icon" />}
-                            placeholder="Last Name"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Email"
-                        name="email"
-                        rules={[{ required: true, message: 'Enter your Email.' }]}
-                    > 
-                        <Input
-                            maxLength={30}
-                            prefix={<MailOutlined className="site-form-item-icon" />}
-                            type="email"
-                            placeholder="Email"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Date of Birth"
-                        name="dateOfBirth"
-                        rules={[{ required: true, message: 'Enter your Date of Birth.' }]}
-                    > 
-                        <DatePicker format="MM-DD-YYYY" />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Address"
-                        name="address"
-                        rules={[{ required: true, message: 'Enter your Address.' }]}
-                    > 
-                        <Input
-                            maxLength={30}
-                            prefix={<HomeOutlined className="site-form-item-icon" />}
-                            placeholder="Address"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Phone Number"
-                        name="phoneNumber"
-                        rules={[{ required: true, message: 'Enter your Phone Number.' }]}
-                    > 
-                        <Input
-                            maxLength={11}
-                            prefix={<PhoneOutlined className="site-form-item-icon" />}
-                            placeholder="Phone Number"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Gender"
-                        name="gender"
-                        rules={[{ required: true, message: 'Select your gender.' }]}
-                    >
-                        <Radio.Group>
-                            <Radio value="1"> Female </Radio>
-                            <Radio value="2"> Male </Radio>
-                        </Radio.Group>
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Password"
-                        name="password"
-                        rules={[{ required: true, message: 'Enter your Password.' }]}
-                    >
-                        <Input
-                            maxLength={8}
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Password"
-                        />
-                    </Form.Item>
-
-                    <Form.Item<VoterType>
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        rules={[
-                            { required: true, message: 'Please confirm your password.' },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value || getFieldValue('password') === value) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(new Error('The two passwords that you entered do not match.'));
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input
-                            maxLength={8}
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Confirm Password"
-                        />
-                    </Form.Item>
-                    
-                </div>
-
-
+            {steps[current].content}
+            
+            <React.Fragment>
                 <Form.Item>
-                    <div className="register-voter-container">
-                        <Button 
-                            type="primary" 
-                            htmlType="submit" 
-                            className="register-form-button"
-                            loading={loadings}
-                        >
-                            Register
-                        </Button>
-                    </div>
+                        {current > 0 && (
+                            <Button 
+                                style={{ margin: '0 8px' }} 
+                                className='prev-button-content'
+                                onClick={prev}
+                            >
+                                Previous
+                            </Button>
+                        )}
+                        {current < steps.length - 1 && (
+                            <Button 
+                                type="primary" 
+                                className='next-button-content'
+                                onClick={next}
+                            >
+                                Next
+                            </Button>
+                        )}
+                        {current === steps.length - 1 && (
+                            <Button
+                                type="primary" 
+                                htmlType="submit" 
+                                className="register-form-button"
+                                loading={loadings}
+                            >
+                                Register
+                            </Button>
+                        )}
                 </Form.Item>
-
-            </Form>
+            </React.Fragment>
+                
         </div>
     );
 }
+
 
 export default Register
