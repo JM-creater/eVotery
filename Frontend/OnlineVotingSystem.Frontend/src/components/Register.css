@@ -24,16 +24,22 @@
     justify-content: center; 
     align-items: center;
     width: 100vh;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .register-form-container {
     width: 100vh;
     padding: 20px;
+    background: rgba(255, 255, 255, 255);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* border-radius: 8px; */
+    z-index: 1; 
+    height: 490px;
+    overflow: auto;
 }
 
 .register-title-label {
-    color: white;
+    color: black;
     text-align: center;
     padding: 8px;
     font-weight: 800;
@@ -89,4 +95,8 @@
 
 .ant-steps-item-title {
     color: #FFFFFF !important;
+}
+
+.terms-agreement-container {
+    margin-bottom: 20px;
 }
