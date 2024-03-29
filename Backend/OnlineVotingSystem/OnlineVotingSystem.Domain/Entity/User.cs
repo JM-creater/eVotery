@@ -19,6 +19,9 @@ public class User : BaseEntity
     [Column(TypeName = "nvarchar(15)")]
     public string LastName { get; set; } = string.Empty;
 
+    [Column(TypeName = "nvarchar(4)")]
+    public string SuffixName { get; set; } = string.Empty;
+
     [Required]
     public DateTime DateOfBirth { get; set; }
 
@@ -57,4 +60,5 @@ public class User : BaseEntity
     public DateTime? ResetTokenExpires { get; set; }
 
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
+    public ICollection<PersonalDocument> Documents { get;} = new List<PersonalDocument>();
 }

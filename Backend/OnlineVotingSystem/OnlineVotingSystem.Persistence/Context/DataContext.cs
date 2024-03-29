@@ -19,11 +19,13 @@ public partial class DataContext : DbContext
     public DbSet<Ballot> Ballots { get; set; }
     public DbSet<Position> Positions { get; set; }
     public DbSet<PartyAffiliation> PartyAffiliations { get; set; }
+    public DbSet<PersonalDocument> PersonalDocuments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
+        // Position
         Guid Position_ID1 = Guid.NewGuid();
         Guid Position_ID2 = Guid.NewGuid();
         Guid Position_ID3 = Guid.NewGuid();
@@ -37,6 +39,23 @@ public partial class DataContext : DbContext
         Guid Position_ID11 = Guid.NewGuid();
         Guid Position_ID12 = Guid.NewGuid();
         Guid Position_ID13 = Guid.NewGuid();
+
+        // Government IDs
+        Guid Document_ID1 = Guid.NewGuid();
+        Guid Document_ID2 = Guid.NewGuid();
+        Guid Document_ID3 = Guid.NewGuid();
+        Guid Document_ID4 = Guid.NewGuid();
+        Guid Document_ID5 = Guid.NewGuid();
+        Guid Document_ID6 = Guid.NewGuid();
+        Guid Document_ID7 = Guid.NewGuid();
+        Guid Document_ID8 = Guid.NewGuid();
+        Guid Document_ID9 = Guid.NewGuid();
+        Guid Document_ID10 = Guid.NewGuid();
+        Guid Document_ID11 = Guid.NewGuid();
+        Guid Document_ID12 = Guid.NewGuid();
+        Guid Document_ID13 = Guid.NewGuid();
+        Guid Document_ID14 = Guid.NewGuid();
+        Guid Document_ID15 = Guid.NewGuid();
 
         modelBuilder.Entity<User>().HasData(
             new User
@@ -57,6 +76,95 @@ public partial class DataContext : DbContext
                 Gender = "Male"
             }
         );
+
+        modelBuilder.Entity<PersonalDocument>().Property(pd => pd.IdNUmber).ValueGeneratedNever();
+
+        modelBuilder.Entity<PersonalDocument>().HasData(
+           new PersonalDocument
+           {
+               Id = Document_ID1,
+               Document = "UMID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID2,
+               Document = "Driver’s License",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID3,
+               Document = "Professional Regulation Commission ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID4,
+               Document = "Passport",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID5,
+               Document = "Senior Citizen ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID6,
+               Document = "SSS ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID7,
+               Document = "Philippine Identification",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID8,
+               Document = "NBI Clearance",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID9,
+               Document = "BIR",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID10,
+               Document = "Pag-ibig ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID11,
+               Document = "Barangay ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID12,
+               Document = "Philippine Postal ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID13,
+               Document = "School ID",
+               DateCreated = DateTime.Now
+           },
+           new PersonalDocument
+           {
+               Id = Document_ID14,
+               Document = "Other valid government-issued IDs",
+               DateCreated = DateTime.Now
+           }
+       );
 
         modelBuilder.Entity<Position>().HasData(
             new Position
@@ -187,6 +295,5 @@ public partial class DataContext : DbContext
             .WithMany(pa => pa.Candidates)
             .HasForeignKey(c => c.PartyAffiliationId)
             .OnDelete(DeleteBehavior.NoAction);
-
     }
 }

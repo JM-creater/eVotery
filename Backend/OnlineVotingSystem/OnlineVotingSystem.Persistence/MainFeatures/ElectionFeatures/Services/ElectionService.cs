@@ -57,6 +57,7 @@ public class ElectionService : IElectionService
     public async Task<List<Election>> GetAll()
         => await context.Elections
                         .OrderByDescending(e => e.DateCreated)
+                        .AsNoTracking()
                         .ToListAsync();
 
     public async Task<Election> GetById(Guid id)

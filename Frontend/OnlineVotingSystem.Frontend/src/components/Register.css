@@ -56,14 +56,11 @@
     max-height: 220px;
 }
 
-.input-grid-container {
+.first-last-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px; 
-}
-
-.input-grid-container > * {
-    flex: 1 1 45%;
+    flex-flow: row;
+    gap: 12px;
+    width: 100%;
 }
 
 .register-form-button, 
@@ -88,20 +85,6 @@
 .menu-item-label {
     float: right; 
     margin-left: auto; 
-}
-
-[title="First Name"],
-[title="Last Name"],
-[title="Email"],
-[title="Date of Birth"],
-[title="Address"],
-[title="Address"],
-[title="Phone Number"],
-[title="Gender"],
-[title="Password"],
-[title="Confirm Password"],
-[title="Image"] {
-    color: #FFFFFF !important;
 }
 
 .ant-steps-item-title {
