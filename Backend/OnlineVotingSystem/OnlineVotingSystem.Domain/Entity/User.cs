@@ -12,42 +12,63 @@ public class User : BaseEntity
     public int VoterId { get; set; }
 
     [Required]
-    [Column(TypeName = "nvarchar(15)")]
-    public string FirstName { get; set; } = string.Empty;
+    public Guid? PersonalDocumentId { get; set; }
+    public virtual PersonalDocument PersonalDocument { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(15)")]
-    public string LastName { get; set; } = string.Empty;
+    public string? FirstName { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(15)")]
+    public string? LastName { get; set; }
 
     [Column(TypeName = "nvarchar(4)")]
-    public string SuffixName { get; set; } = string.Empty;
+    public string? SuffixName { get; set; }
 
     [Required]
-    public DateTime DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     [Required]
     [EmailAddress]
     [Column(TypeName = "nvarchar(30)")]
-    public string Email { get; set; } = string.Empty;
+    public string? Email { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(100)")]
-    public string Password { get; set; } = string.Empty;
+    public string? Password { get; set; } 
 
     [Required]
     [Column(TypeName = "nvarchar(30)")]
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; } 
 
     [Required]
     [Column(TypeName = "nvarchar(12)")]
-    public string PhoneNumber { get; set; } = string.Empty;
+    public string? PhoneNumber { get; set; } 
 
     [Required]
-    public string Gender { get; set; }
+    [Column(TypeName = "nvarchar(20)")]
+    public string? Gender { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? Nationality { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string? Religion { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(4)")]
+    public string ZipCode { get; set; }
+
+    [Required]
+    [Column(TypeName = "nvarchar(50)")]
+    public string Occupation { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
-    public string VoterImages { get; set; } = string.Empty;
+    public string? VoterImages { get; set; } = string.Empty;
 
     [Required]
     public bool HasAgreedToTerms { get; set; }
@@ -60,5 +81,4 @@ public class User : BaseEntity
     public DateTime? ResetTokenExpires { get; set; }
 
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
-    public ICollection<PersonalDocument> Documents { get;} = new List<PersonalDocument>();
 }

@@ -40,6 +40,65 @@ public class UserService : IUserService
                      .Where(v => v.VoterId.Equals(id))
                      .FirstOrDefaultAsync();
 
+    public async Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto)
+    {
+        ApiResponse<User> response = new ApiResponse<User>();
+
+        try
+        {
+            User existingFirstName = await context.Users
+                                                .Where(v => v.FirstName.Equals(dto.FirstName))
+                                                .FirstOrDefaultAsync();
+
+            if (existingFirstName != null)
+            {
+                string errorMessage = $"A voter with the first name '{dto.FirstName}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            User existingLastName = await context.Users
+                                                  .Where(v => v.LastName.Equals(dto.LastName))
+                                                  .FirstOrDefaultAsync();
+
+            if (existingLastName != null)
+            {
+                string errorMessage = $"A voter with the last name '{dto.LastName}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            User existingPhoneNumber = await context.Users
+                                                     .Where(v => v.PhoneNumber.Equals(dto.PhoneNumber))
+                                                     .FirstOrDefaultAsync();
+
+            if (existingPhoneNumber != null)
+            {
+                string errorMessage = $"A voter with phone number '{dto.PhoneNumber}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var generateVoterID = Tokens.GenerateVoterID();
+
+            var student = mapper.Map<User>(dto);
+            student.VoterId = generateVoterID;
+
+            context.Users.Add(student);
+            await context.SaveChangesAsync();
+            response.ResponseCode = 200;
+            response.UserRole = UserRole.Voter;
+
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
     public async Task<ApiResponse<User>> Register(CreateVoterDto dto)
     {
         ApiResponse<User> response = new ApiResponse<User>();

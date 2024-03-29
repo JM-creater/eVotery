@@ -10,6 +10,7 @@ public class AutoMapperConfig : Profile
     {
         // Voter
         CreateMap<CreateVoterDto, User>();
+        CreateMap<StepOneRegisterDto, User>();
         CreateMap<UpdateVoterDto, User>()
             .ForMember(dest => dest.VoterImages, opt => opt.Ignore())
             .ForMember(dest => dest.Password, opt => opt.Ignore());
