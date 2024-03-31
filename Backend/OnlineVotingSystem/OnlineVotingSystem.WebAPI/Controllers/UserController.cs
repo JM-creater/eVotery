@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
+using System.Net;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
 
@@ -27,7 +29,19 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        return Ok(response);
+        var settings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        var json = JsonConvert.SerializeObject(response, settings);
+
+        return new ContentResult
+        {
+            Content = json,
+            ContentType = "application/json",
+            StatusCode = (int)HttpStatusCode.OK
+        };
     }
 
     [HttpGet("get-by-id/{id}")]
@@ -55,6 +69,23 @@ public class UserController : ControllerBase
         var isValid = await service.IsResetTokenValid(token);
 
         return Ok(new { isValid });
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register-first-step")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepOneRegister([FromBody] StepOneRegisterDto dto)
+    {
+        var response = await service.StepOneRegister(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
     }
 
     [AllowAnonymous]

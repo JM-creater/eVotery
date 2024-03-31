@@ -10,14 +10,11 @@ public class Ballot : BaseEntity
     [Column(TypeName = "nvarchar(100)")]
     public string BallotName { get; set; }
 
-    [Required]
     public Guid ElectionId { get; set; }
     public virtual Election Election { get; set; }
 
-    [Required]
     public DateTime StartDate { get; set; }
 
-    [Required]
     public DateTime EndDate { get; set; }
     public bool IsActive { get; set; }
 

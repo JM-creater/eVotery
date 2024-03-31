@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
@@ -29,11 +31,18 @@ public class UserService : IUserService
         configuration = _configuration;
     }
 
-    public async Task<List<User>> GetAll()
-     => await context.Users
-                     .Where(u => u.Role == UserRole.Voter)
-                     .OrderByDescending(v => v.DateCreated)
-                     .ToListAsync();
+    public async Task<IEnumerable<GetAllUserDto>> GetAll()
+    {
+        var student = await context.Users
+                                     .Where(u => u.Role == UserRole.Voter)
+                                     .AsNoTracking()
+                                     .OrderByDescending(v => v.DateCreated)
+                                     .ToListAsync();
+
+        var newStudents = mapper.Map<IEnumerable<GetAllUserDto>>(student);
+
+        return newStudents;
+    }
 
     public async Task<User> GetById(int id)
      => await context.Users
@@ -68,21 +77,11 @@ public class UserService : IUserService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            User existingPhoneNumber = await context.Users
-                                                     .Where(v => v.PhoneNumber.Equals(dto.PhoneNumber))
-                                                     .FirstOrDefaultAsync();
-
-            if (existingPhoneNumber != null)
-            {
-                string errorMessage = $"A voter with phone number '{dto.PhoneNumber}' already exists.";
-                response.ErrorMessage = errorMessage;
-                throw new InvalidOperationException(errorMessage);
-            }
-
             var generateVoterID = Tokens.GenerateVoterID();
 
             var student = mapper.Map<User>(dto);
             student.VoterId = generateVoterID;
+            student.Role = UserRole.Voter;
 
             context.Users.Add(student);
             await context.SaveChangesAsync();
@@ -98,6 +97,8 @@ public class UserService : IUserService
 
         return response;
     }
+
+
 
     public async Task<ApiResponse<User>> Register(CreateVoterDto dto)
     {
