@@ -8,7 +8,7 @@ public class Ballot : BaseEntity
 {
     [Required]
     [Column(TypeName = "nvarchar(100)")]
-    public string BallotName { get; set; } = string.Empty;
+    public string BallotName { get; set; }
 
     [Required]
     public Guid ElectionId { get; set; }

@@ -68,7 +68,7 @@ public class User : BaseEntity
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
-    public string? VoterImages { get; set; } = string.Empty;
+    public string? VoterImages { get; set; }
 
     [Required]
     public bool HasAgreedToTerms { get; set; }

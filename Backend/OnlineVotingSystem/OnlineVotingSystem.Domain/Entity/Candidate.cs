@@ -9,15 +9,15 @@ public class Candidate : BaseEntity
 {
     [Required]
     [Column(TypeName = "nvarchar(15)")]
-    public string FirstName { get; set; } = string.Empty;
+    public string FirstName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(15)")]
-    public string LastName { get; set; } = string.Empty;
+    public string LastName { get; set; } 
 
     [Required]
     [Column(TypeName = "nvarchar(MAX)")]
-    public string Image { get; set; } = string.Empty;
+    public string Image { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(10)")]

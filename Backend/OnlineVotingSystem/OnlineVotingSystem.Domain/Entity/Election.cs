@@ -8,7 +8,7 @@ public class Election : BaseEntity
 {
     [Required]
     [Column(TypeName = "nvarchar(100)")]
-    public string ElectionName { get; set; } = string.Empty;
+    public string ElectionName { get; set; } 
 
     [Required]
     public DateTime StartDate { get; set; }
