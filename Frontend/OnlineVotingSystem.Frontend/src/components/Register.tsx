@@ -334,6 +334,11 @@ const Register: React.FC = () => {
                                             <NumberOutlined className="site-form-item-icon" />
                                         }
                                         placeholder="Zip Code"
+                                        onKeyPress={(event) => {
+                                            if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                            }
+                                        }}
                                     />
                                 </Form.Item>
                             </Flex>

@@ -9,6 +9,13 @@ public class AutoMapperConfig : Profile
     public AutoMapperConfig()
     {
         // Voter
+        CreateMap<User, GetAllUserDto>();
+            //.ForMember(dest => dest.PersonalDocumentId, opt => opt.MapFrom(src => src.PersonalDocumentId ?? Guid.Empty))
+            //.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email ?? string.Empty))
+            //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password ?? string.Empty))
+            //.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber ?? string.Empty))
+            //.ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => src.Occupation ?? string.Empty))
+            //.ForMember(dest => dest.VoterImages, opt => opt.MapFrom(src => src.VoterImages ?? string.Empty));
         CreateMap<CreateVoterDto, User>();
         CreateMap<StepOneRegisterDto, User>();
         CreateMap<UpdateVoterDto, User>()

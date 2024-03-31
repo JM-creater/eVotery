@@ -12,14 +12,14 @@ public partial class DataContext : DbContext
 
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Candidate> Candidates { get; set; }
-    public DbSet<Vote> Votes { get; set; }
-    public DbSet<Election> Elections { get; set; }
-    public DbSet<Ballot> Ballots { get; set; }
-    public DbSet<Position> Positions { get; set; }
-    public DbSet<PartyAffiliation> PartyAffiliations { get; set; }
-    public DbSet<PersonalDocument> PersonalDocuments { get; set; }
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Candidate> Candidates => Set<Candidate>();
+    public DbSet<Vote> Votes => Set<Vote>();
+    public DbSet<Election> Elections => Set<Election>();
+    public DbSet<Ballot> Ballots => Set<Ballot>();
+    public DbSet<Position> Positions => Set<Position>();
+    public DbSet<PartyAffiliation> PartyAffiliations => Set<PartyAffiliation>();
+    public DbSet<PersonalDocument> PersonalDocuments => Set<PersonalDocument>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
