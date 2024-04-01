@@ -10,11 +10,5 @@ public class PersonalDocument : BaseEntity
     [Column(TypeName = "nvarchar(50)")]
     public string Document { get; set; } = string.Empty;
 
-    [Required]
-    [Column(TypeName = "nvarchar(30)")]
-    public string IdNUmber { get; set; } = string.Empty;
-
-    [Required]
-    [Column(TypeName = "nvarchar(MAX)")]
-    public string Image { get; set; } = string.Empty;
+    public bool IsActive { get; set; }
 }

@@ -55,8 +55,13 @@ public class User : BaseEntity
     [Column(TypeName = "nvarchar(MAX)")]
     public string? VoterImages { get; set; }
 
-    [Required]
     public bool HasAgreedToTerms { get; set; }
+
+    [Column(TypeName = "nvarchar(30)")]
+    public string? PIDNumber { get; set; }
+
+    [Column(TypeName = "nvarchar(MAX)")]
+    public string? PImage { get; set; }
 
     public bool IsValidate { get; set; }
     public bool IsActive { get; set; }

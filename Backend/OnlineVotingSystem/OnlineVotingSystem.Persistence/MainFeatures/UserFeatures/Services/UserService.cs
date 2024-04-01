@@ -97,12 +97,23 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse<User>> StepTwoRegister(StepTwoRegisterDto dto)
+    public async Task<ApiResponse<User>> StepTwoRegister(Guid id, StepTwoRegisterDto dto)
     {
         ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
+            User user = await context.Users
+                                     .Where(u => u.Id.Equals(id))
+                                     .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                string errorMessage = "User's ID not found.";
+                response.ErrorMessage = errorMessage;
+                throw new KeyNotFoundException(errorMessage);
+            }
+
             User existingPhoneNumber = await context.Users
                                                     .Where(u => u.PhoneNumber.Equals(dto.PhoneNumber))
                                                     .FirstOrDefaultAsync();
@@ -127,10 +138,12 @@ public class UserService : IUserService
 
             var passwordEncrypt = PasswordHasher.EncryptPassword(dto.Password);
 
-            var student = mapper.Map<User>(dto);
-            student.Password = passwordEncrypt;
+            user.Occupation = dto.Occupation;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Email = dto.Email;
+            user.Password = passwordEncrypt;
 
-            context.Users.Add(student);
+            context.Users.Update(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
         }
@@ -143,15 +156,27 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse<User>> StepThreeRegister(StepThreeRegisterDto dto)
+    public async Task<ApiResponse<User>> StepThreeRegister(Guid id, StepThreeRegisterDto dto)
     {
         ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
-            var document = mapper.Map<User>(dto);
+            User user = await context.Users
+                                     .Where(u => u.Id.Equals(id))
+                                     .FirstOrDefaultAsync();
 
-            context.Users.Add(document);
+            if (user == null)
+            {
+                string errorMessage = "User's ID not found.";
+                response.ErrorMessage = errorMessage;
+                throw new KeyNotFoundException(errorMessage);
+            }
+
+            user.PersonalDocumentId = dto.PersonalDocumentId;
+            user.HasAgreedToTerms = dto.HasAgreedToTerms;
+
+            context.Users.Update(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
         }
@@ -164,13 +189,13 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task<ApiResponse<PersonalDocument>> SubStepThreeRegister(Guid id, SubStepThreeRegisterDto dto)
+    public async Task<ApiResponse<User>> SubStepThreeRegister(Guid id, SubStepThreeRegisterDto dto)
     {
-        ApiResponse<PersonalDocument> response = new ApiResponse<PersonalDocument>();
+        ApiResponse<User> response = new ApiResponse<User>();
 
         try
         {
-            var user = await context.Users
+            User user = await context.Users
                                       .Where(u => u.Id.Equals(id))
                                       .FirstOrDefaultAsync();
 
@@ -181,20 +206,31 @@ public class UserService : IUserService
                 throw new KeyNotFoundException(errorMessage);
             }
 
-            var existingIdNumber = await context.PersonalDocuments
-                                                .Where(pd => pd.IdNUmber.Equals(dto.IdNUmber))
+            var existingIdNumber = await context.Users
+                                                .Where(pd => pd.PIDNumber.Equals(dto.PIDNumber))
                                                 .FirstOrDefaultAsync();
 
             if (existingIdNumber != null)
             {
-                string errorMessage = $"Id Number with '{dto.IdNUmber}' already exists.";
+                string errorMessage = $"Id Number with '{dto.PIDNumber}' already exists.";
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
 
-            var document = mapper.Map<PersonalDocument>(dto);
+            var identificationImagePath = await new ImagePathConfig().SaveIdentificationImages(dto.PImage);
+            
+            user.PIDNumber = 
+            user.PImage = identificationImagePath;
+            user.IsValidate = false;
+            user.IsActive = true;
+            user.VerificationStatus = VerifyStatus.Pending;
+            user.Role = UserRole.Voter;
+            user.DateCreated = DateTime.Now;
 
-
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+            response.ResponseCode = 200;
+            response.UserRole = UserRole.Voter;
         }
         catch (Exception e)
         {
@@ -260,17 +296,17 @@ public class UserService : IUserService
             var generateVoterID = Tokens.GenerateVoterID();
             var passwordEncrypt = PasswordHasher.EncryptPassword(dto.Password);
 
-            var student = mapper.Map<User>(dto);
-            student.VoterImages = voterImagePath;
-            student.VoterId = generateVoterID;
-            student.Password = passwordEncrypt;
-            student.IsValidate = false;
-            student.IsActive = true;
-            student.DateCreated = DateTime.Now;
-            student.VerificationStatus = VerifyStatus.Pending;
-            student.Role = UserRole.Voter;
+            var user = mapper.Map<User>(dto);
+            user.VoterImages = voterImagePath;
+            user.VoterId = generateVoterID;
+            user.Password = passwordEncrypt;
+            user.IsValidate = false;
+            user.IsActive = true;
+            user.DateCreated = DateTime.Now;
+            user.VerificationStatus = VerifyStatus.Pending;
+            user.Role = UserRole.Voter;
 
-            context.Users.Add(student);
+            context.Users.Add(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
             response.UserRole = UserRole.Voter;

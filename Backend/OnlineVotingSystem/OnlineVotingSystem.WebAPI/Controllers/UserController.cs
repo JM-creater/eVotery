@@ -16,6 +16,108 @@ public class UserController : ControllerBase
         service = _service;
     }
 
+    [AllowAnonymous]
+    [HttpPost("register-first-step")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepOneRegister([FromBody] StepOneRegisterDto dto)
+    {
+        var response = await service.StepOneRegister(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPut("register-second-step/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepTwoRegister([FromRoute] Guid id, [FromBody] StepTwoRegisterDto dto)
+    {
+        var response = await service.StepTwoRegister(id, dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPut("register-third-step/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepThreeRegister([FromRoute] Guid id, [FromBody] StepThreeRegisterDto dto)
+    {
+        var response = await service.StepThreeRegister(id, dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPut("register-subthird-step/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SubStepThreeRegister([FromRoute] Guid id, [FromForm] SubStepThreeRegisterDto dto)
+    {
+        var response = await service.SubStepThreeRegister(id, dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
+    {
+        var response = await service.Register(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
+    {
+        var response = await service.Login(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
     [HttpGet("get-all")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -69,91 +171,6 @@ public class UserController : ControllerBase
         var isValid = await service.IsResetTokenValid(token);
 
         return Ok(new { isValid });
-    }
-
-    [AllowAnonymous]
-    [HttpPost("register-first-step")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StepOneRegister([FromBody] StepOneRegisterDto dto)
-    {
-        var response = await service.StepOneRegister(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
-    }
-
-    [AllowAnonymous]
-    [HttpPost("register-second-step")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StepTwoRegister([FromBody] StepTwoRegisterDto dto)
-    {
-        var response = await service.StepTwoRegister(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
-    }
-
-    [AllowAnonymous]
-    [HttpPost("register-third-step")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StepThreeRegister([FromBody] StepThreeRegisterDto dto)
-    {
-        var response = await service.StepThreeRegister(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
-    }
-
-    [AllowAnonymous]
-    [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
-    {
-        var response = await service.Register(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
-    }
-
-    [AllowAnonymous]
-    [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
-    {
-        var response = await service.Login(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
     }
 
     [HttpPut("forgot-password")]
