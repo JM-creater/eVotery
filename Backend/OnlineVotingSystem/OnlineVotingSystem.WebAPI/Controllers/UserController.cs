@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnlineVotingSystem.Domain.Dtos;
+using OnlineVotingSystem.Persistence.Helpers.CaptchaResponse;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 using System.Net;
 
@@ -11,9 +12,35 @@ namespace OnlineVotingSystem.WebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService service;
-    public UserController(IUserService _service)
+    private readonly IConfiguration _configuration;
+    private readonly HttpClient _httpClient;
+    public UserController(IUserService _service, IConfiguration configuration, HttpClient httpClient)
     {
         service = _service;
+        _configuration = configuration;
+        _httpClient = httpClient;
+    }
+
+    [HttpGet("Captcha")]
+    public async Task<bool> GetreCaptchaResponse(string userResponse)
+    {
+        var reCaptchaSecretKey = _configuration["reCaptcha:SecretKey"];
+
+        if (reCaptchaSecretKey != null && userResponse != null)
+        {
+            var content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    {"secret", reCaptchaSecretKey },
+                    {"response", userResponse }
+                });
+            var response = await _httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<reCaptchaResponse>();
+                return result.Success;
+            }
+        }
+        return false;
     }
 
     [AllowAnonymous]
