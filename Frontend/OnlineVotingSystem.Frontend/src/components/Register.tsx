@@ -657,7 +657,6 @@ const Register: React.FC = () => {
                             <div className="terms-agreement-container">
                                 <Form.Item
                                     name='hasAgreedToTerms'
-                                    rules={[{ required: true, message: 'Please select a documents' }]}
                                 >
                                     <Checkbox value='True'>
                                         I have read and agree to the <a href="/terms-and-conditions" style={{ color: '#1890ff' }}>

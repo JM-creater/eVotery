@@ -78,11 +78,11 @@ public partial class DataContext : DbContext
                 Nationality = "Filipino",
                 Occupation = "Admin",
                 Religion = "Roman Catholic",
-                ZipCode = "1234"
+                ZipCode = "1234",
+                PIDNumber = "",
+                PImage = ""
             }
         );
-
-        modelBuilder.Entity<PersonalDocument>().Property(pd => pd.IdNUmber).ValueGeneratedNever();
 
         modelBuilder.Entity<PersonalDocument>().HasData(
            new PersonalDocument

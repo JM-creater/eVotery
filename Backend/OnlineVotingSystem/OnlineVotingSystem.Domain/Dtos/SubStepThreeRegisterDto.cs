@@ -6,7 +6,7 @@ namespace OnlineVotingSystem.Domain.Dtos;
 public class SubStepThreeRegisterDto
 {
     [Required]
-    public string IdNUmber { get; set; }
+    public string PIDNumber { get; set; }
     [Required]
-    public IFormFile Image { get; set; }
+    public IFormFile PImage { get; set; }
 }
