@@ -86,7 +86,6 @@ public class UserService : IUserService
             context.Users.Add(student);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
-            response.UserRole = UserRole.Voter;
 
         }
         catch (Exception e)
@@ -98,6 +97,113 @@ public class UserService : IUserService
         return response;
     }
 
+    public async Task<ApiResponse<User>> StepTwoRegister(StepTwoRegisterDto dto)
+    {
+        ApiResponse<User> response = new ApiResponse<User>();
+
+        try
+        {
+            User existingPhoneNumber = await context.Users
+                                                    .Where(u => u.PhoneNumber.Equals(dto.PhoneNumber))
+                                                    .FirstOrDefaultAsync();
+
+            if (existingPhoneNumber != null)
+            {
+                string errorMessage = $"A voter with the phone number '{dto.PhoneNumber}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            User existingEmail = await context.Users
+                                              .Where(u => u.Email.Equals(dto.Email))
+                                              .FirstOrDefaultAsync();
+
+            if (existingEmail != null)
+            {
+                string errorMessage = $"A voter with the the email '{dto.PhoneNumber}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var passwordEncrypt = PasswordHasher.EncryptPassword(dto.Password);
+
+            var student = mapper.Map<User>(dto);
+            student.Password = passwordEncrypt;
+
+            context.Users.Add(student);
+            await context.SaveChangesAsync();
+            response.ResponseCode = 200;
+        }
+        catch (Exception e) 
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<User>> StepThreeRegister(StepThreeRegisterDto dto)
+    {
+        ApiResponse<User> response = new ApiResponse<User>();
+
+        try
+        {
+            var document = mapper.Map<User>(dto);
+
+            context.Users.Add(document);
+            await context.SaveChangesAsync();
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<PersonalDocument>> SubStepThreeRegister(Guid id, SubStepThreeRegisterDto dto)
+    {
+        ApiResponse<PersonalDocument> response = new ApiResponse<PersonalDocument>();
+
+        try
+        {
+            var user = await context.Users
+                                      .Where(u => u.Id.Equals(id))
+                                      .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                string errorMessage = "Voter's ID not found.";
+                response.ErrorMessage = errorMessage;
+                throw new KeyNotFoundException(errorMessage);
+            }
+
+            var existingIdNumber = await context.PersonalDocuments
+                                                .Where(pd => pd.IdNUmber.Equals(dto.IdNUmber))
+                                                .FirstOrDefaultAsync();
+
+            if (existingIdNumber != null)
+            {
+                string errorMessage = $"Id Number with '{dto.IdNUmber}' already exists.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var document = mapper.Map<PersonalDocument>(dto);
+
+
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
 
 
     public async Task<ApiResponse<User>> Register(CreateVoterDto dto)

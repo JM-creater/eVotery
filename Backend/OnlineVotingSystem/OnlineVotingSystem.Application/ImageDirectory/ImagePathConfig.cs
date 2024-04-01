@@ -87,4 +87,32 @@ public class ImagePathConfig
 
         return Path.Combine("PathImages", "LogoImage", fileName);
     }
+
+    public async Task<string?> SaveIdentificationImages(IFormFile? imageFile)
+    {
+        if (imageFile == null || imageFile.Length == 0)
+            return null;
+
+        string mainFolder = Path.Combine(Directory.GetCurrentDirectory(), "PathImages");
+        string subFolder = Path.Combine(mainFolder, "IdentificationImage");
+
+        if (!Directory.Exists(mainFolder))
+        {
+            Directory.CreateDirectory(mainFolder);
+        }
+        if (!Directory.Exists(subFolder))
+        {
+            Directory.CreateDirectory(subFolder);
+        }
+
+        var fileName = Path.GetFileName(imageFile.FileName);
+        var filePath = Path.Combine(subFolder, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await imageFile.CopyToAsync(stream);
+        }
+
+        return Path.Combine("PathImages", "IdentificationImage", fileName);
+    }
 }
