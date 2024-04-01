@@ -89,6 +89,40 @@ public class UserController : ControllerBase
     }
 
     [AllowAnonymous]
+    [HttpPost("register-second-step")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepTwoRegister([FromBody] StepTwoRegisterDto dto)
+    {
+        var response = await service.StepTwoRegister(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register-third-step")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> StepThreeRegister([FromBody] StepThreeRegisterDto dto)
+    {
+        var response = await service.StepThreeRegister(dto);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

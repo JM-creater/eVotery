@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="PathImages\CandidateImage\" />
     <Folder Include="PathImages\LogoImage\" />
+    <Folder Include="PathImages\IdentificationImage\" />
   </ItemGroup>
 
 </Project>

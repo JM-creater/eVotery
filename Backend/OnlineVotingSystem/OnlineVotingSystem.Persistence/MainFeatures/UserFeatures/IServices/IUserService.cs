@@ -10,6 +10,9 @@ public interface IUserService
     Task<User> GetById(int id);
     Task<ApiResponse<User>> Register(CreateVoterDto dto);
     Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto);
+    Task<ApiResponse<User>> StepTwoRegister(StepTwoRegisterDto dto);
+    Task<ApiResponse<User>> StepThreeRegister(StepThreeRegisterDto dto);
+    Task<ApiResponse<User>> SubStepThreeRegister(Guid id, SubStepThreeRegisterDto dto);
     Task<ApiResponse<User>> Login(LoginVoterDto dto);
     Task<ApiResponse<User>> Validate(int id);
     Task<ApiResponse<User>> Deactivated(int id);

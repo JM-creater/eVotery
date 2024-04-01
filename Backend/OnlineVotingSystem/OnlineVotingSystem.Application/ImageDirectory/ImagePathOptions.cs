@@ -6,4 +6,5 @@ public class ImagePathOptions
     public string VoterImages { get; set; }
     public string CandidateImages { get; set; }
     public string LogoImage { get; set; }
+    public string IdentificationImage { get; set; } 
 }

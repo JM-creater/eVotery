@@ -39,6 +39,14 @@ import Dragger from 'antd/es/upload/Dragger';
 const REGISTER_URL = 'https://localhost:7196/User/register';
 const GETALL_DOCUMENTS_URL = 'https://localhost:7196/PersonalDocument/getall-documents';
 
+type StepOneType = {
+    firstName?: string;
+    lastName?: string;
+    suffixName?: string;
+    dateOfBirth?: string;
+    gender?: string;
+}
+
 type VoterType = {
     firstName?: string;
     lastName?: string;
@@ -56,6 +64,7 @@ type VoterType = {
     gender?: string;
     voterImages?: FileType[];
     hasAgreedToTerms?: boolean;
+    idNUmber?: string;
 };
 
 type FileType = {
@@ -139,6 +148,10 @@ const Register: React.FC = () => {
 
         fetchDocuments();
     }, []);
+
+    // const handleStepOneRegister = async (values: ) => {
+
+    // };
 
     const handleRegister = async (values: VoterType) => {
         setLoadings(true);
@@ -461,7 +474,6 @@ const Register: React.FC = () => {
                                     </Form.Item>
                                 </Flex>
                                 
-
                                 <Form.Item<VoterType>
                                         name="email"
                                         rules={[{ required: true, message: 'Enter your Email.' }]}
@@ -620,6 +632,27 @@ const Register: React.FC = () => {
                                     </p>
                                 </Dragger>
                             </Form.Item>
+
+                            <Form.Item<VoterType>
+                                    name="idNUmber"
+                                    rules={[{ required: true, message: 'Enter your Id Number.' }]}
+                                > 
+                                <Input
+                                    size="large"
+                                    maxLength={30}
+                                    prefix={<NumberOutlined className="site-form-item-icon" />}
+                                    type="email"
+                                    placeholder="Id Number"
+                                    style={{ 
+                                        width: '695px' 
+                                    }}
+                                    suffix={
+                                        <Tooltip title="Email must be valid id number.">
+                                            <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                                        </Tooltip>
+                                    }
+                                />
+                            </Form.Item>
                             
                             <div className="terms-agreement-container">
                                 <Form.Item
@@ -634,7 +667,6 @@ const Register: React.FC = () => {
                                         </a>
                                     </Checkbox>
                                 </Form.Item>
-                                
                             </div>
                             <Form.Item>
                                 <Flex gap='middle' justify='center' align='center'>

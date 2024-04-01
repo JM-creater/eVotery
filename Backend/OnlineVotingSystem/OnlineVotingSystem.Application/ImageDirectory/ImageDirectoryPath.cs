@@ -29,4 +29,9 @@ public class ImageDirectoryPath
     {
         return Path.Combine(_imagePathOptions.PathImages, _imagePathOptions.LogoImage);
     }
+
+    public string GetIdentificationImagePath()
+    {
+        return Path.Combine(_imagePathOptions.PathImages, _imagePathOptions.IdentificationImage);
+    }
 }
