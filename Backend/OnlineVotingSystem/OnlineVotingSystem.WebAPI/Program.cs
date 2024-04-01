@@ -45,6 +45,8 @@ builder.Services.AddHealthChecks();
 
 builder.Services.Configure<ImagePathOptions>(builder.Configuration.GetSection("ImagePath"));
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 app.MapHealthChecks("/health");

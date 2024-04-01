@@ -35,7 +35,7 @@
     /* border-radius: 8px; */
     z-index: 1; 
     height: 490px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .register-title-label {

@@ -36,6 +36,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Dragger from 'antd/es/upload/Dragger';
 
+const ONESTEP_REGISTER_URL = 'https://localhost:7196/User/register-first-step';
 const REGISTER_URL = 'https://localhost:7196/User/register';
 const GETALL_DOCUMENTS_URL = 'https://localhost:7196/PersonalDocument/getall-documents';
 
@@ -45,6 +46,10 @@ type StepOneType = {
     suffixName?: string;
     dateOfBirth?: string;
     gender?: string;
+    address?: string;
+    nationality?: string;
+    religion?: string;
+    zipCode?: string;
 }
 
 type VoterType = {
@@ -110,6 +115,7 @@ const Register: React.FC = () => {
     const [current, setCurrent] = useState(0);
     const [personalDocuments, setPersonalDocuments] = useState<DocumentType[]>([]);
 
+
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const contentStyle: React.CSSProperties = {
@@ -149,9 +155,42 @@ const Register: React.FC = () => {
         fetchDocuments();
     }, []);
 
-    // const handleStepOneRegister = async (values: ) => {
+    // * First Step Register Handle
+    const handleStepOneRegister = async (values: StepOneType) => {
+        setLoadings(true);
 
-    // };
+        const oneStepRequest = {
+            FirstName: values.firstName,
+            LastName: values.lastName,
+            SuffixName: values.suffixName,
+            DateOfBirth: values.dateOfBirth,
+            Gender: values.gender,
+            Address: values.address,
+            Nationality: values.nationality,
+            Religion: values.religion,
+            ZipCode: values.zipCode
+        }
+
+        try {
+            const response = await axios.post(ONESTEP_REGISTER_URL, oneStepRequest, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            if (response.data.responseCode === 200) {
+                if (current < steps.length - 1) {
+                    setCurrent(current + 1);
+                }
+            } else if (response.data.responseCode === 400) {
+                toast.error('Register failed. Please check your information.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleRegister = async (values: VoterType) => {
         setLoadings(true);
@@ -214,7 +253,7 @@ const Register: React.FC = () => {
                         <Form
                             className="register-form-container"
                             initialValues={{ remember: true }}
-                            onFinish={handleRegister}
+                            onFinish={(values: StepOneType) => handleStepOneRegister(values)}
                             onFinishFailed={onFinishFailed}
                             autoComplete="off"
                         >
@@ -235,7 +274,7 @@ const Register: React.FC = () => {
 
                             <div className="first-last-container">
 
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="lastName"
                                     rules={[{ required: true, message: 'Enter your Last Name.' }]}
                                 >
@@ -249,7 +288,7 @@ const Register: React.FC = () => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="firstName"
                                     rules={[{ required: true, message: 'Enter your First Name.' }]}
                                 >
@@ -263,8 +302,8 @@ const Register: React.FC = () => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<VoterType>
-                                    name="lastName"
+                                <Form.Item<StepOneType>
+                                    name="suffixName"
                                 >
                                     <Input
                                         size="large"
@@ -278,7 +317,7 @@ const Register: React.FC = () => {
                             </div>
                             
                             <Flex gap='middle'>
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="dateOfBirth"
                                     rules={[{ required: true, message: 'Enter your Date of Birth.' }]}
                                 > 
@@ -291,7 +330,7 @@ const Register: React.FC = () => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="gender"
                                     rules={[{ required: true, message: 'Select your gender.' }]}
                                 >
@@ -320,7 +359,7 @@ const Register: React.FC = () => {
                             </Flex>
                             
                             <Flex gap='middle'>
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="address"
                                     rules={[{ required: true, message: 'Enter your Address.' }]}
                                 > 
@@ -336,7 +375,7 @@ const Register: React.FC = () => {
                                         }}
                                     />
                                 </Form.Item>
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                     name="zipCode"
                                     rules={[{ required: true, message: 'Enter your Zip Code.' }]}
                                 > 
@@ -389,17 +428,20 @@ const Register: React.FC = () => {
                                 </Form.Item>
                             </Flex>
                             
-                            <Flex gap='middle' justify='center' align='center'>
-                                <Button 
-                                    size='large'
-                                    type="primary" 
-                                    className='next-button-content' 
-                                    onClick={next}
-                                    loading={loadings}
-                                >
-                                    Next
-                                </Button>
-                            </Flex>
+                            <Form.Item>
+                                <Flex gap='middle' justify='center' align='center'>
+                                    <Button 
+                                        size='large'
+                                        type="primary" 
+                                        className='next-button-content' 
+                                        htmlType="submit" 
+                                        loading={loadings}
+                                    >   
+                                        Next
+                                    </Button>
+                                </Flex>
+                            </Form.Item>
+                            
                         </Form>
         
                     </React.Fragment>

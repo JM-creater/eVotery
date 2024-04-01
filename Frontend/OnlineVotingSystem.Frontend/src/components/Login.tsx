@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Logo from '../assets/samples/Logo.png';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const LOGIN_URL = 'https://localhost:7196/User/login';
 
@@ -117,7 +118,11 @@ const Login: React.FC = () => {
                     name="voterIdOrEmail"
                     rules={[{ required: true, message: 'Please input your Voter ID or Email.' }]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Voter's ID or Email" />
+                    <Input 
+                        size='large' 
+                        prefix={<UserOutlined className="site-form-item-icon" />} 
+                        placeholder="Voter's ID or Email" 
+                    />
                 </Form.Item>
                 
                 <Form.Item<VoterType>
@@ -125,11 +130,16 @@ const Login: React.FC = () => {
                     rules={[{ required: true, message: 'Please input your Password.' }]}
                 >
                     <Input
+                    size='large'
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="Password"
                     />
                 </Form.Item>
+
+                <ReCAPTCHA
+                    sitekey="6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51"
+                />
 
                 <Form.Item>
                     <div className="form-remember-forgot">
@@ -149,6 +159,7 @@ const Login: React.FC = () => {
                     <div className="login-register-container">
                         <div className="login-button-container">
                             <Button 
+                                size='large'
                                 type="primary" 
                                 htmlType="submit" 
                                 className="login-form-button"

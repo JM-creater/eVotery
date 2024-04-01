@@ -86,7 +86,7 @@ public class UserService : IUserService
             context.Users.Add(student);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
-
+            response.Result = student;
         }
         catch (Exception e)
         {
@@ -219,7 +219,7 @@ public class UserService : IUserService
 
             var identificationImagePath = await new ImagePathConfig().SaveIdentificationImages(dto.PImage);
             
-            user.PIDNumber = 
+            user.PIDNumber = dto.PIDNumber;
             user.PImage = identificationImagePath;
             user.IsValidate = false;
             user.IsActive = true;
