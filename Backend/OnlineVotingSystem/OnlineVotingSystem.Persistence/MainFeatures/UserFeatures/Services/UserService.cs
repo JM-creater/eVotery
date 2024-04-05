@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Azure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;

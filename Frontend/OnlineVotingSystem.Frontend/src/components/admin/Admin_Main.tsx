@@ -104,7 +104,7 @@ const Admin_Main: React.FC = () => {
           onClick={({ key }) => handleMenuClick(key as string)}
         >
           <div className="image-dashboard-container">
-            <img src={Logo} width={80} height={30} />
+            <img src={Logo} width={80} height={30} alt='image-dashboard' />
           </div>
 
           <Menu.SubMenu key="reports" title="Reports">
