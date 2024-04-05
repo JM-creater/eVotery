@@ -112,23 +112,6 @@ public class UserController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromForm] CreateVoterDto dto)
-    {
-        var response = await service.Register(dto);
-
-        if (response == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(response);
-    }
-
-    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -280,4 +263,19 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+    [HttpDelete("delete/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var response = await service.Delete(id);
+
+        if (response == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(response);
+    }
 }

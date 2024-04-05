@@ -34,7 +34,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* border-radius: 8px; */
     z-index: 1; 
-    height: 490px;
+    /* height: 490px; */
     overflow: hidden;
 }
 

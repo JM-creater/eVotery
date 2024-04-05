@@ -46,7 +46,7 @@ const App: React.FC = () => {
                     onClick={({ key }) => handleMenuClick(key as string)}
                 >
                     <div className="image-home-container">
-                        <img src={Logo} width={80} height={30} />
+                        <img src={Logo} width={80} height={30} alt='image-home' />
                     </div>
 
                     <Menu.Item key="1">Home</Menu.Item>

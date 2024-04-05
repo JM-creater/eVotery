@@ -6,9 +6,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Logo from '../assets/samples/Logo.png';
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 const LOGIN_URL = 'https://localhost:7196/User/login';
+// const SITE_KEY = '6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51';
 
 type VoterType = {
     voterIdOrEmail?: string;
@@ -137,9 +138,11 @@ const Login: React.FC = () => {
                     />
                 </Form.Item>
 
-                <ReCAPTCHA
-                    sitekey="6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51"
-                />
+                {/* <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
+                    <ReCAPTCHA
+                        sitekey={SITE_KEY}
+                    />
+                </Flex> */}
 
                 <Form.Item>
                     <div className="form-remember-forgot">

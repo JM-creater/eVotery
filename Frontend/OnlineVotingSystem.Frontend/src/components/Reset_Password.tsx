@@ -78,6 +78,7 @@ const Reset_Password: React.FC = () => {
                     rules={[{ required: true, message: 'Please input your valid email.' }]}
                 >
                     <Input 
+                        size='large'
                         maxLength={30} 
                         prefix={<MailOutlined className="site-form-item-icon" />} 
                         placeholder="Enter your valid email" 
@@ -88,6 +89,7 @@ const Reset_Password: React.FC = () => {
                     <div className="reset-container">
                         <div className="reset-button-container">
                             <Button 
+                                size='large'
                                 type="primary" 
                                 htmlType="submit" 
                                 className="reset-form-button"
