@@ -4,9 +4,11 @@ import Logo from '../../assets/samples/Logo.png'
 import { useNavigate } from 'react-router-dom';
 import '../voter/HomePage.css'
 import { HomeOutlined } from '@ant-design/icons';
+import Voter_ElectionPage from './Voter_ElectionPage';
+import Voter_HomePage from './Voter_HomePage';
+import Voter_ResultPage from './Voter_ResultPage';
 
-const { Header, Content, Footer } = Layout;
-
+const { Header, Content } = Layout;
 
 const App: React.FC = () => {
 
@@ -23,6 +25,19 @@ const App: React.FC = () => {
 
     const handleMenuClick = (menuItem: string) => {
         setSelectedItemMenu(menuItem);
+    };
+
+    const renderComponent = () => {
+        switch (selectedItemMenu) {
+            case '1':
+                return <Voter_HomePage/>
+            case '2':
+                return <Voter_ElectionPage/>
+            case '3': 
+                return <Voter_ResultPage/>
+            default:
+                return null;
+        }
     };
 
     return (
@@ -76,20 +91,14 @@ const App: React.FC = () => {
                 <div
                     style={{
                         background: colorBgContainer,
-                        minHeight: 280,
+                        minHeight: 280, 
                         padding: 24,
                         borderRadius: borderRadiusLG,
                     }}
                 >
-                    Content
+                    {renderComponent()}
                 </div>
             </Content>
-            
-            <div className="footer-container">
-                <Footer style={{ textAlign: 'center' }}>
-                    eVotery ©{new Date().getFullYear()} Created by Joseph Martin Garado
-                </Footer>
-            </div>
             
         </Layout>
     );
