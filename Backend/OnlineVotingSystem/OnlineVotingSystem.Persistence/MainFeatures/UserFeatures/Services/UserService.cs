@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -146,6 +147,7 @@ public class UserService : IUserService
             context.Users.Update(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
+            response.Result = user;
         }
         catch (Exception e) 
         {
@@ -179,6 +181,7 @@ public class UserService : IUserService
             context.Users.Update(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
+            response.Result = user;
         }
         catch (Exception e)
         {
@@ -231,85 +234,7 @@ public class UserService : IUserService
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
             response.UserRole = UserRole.Voter;
-        }
-        catch (Exception e)
-        {
-            response.ResponseCode = 400;
-            response.ErrorMessage = e.Message;
-        }
-
-        return response;
-    }
-
-
-    public async Task<ApiResponse<User>> Register(CreateVoterDto dto)
-    {
-        ApiResponse<User> response = new ApiResponse<User>();
-
-        try
-        {
-            User existingFirstName = await context.Users
-                                                  .Where(v => v.FirstName.Equals(dto.FirstName))
-                                                  .FirstOrDefaultAsync();
-
-            if (existingFirstName != null)
-            {
-                string errorMessage = $"A voter with the first name '{dto.FirstName}' already exists.";
-                response.ErrorMessage = errorMessage;
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            User existingLastName = await context.Users
-                                                  .Where(v => v.LastName.Equals(dto.LastName))
-                                                  .FirstOrDefaultAsync();
-
-            if (existingLastName != null)
-            {
-                string errorMessage = $"A voter with the last name '{dto.LastName}' already exists.";
-                response.ErrorMessage = errorMessage;
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            User existingEmail = await context.Users
-                                               .Where(v => v.Email.Equals(dto.Email))
-                                               .FirstOrDefaultAsync();
-
-            if (existingEmail != null)
-            {
-                string errorMessage = $"A voter with email '{dto.Email}' already exists.";
-                response.ErrorMessage = errorMessage;
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            User existingPhoneNumber = await context.Users
-                                                     .Where(v => v.PhoneNumber.Equals(dto.PhoneNumber))
-                                                     .FirstOrDefaultAsync();
-
-            if (existingPhoneNumber != null)
-            {
-                string errorMessage = $"A voter with phone number '{dto.PhoneNumber}' already exists.";
-                response.ErrorMessage = errorMessage;
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            var voterImagePath = await new ImagePathConfig().SaveVoterImages(dto.VoterImages);
-            var generateVoterID = Tokens.GenerateVoterID();
-            var passwordEncrypt = PasswordHasher.EncryptPassword(dto.Password);
-
-            var user = mapper.Map<User>(dto);
-            user.VoterImages = voterImagePath;
-            user.VoterId = generateVoterID;
-            user.Password = passwordEncrypt;
-            user.IsValidate = false;
-            user.IsActive = true;
-            user.DateCreated = DateTime.Now;
-            user.VerificationStatus = VerifyStatus.Pending;
-            user.Role = UserRole.Voter;
-
-            context.Users.Add(user);
-            await context.SaveChangesAsync();
-            response.ResponseCode = 200;
-            response.UserRole = UserRole.Voter;
+            response.Result = user;
         }
         catch (Exception e)
         {
@@ -387,7 +312,6 @@ public class UserService : IUserService
 
         return response;
     }
-
 
     public async Task<ApiResponse<User>> Validate(int id)
     {
@@ -601,7 +525,6 @@ public class UserService : IUserService
         return response;
     }
 
-
     public async Task<bool> IsResetTokenValid(string token)
     {
         try
@@ -618,7 +541,31 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            throw new ArgumentException(e.Message);
+           throw new InvalidOperationException(e.Message);
         }
+    }
+
+    public async Task<ApiResponse<User>> Delete(Guid id)
+    {
+        ApiResponse<User> response = new ApiResponse<User>();
+
+        try
+        {
+            var user = await context.Users.FindAsync(id);
+
+            if (user == null) 
+            {
+                string errorMessage = "No Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
     }
 }

@@ -8,7 +8,6 @@ public interface IUserService
 {
     Task<IEnumerable<GetAllUserDto>> GetAll();
     Task<User> GetById(int id);
-    Task<ApiResponse<User>> Register(CreateVoterDto dto);
     Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto);
     Task<ApiResponse<User>> StepTwoRegister(Guid id, StepTwoRegisterDto dto);
     Task<ApiResponse<User>> StepThreeRegister(Guid id, StepThreeRegisterDto dto);
@@ -21,4 +20,5 @@ public interface IUserService
     Task<ApiResponse<User>> ForgotPassword(string email);
     Task<ApiResponse<User>> ResetPassword(ResetPasswordDto dto);
     Task<bool> IsResetTokenValid(string token);
+    Task<ApiResponse<User>> Delete(Guid id);
 }

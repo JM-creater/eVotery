@@ -37,7 +37,9 @@ import { useNavigate } from 'react-router-dom';
 import Dragger from 'antd/es/upload/Dragger';
 
 const ONESTEP_REGISTER_URL = 'https://localhost:7196/User/register-first-step';
-const REGISTER_URL = 'https://localhost:7196/User/register';
+const TWOSTEP_REGISTER_URL = 'https://localhost:7196/User/register-second-step/';
+const THREESTEP_REGISTER_URL = 'https://localhost:7196/User/register-third-step/';
+const THREESUBSTEP_REGISTER_URL = 'https://localhost:7196/User/register-subthird-step/';
 const GETALL_DOCUMENTS_URL = 'https://localhost:7196/PersonalDocument/getall-documents';
 
 type StepOneType = {
@@ -52,25 +54,24 @@ type StepOneType = {
     zipCode?: string;
 }
 
-type VoterType = {
-    firstName?: string;
-    lastName?: string;
-    personalDocumentId?: string;
-    nationality?: string;
-    religion?: string;
-    zipCode?: string;
+type StepTwoType = {
+    id?: string;
     occupation?: string;
-    dateOfBirth?: string;
+    phoneNumber?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
-    address?: string;
-    phoneNumber?: string;
-    gender?: string;
-    voterImages?: FileType[];
+}
+
+type StepThreeType = {
+    personalDocumentId?: string;
     hasAgreedToTerms?: boolean;
-    idNUmber?: string;
-};
+}
+
+type StepSubThreeType = {
+    pidNumber?: string;
+    pImage?: FileType[];
+}
 
 type FileType = {
     uid: string;
@@ -84,8 +85,10 @@ type DocumentType = {
     document?: string;
 }
 
+type CombineTwoTypes = StepThreeType & StepSubThreeType;
+
 const props: UploadProps = {
-    name: 'voterImages',
+    name: 'pImage',
     headers: {
         'Content-Type': 'multipart/form-data',
     },
@@ -115,7 +118,6 @@ const Register: React.FC = () => {
     const [current, setCurrent] = useState(0);
     const [personalDocuments, setPersonalDocuments] = useState<DocumentType[]>([]);
 
-
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const contentStyle: React.CSSProperties = {
@@ -130,12 +132,6 @@ const Register: React.FC = () => {
 
     const handleBackLogin = () => {
         navigate('/');
-    };
-
-    const next = () => {
-        if (current < steps.length - 1) {
-            setCurrent(current + 1);
-        }
     };
     
     const prev = () => {
@@ -180,7 +176,12 @@ const Register: React.FC = () => {
 
             if (response.data.responseCode === 200) {
                 if (current < steps.length - 1) {
-                    setCurrent(current + 1);
+
+                    const getUserId = response.data.result.id;
+
+                    localStorage.setItem('userId', getUserId);
+
+                    setCurrent((prevCurrent) => prevCurrent + 1);
                 }
             } else if (response.data.responseCode === 400) {
                 toast.error('Register failed. Please check your information.');
@@ -189,61 +190,125 @@ const Register: React.FC = () => {
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoadings(false);
         }
     };
 
-    const handleRegister = async (values: VoterType) => {
+    // * Second Step Register Handle
+    const handleStepTwoRegister = async (values: StepTwoType) => {
         setLoadings(true);
 
-        if (values.password !== values.confirmPassword) {
-            toast.error('Passwords do not match.');
-            setLoadings(false);
-            return;
+        const twoStepRequest = {
+            Occupation: values.occupation,
+            PhoneNumber: values.phoneNumber,
+            Email: values.email,
+            Password: values.password
         }
 
-        try {
+        const id = localStorage.getItem('userId');
 
+        try {
+            const response = await axios.put(`${TWOSTEP_REGISTER_URL}${id}`, twoStepRequest, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            if (response.data.responseCode === 200) {
+                if (current < steps.length - 1) {
+                    setCurrent((prevCurrent) => prevCurrent + 1);
+                }
+            } else if (response.data.responseCode === 400) {
+                toast.error('Register failed. Please check your information.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoadings(false);
+        }
+    };
+
+    // * Third Step Register Handle
+    const handleStepThreeRegister = async (values: StepThreeType) => {
+        setLoadings(true);
+
+        const threeStepRequest = {
+            PersonalDocumentId: values.personalDocumentId,
+            hasAgreedToTerms: values.hasAgreedToTerms
+        }
+
+        const id = localStorage.getItem('userId');
+
+        try {
+            const response = await axios.put(`${THREESTEP_REGISTER_URL}${id}`, threeStepRequest, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            if (response.data.responseCode === 200) {
+                if (current < steps.length - 1) {
+                    setCurrent((prevCurrent) => prevCurrent + 1);
+                }
+            } else if (response.data.responseCode === 400) {
+                toast.error('Register failed. Please check your information.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoadings(false);
+        }
+    };
+
+    // * Sub Third Step Register Handle
+    const handleStepSubThreeRegister = async (values: StepSubThreeType) => {
+        setLoadings(true);
+
+        const id = localStorage.getItem('userId');
+
+        try {
             const formData = new FormData();
 
             Object.entries(values).forEach(([key, value]) => {
-                if (key !== 'voterImages' && value !== undefined) {
+                if (key !== 'pImage' && value !== undefined) {
                     formData.append(key, value.toString());
                 }
-            });
+            })
 
-            if (values.voterImages && values.voterImages.length > 0) {
-                const file = values.voterImages[0].originFileObj;
+            if (values.pImage && values.pImage.length > 0) {
+                const file = values.pImage[0].originFileObj;
                 if (file) {
-                    formData.append('voterImages', file);
+                    formData.append('pImage', file);
                 }
             }
 
-            if (values.password !== values.confirmPassword) {
-                toast.error('Password do not match.')
-            }
-
-            const response = await axios.post(REGISTER_URL, formData, {
+            const response = await axios.put(`${THREESUBSTEP_REGISTER_URL}${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
 
             if (response.data.responseCode === 200) {
-                toast.success('Successfully Created an Account.');
-                await delay(2000);
+                await delay(1000);
+                localStorage.removeItem('userId');
                 navigate('/');
             } else if (response.data.responseCode === 400) {
                 toast.error('Register failed. Please check your information.');
             } else {
                 toast.error('An error occurred. Please try again later.');
             }
-
         } catch (error) {
-            console.log(error);
+            console.error(error);
         } finally {
             setLoadings(false);
         }
     };
+
 
     const renderFormContent = (currentStep: number) => {
         switch (currentStep) {
@@ -339,17 +404,17 @@ const Register: React.FC = () => {
 
                                         <Radio.Group buttonStyle="solid" size='large'>
                                             <Radio.Button   
-                                                value="1" 
+                                                value="Female" 
                                             > 
                                                 Female 
                                             </Radio.Button>
                                             <Radio.Button
-                                                value="2" 
+                                                value="Male" 
                                             > 
                                                 Male 
                                             </Radio.Button>
                                             <Radio.Button
-                                                value="3" 
+                                                value="Prefer not to say" 
                                             > 
                                                 Prefer not to say 
                                             </Radio.Button>
@@ -397,7 +462,7 @@ const Register: React.FC = () => {
                             
                             
                             <Flex gap='middle'>
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                         name="religion"
                                         rules={[{ required: true, message: 'Enter your Religion.' }]}
                                     > 
@@ -412,7 +477,7 @@ const Register: React.FC = () => {
                                     />
                                 </Form.Item>
 
-                                <Form.Item<VoterType>
+                                <Form.Item<StepOneType>
                                         name="nationality"
                                         rules={[{ required: true, message: 'Enter your Nationality.' }]}
                                     > 
@@ -452,7 +517,7 @@ const Register: React.FC = () => {
                         <Form
                             className="register-form-container"
                             initialValues={{ remember: true }}
-                            onFinish={handleRegister}
+                            onFinish={(values: StepTwoType) => handleStepTwoRegister(values as StepTwoType)}
                             onFinishFailed={onFinishFailed}
                             autoComplete="off"
                         >
@@ -472,7 +537,7 @@ const Register: React.FC = () => {
                             </div>
 
                                 <Flex gap='middle'>
-                                    <Form.Item<VoterType>
+                                    <Form.Item<StepTwoType>
                                             name="occupation"
                                             rules={[{ required: true, message: 'Enter your Occupation.' }]}
                                         > 
@@ -487,7 +552,7 @@ const Register: React.FC = () => {
                                         />
                                     </Form.Item>
 
-                                    <Form.Item<VoterType>
+                                    <Form.Item<StepTwoType>
                                         name="phoneNumber"
                                         rules={[{ required: true, message: 'Enter your Phone Number.' }]}
                                     > 
@@ -516,7 +581,7 @@ const Register: React.FC = () => {
                                     </Form.Item>
                                 </Flex>
                                 
-                                <Form.Item<VoterType>
+                                <Form.Item<StepTwoType>
                                         name="email"
                                         rules={[{ required: true, message: 'Enter your Email.' }]}
                                     > 
@@ -538,7 +603,7 @@ const Register: React.FC = () => {
                                 </Form.Item>
                                 
                                 <Flex gap='middle'>
-                                    <Form.Item<VoterType>
+                                    <Form.Item<StepTwoType>
                                         name="password"
                                         rules={[{ required: true, message: 'Enter your Password.' }]}
                                     >
@@ -553,7 +618,7 @@ const Register: React.FC = () => {
                                         />
                                     </Form.Item>
                 
-                                    <Form.Item<VoterType>
+                                    <Form.Item<StepTwoType>
                                         name="confirmPassword"
                                         rules={[
                                             { required: true, message: 'Please confirm your password.' },
@@ -592,8 +657,8 @@ const Register: React.FC = () => {
                                         <Button 
                                             size='large'
                                             type="primary" 
+                                            htmlType="submit" 
                                             className='next-button-content' 
-                                            onClick={next}
                                             loading={loadings}
                                         >
                                             Next
@@ -609,7 +674,17 @@ const Register: React.FC = () => {
                         <Form
                             className="register-form-container"
                             initialValues={{ remember: true }}
-                            onFinish={handleRegister}
+                            onFinish={(values: CombineTwoTypes) => {
+                                const { personalDocumentId, hasAgreedToTerms, pidNumber, pImage } = values;
+
+                                // * Process StepThreeType values
+                                const stepThreeValues: StepThreeType = { personalDocumentId, hasAgreedToTerms };
+                                handleStepThreeRegister(stepThreeValues);
+                                
+                                // * Process StepSubThreeType values
+                                const stepSubThreeValues: StepSubThreeType = { pidNumber, pImage };
+                                handleStepSubThreeRegister(stepSubThreeValues);
+                            }}
                             onFinishFailed={onFinishFailed}
                             autoComplete="off"
                         >
@@ -628,7 +703,7 @@ const Register: React.FC = () => {
                                 </h1>
                             </div>
 
-                            <Form.Item<VoterType>
+                            <Form.Item<StepThreeType>
                                 name="personalDocumentId"
                                 rules={[{ required: true, message: 'Please select a documents' }]}
                             >
@@ -651,8 +726,8 @@ const Register: React.FC = () => {
                                 </Select>
                             </Form.Item>
 
-                            <Form.Item<VoterType>
-                                name="voterImages"
+                            <Form.Item<StepSubThreeType>
+                                name="pImage"
                                 rules={[{ 
                                     required: true, message: 'Please upload an image.' 
                                 }]}
@@ -675,15 +750,14 @@ const Register: React.FC = () => {
                                 </Dragger>
                             </Form.Item>
 
-                            <Form.Item<VoterType>
-                                    name="idNUmber"
+                            <Form.Item<StepSubThreeType>
+                                    name="pidNumber"
                                     rules={[{ required: true, message: 'Enter your Id Number.' }]}
                                 > 
                                 <Input
                                     size="large"
                                     maxLength={30}
                                     prefix={<NumberOutlined className="site-form-item-icon" />}
-                                    type="email"
                                     placeholder="Id Number"
                                     style={{ 
                                         width: '695px' 
@@ -697,7 +771,7 @@ const Register: React.FC = () => {
                             </Form.Item>
                             
                             <div className="terms-agreement-container">
-                                <Form.Item
+                                <Form.Item<StepThreeType>
                                     name='hasAgreedToTerms'
                                 >
                                     <Checkbox value='True'>
@@ -721,8 +795,8 @@ const Register: React.FC = () => {
                                         <Button 
                                             size='large'
                                             type="primary" 
+                                            htmlType="submit" 
                                             className='next-button-content' 
-                                            onClick={next}
                                             loading={loadings}
                                         >
                                             Register
