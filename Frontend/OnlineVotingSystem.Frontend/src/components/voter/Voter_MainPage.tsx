@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Logo from '../../assets/samples/Logo.png'
 import { useNavigate } from 'react-router-dom';
-import '../voter/HomePage.css'
+import '../voter/Voter_MainPage.css'
 import { HomeOutlined } from '@ant-design/icons';
-import Voter_ElectionPage from './Voter_ElectionPage';
 import Voter_HomePage from './Voter_HomePage';
 import Voter_ResultPage from './Voter_ResultPage';
+import Voter_GettingStarted from './Voter_GettingStarted';
 
 const { Header, Content } = Layout;
 
-const App: React.FC = () => {
+const Voter_MainPage: React.FC = () => {
 
     const navigate = useNavigate();
     const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
@@ -32,7 +32,7 @@ const App: React.FC = () => {
             case '1':
                 return <Voter_HomePage/>
             case '2':
-                return <Voter_ElectionPage/>
+                return <Voter_GettingStarted/>
             case '3': 
                 return <Voter_ResultPage/>
             default:
@@ -104,4 +104,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default Voter_MainPage;

@@ -3,13 +3,13 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './components/Login'
 import Register from './components/Register'
-import HomePage from './components/voter/HomePage'
 import Admin_Main from './components/admin/Admin_Main'
 import Forgot_Password from './components/Forgot_Password'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, Zoom } from 'react-toastify'
 import Reset_Password from './components/Reset_Password'
 import Not_FoundPage from './components/common/Not_FoundPage'
+import Voter_MainPage from './components/voter/Voter_MainPage'
 
 function App() {
 
@@ -41,7 +41,7 @@ function App() {
 
           {/* User */}
 
-          <Route path='/home-page' element={ <HomePage/> } />
+          <Route path='/home-page' element={ <Voter_MainPage/> } />
 
           {/* Admin */}
 
