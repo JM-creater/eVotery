@@ -50,11 +50,22 @@ public class Tokens
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var claims = new[]
+
+        var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Email),
             new Claim(ClaimTypes.Role, userRole.ToString())
         };
+
+        if (!string.IsNullOrEmpty(user.Email))
+        {
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Email));
+        }
+
+        if (user.VoterId.HasValue)
+        {
+            claims.Add(new Claim("VoterId", user.VoterId.Value.ToString()));
+        }
+
         var token = new JwtSecurityToken(
             configuration["Jwt:Issuer"],
             configuration["Jwt:Audience"],

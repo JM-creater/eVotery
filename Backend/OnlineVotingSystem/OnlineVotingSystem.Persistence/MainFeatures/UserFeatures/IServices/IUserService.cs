@@ -13,6 +13,7 @@ public interface IUserService
     Task<ApiResponse<User>> StepThreeRegister(Guid id, StepThreeRegisterDto dto);
     Task<ApiResponse<User>> SubStepThreeRegister(Guid id, SubStepThreeRegisterDto dto);
     Task<ApiResponse<User>> Login(LoginVoterDto dto);
+    Task<bool> GetreCaptchaResponse(string userResponse);
     Task<ApiResponse<User>> Validate(int id);
     Task<ApiResponse<User>> Deactivated(int id);
     Task<ApiResponse<User>> Activated(int id);

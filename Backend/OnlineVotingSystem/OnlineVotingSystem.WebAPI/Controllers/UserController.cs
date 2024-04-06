@@ -118,6 +118,13 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginVoterDto dto)
     {
+        bool isCaptchaValid = await GetreCaptchaResponse(dto.RecaptchaToken);
+
+        if (!isCaptchaValid)
+        {
+            return BadRequest(new { message = "Invalid reCAPTCHA. Please try again." });
+        }
+
         var response = await service.Login(dto);
 
         if (response == null)

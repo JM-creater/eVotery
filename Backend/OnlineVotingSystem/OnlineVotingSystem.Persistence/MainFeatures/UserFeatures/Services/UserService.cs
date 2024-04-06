@@ -12,6 +12,8 @@ using OnlineVotingSystem.Persistence.Helpers.EmailContent;
 using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 using OnlineVotingSystem.Persistence.Helpers.Security;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
 
@@ -21,12 +23,14 @@ public class UserService : IUserService
     private readonly IMapper mapper;
     private readonly ILogger<UserService> logger;
     private readonly IConfiguration configuration;
-    public UserService(DataContext _context, IMapper _mapper, ILogger<UserService> _logger, IConfiguration _configuration)
+    private readonly HttpClient _httpClient;
+    public UserService(DataContext _context, IMapper _mapper, ILogger<UserService> _logger, IConfiguration _configuration, HttpClient httpClient)
     {
         context = _context;
         mapper = _mapper;
         logger = _logger;
         configuration = _configuration;
+        _httpClient = httpClient;
     }
 
     public async Task<IEnumerable<GetAllUserDto>> GetAll()
@@ -248,19 +252,33 @@ public class UserService : IUserService
 
         try
         {
-            User voter = await FindUser(dto);
+            User voter = null;
 
-            if (voter == null)
+            if (dto.VoterId.HasValue)
             {
-                response.ErrorMessage = "Voter not yet registered.";
-                response.ResponseCode = 404; 
-                return response;
+                voter = await context.Users
+                                     .Where(v => v.VoterId.Equals(dto.VoterId.Value))
+                                     .FirstOrDefaultAsync();
+            }
+            else if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                voter = await context.Users
+                                     .Where(v => v.Email.Equals(dto.Email))
+                                     .FirstOrDefaultAsync();
+            }
+            else
+            {
+                string errorMessage = "No valid identifier provided.";
+                response.ErrorMessage = errorMessage;
+                response.ResponseCode = 400;
+                throw new ArgumentException(errorMessage);
             }
 
             if (voter == null)
             {
                 string errorMessage = "Voter not yet registered.";
                 response.ErrorMessage = errorMessage;
+                response.ResponseCode = 400;
                 throw new KeyNotFoundException(errorMessage);
             }
 
@@ -268,6 +286,7 @@ public class UserService : IUserService
             {
                 string errorMessage = "Voter registration is pending validation.";
                 response.ErrorMessage = errorMessage;
+                response.ResponseCode = 403;
                 throw new InvalidOperationException(errorMessage);
             }
 
@@ -275,6 +294,7 @@ public class UserService : IUserService
             {
                 string errorMessage = "Account has been deactivated.";
                 response.ErrorMessage = errorMessage;
+                response.ResponseCode = 403;
                 throw new InvalidOperationException(errorMessage);
             }
 
@@ -282,6 +302,7 @@ public class UserService : IUserService
             {
                 string errorMessage = "Incorrect password entered.";
                 response.ErrorMessage = errorMessage;
+                response.ResponseCode = 401;
                 throw new InvalidOperationException(errorMessage);
             }
 
@@ -292,44 +313,28 @@ public class UserService : IUserService
                 if (!string.IsNullOrEmpty(token))
                 {
                     voter.Token = token;
+                    response.Token = token;
                 }
                 else
                 {
-                    response.ErrorMessage = "Failed to generate authentication token.";
+                    string errorMessage = "Failed to generate authentication token.";
+                    response.ErrorMessage = errorMessage;
                     response.ResponseCode = 500;
-                    return response;
+                    throw new InvalidOperationException(errorMessage);
                 }
             }
-           
+
             response.ResponseCode = 200;
             response.UserRole = GetUserRole(voter.VoterId);
             response.Result = voter;
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
         return response;
-    }
-
-    private async Task<User> FindUser(LoginVoterDto dto)
-    {
-        if (dto.VoterId.HasValue)
-        {
-            return await context.Users
-                                .AsNoTracking()
-                                .FirstOrDefaultAsync(v => v.VoterId == dto.VoterId.Value);
-        }
-        else if (!string.IsNullOrWhiteSpace(dto.Email))
-        {
-            return await context.Users
-                                .AsNoTracking()
-                                .FirstOrDefaultAsync(v => v.Email == dto.Email);
-        }
-
-        return null;
     }
 
     public UserRole GetUserRole(int userId)
@@ -346,6 +351,28 @@ public class UserService : IUserService
 
         return role;
     }
+
+    public async Task<bool> GetreCaptchaResponse(string userResponse)
+    {
+        var reCaptchaSecretKey = configuration["reCaptcha:SecretKey"];
+
+        if (reCaptchaSecretKey != null && userResponse != null)
+        {
+            var content = new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            {"secret", reCaptchaSecretKey },
+            {"response", userResponse }
+        });
+            var response = await _httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<reCaptchaResponse>();
+                return result.Success;
+            }
+        }
+        return false;
+    }
+
 
     public async Task<ApiResponse<User>> Validate(int id)
     {
@@ -365,6 +392,7 @@ public class UserService : IUserService
             }
 
             voter.IsValidate = true;
+            voter.VerificationStatus = VerifyStatus.Approved;
 
             context.Users.Update(voter);
             await context.SaveChangesAsync();

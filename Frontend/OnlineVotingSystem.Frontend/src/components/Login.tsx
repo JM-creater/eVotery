@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, Form, Input } from 'antd'
+import { Alert, Button, Checkbox, Flex, Form, Input } from 'antd'
 import React, { useState } from 'react'
 import '../components/Login.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -6,10 +6,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Logo from '../assets/samples/Logo.png';
-// import ReCAPTCHA from "react-google-recaptcha";
+import { useAuth } from '../utils/AuthContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const LOGIN_URL = 'https://localhost:7196/User/login';
-// const SITE_KEY = '6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51';
+const SITE_KEY = '6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51';
 
 type VoterType = {
     voterIdOrEmail?: string;
@@ -20,6 +21,7 @@ type LoginType = {
     password?: string;
     email?: string;
     voterId?: number;
+    recaptchaToken: string;
 }
 
 const onFinishFailed = (errorInfo: unknown) => {
@@ -31,6 +33,8 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [loadings, setLoadings] = useState<boolean>(false);
     const [errorField, setErrorField] = useState<string>("");
+    const { login } = useAuth();
+    const [recaptchaToken, setRecaptchaToken] = useState<string>("");
 
     // const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -38,8 +42,10 @@ const Login: React.FC = () => {
         setLoadings(true);
 
         const loginRequest: LoginType = {
-            password: values.password,
+            ...values,
+            recaptchaToken: recaptchaToken, 
         };
+    
 
         if (values.voterIdOrEmail?.includes('@')) {
             loginRequest.email = values.voterIdOrEmail;
@@ -58,15 +64,19 @@ const Login: React.FC = () => {
             });
             
             const resultJson = JSON.stringify(response.data.result);
+            const tokenJson = response.data.token;
+
+            localStorage.setItem('result', resultJson);
+            localStorage.setItem('token', tokenJson);
+
+            login(tokenJson);
 
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
-                        localStorage.setItem('result', resultJson);
                         navigate('/home-page');
                         break;
                     case 2: 
-                        localStorage.setItem('result', resultJson);
                         navigate('/admin-main');
                         break;
                     default:
@@ -86,6 +96,11 @@ const Login: React.FC = () => {
             setLoadings(false);
         }
     };
+
+    const onReCAPTCHAChange = (token: string | null) => {
+        setRecaptchaToken(token || "");
+    };
+
 
     return (
         
@@ -138,11 +153,18 @@ const Login: React.FC = () => {
                     />
                 </Form.Item>
 
-                {/* <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
-                    <ReCAPTCHA
-                        sitekey={SITE_KEY}
-                    />
-                </Flex> */}
+                <Form.Item<LoginType>
+                    name="recaptchaToken"
+                    rules={[{ required: true, message: 'Please check that.' }]}
+                >
+                    <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
+                        <ReCAPTCHA
+                            sitekey={SITE_KEY}
+                            onChange={onReCAPTCHAChange}
+                        />
+                    </Flex>
+                </Form.Item>
+                
 
                 <Form.Item>
                     <div className="form-remember-forgot">
