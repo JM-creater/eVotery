@@ -69,6 +69,7 @@ public class User : BaseEntity
     public UserRole Role { get; set; }
     public string? PasswordResetToken { get; set; }
     public DateTime? ResetTokenExpires { get; set; }
+    public string? Token { get; set; }
 
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
 }

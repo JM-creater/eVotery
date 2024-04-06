@@ -129,6 +129,7 @@ namespace OnlineVotingSystem.Persistence.Migrations
                     Role = table.Column<int>(type: "int", nullable: false),
                     PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -210,20 +211,20 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Document", "IsActive" },
                 values: new object[,]
                 {
-                    { new Guid("1779ff36-4544-4daa-88a1-d7923bebb82a"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8033), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Passport", false },
-                    { new Guid("1b99ac3d-1380-4702-84ea-af030533f0bd"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8035), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "SSS ID", false },
-                    { new Guid("34ce89a0-e93a-4e21-bb64-ea624360590d"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8039), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "BIR", false },
-                    { new Guid("3521f929-cc9d-458e-8765-626b4f546bcb"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8032), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Professional Regulation Commission ID", false },
-                    { new Guid("43ad8bb8-f3eb-4a97-8e76-2f1c61356315"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8040), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pag-ibig ID", false },
-                    { new Guid("5d10ee55-8703-46a6-b3c7-dd9549df717e"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8041), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Barangay ID", false },
-                    { new Guid("633749e7-4793-47e6-9bf3-22211b92d579"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8043), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "School ID", false },
-                    { new Guid("6443970d-56e2-43ae-917d-803123033f4b"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8042), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Philippine Postal ID", false },
-                    { new Guid("6eaffe29-3b55-49bc-92fe-278055590b1d"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8034), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Senior Citizen ID", false },
-                    { new Guid("7881bea6-614c-44bb-86bf-51ac7139c7b1"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8036), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Philippine Identification", false },
-                    { new Guid("864fdcef-1515-4eda-ad46-31f038bda53e"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8017), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "UMID", false },
-                    { new Guid("987294f5-f78f-4a87-b914-a3f5b2eea5f6"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8030), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Driver’s License", false },
-                    { new Guid("a341e379-19eb-4de8-9f4e-d6d73570a926"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8044), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Other valid government-issued IDs", false },
-                    { new Guid("b61517a4-9b3d-43fd-a589-c3e9f58259d4"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8037), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "NBI Clearance", false }
+                    { new Guid("1304212a-a625-4d56-913d-5b7f10c13be2"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8828), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Passport", false },
+                    { new Guid("1b2b8380-d747-45aa-af42-e4fef9c2e5c6"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8836), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Philippine Postal ID", false },
+                    { new Guid("37c0a64c-63f1-461e-8390-459c0d842f68"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8832), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "NBI Clearance", false },
+                    { new Guid("56afd962-1b15-4ffa-9846-bea6b9f0fca0"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8834), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pag-ibig ID", false },
+                    { new Guid("69e2de87-38bd-410d-91c2-5cd73fb08feb"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8837), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "School ID", false },
+                    { new Guid("7145fe15-0bf3-4ad0-b187-b709263e8352"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8827), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Professional Regulation Commission ID", false },
+                    { new Guid("83935cee-0b95-476e-972a-ac029b89e6d4"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8825), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Driver’s License", false },
+                    { new Guid("8ead015a-6ed7-4e1b-9aa9-2dd57a6f0ac5"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8830), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "SSS ID", false },
+                    { new Guid("a95b3156-20ee-47a7-96a1-7e10b5093042"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8814), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "UMID", false },
+                    { new Guid("b1d543b2-c372-41d3-b969-1d77ab6ef862"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8829), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Senior Citizen ID", false },
+                    { new Guid("c6213e7b-442c-4129-a686-f707accc8a90"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8833), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "BIR", false },
+                    { new Guid("e1897cda-435a-41b8-b6e1-18104e8841c0"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8838), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Other valid government-issued IDs", false },
+                    { new Guid("e7da6ac0-d2fa-4a0b-b70f-668de5897ca0"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8835), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Barangay ID", false },
+                    { new Guid("f4c310f8-fa7a-415b-8ff1-f019b7740052"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8831), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Philippine Identification", false }
                 });
 
             migrationBuilder.InsertData(
@@ -231,25 +232,25 @@ namespace OnlineVotingSystem.Persistence.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("2abbe2b7-bee4-4d88-86e8-c74ff79655b5"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8095), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Governor" },
-                    { new Guid("44fa3a90-7b7d-46b6-93bb-6bf033e28d14"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8088), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice President" },
-                    { new Guid("4d8a0935-06dc-4b4f-8658-aff594edfb9d"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8099), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Kagawad" },
-                    { new Guid("5b332783-0098-47a5-9a01-584a4414afc9"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8091), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Member of the House of Representatives" },
-                    { new Guid("7416be4b-7f4b-4201-aa9a-26fe9d1b2c23"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8103), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Kagawad" },
-                    { new Guid("78842e85-7305-40b0-b55b-e8b29762efa9"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8101), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Chairperson" },
-                    { new Guid("8dac2d9a-adb8-43b6-85df-64f165850039"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8096), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Mayor" },
-                    { new Guid("8f712159-e191-4433-b470-5e32344446f8"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8092), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Governor" },
-                    { new Guid("a1f9c630-e4bf-491a-aba3-2174f4f41c74"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8087), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "President" },
-                    { new Guid("a34622f8-a4b0-419a-a5ea-82aab10e4937"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8093), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Mayor" },
-                    { new Guid("b8454380-c2b0-46b6-a9c5-848ed36be8a6"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8090), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Senator" },
-                    { new Guid("e1979fa3-873b-4a90-bcae-7d98cbf87962"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8097), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Councilor" },
-                    { new Guid("ed9ddb72-ac7a-4700-97de-bd751ca30e19"), new DateTime(2024, 4, 6, 9, 34, 13, 582, DateTimeKind.Local).AddTicks(8098), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Captain" }
+                    { new Guid("01ad59bd-a7bf-4e12-8c27-714a084a076d"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8876), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Member of the House of Representatives" },
+                    { new Guid("07fa47db-59aa-437e-96c0-104f04be96b4"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8879), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Governor" },
+                    { new Guid("389a2e89-7eb6-4ea1-8a72-e5680b0138fe"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8912), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Chairperson" },
+                    { new Guid("4567a565-3703-446c-a2f4-4ed010ed5c89"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8909), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Councilor" },
+                    { new Guid("56985c0d-2c25-4b55-ab18-07e653dbe41b"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8872), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "President" },
+                    { new Guid("6bf9801f-29a0-455c-8db2-d424d459242d"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8877), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Governor" },
+                    { new Guid("926d5065-7024-427d-8add-b73978386d50"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8880), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice Mayor" },
+                    { new Guid("a05576d2-d829-49c5-ad72-bff2e55a9eea"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8914), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sangguniang Kabataan Kagawad" },
+                    { new Guid("b87dee51-ad3b-495a-8c1b-f6a0d2e1ecd6"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8878), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Mayor" },
+                    { new Guid("c489a505-3993-41b6-9ca5-068c16452e27"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8873), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Vice President" },
+                    { new Guid("c943fac6-b28e-4b86-9314-fa09285b16fe"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8874), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Senator" },
+                    { new Guid("dc15166d-0176-43bf-8b47-420c3a6dc1ae"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8910), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Captain" },
+                    { new Guid("e93633cb-52bf-4a92-b990-2b5abe8a4043"), new DateTime(2024, 4, 6, 13, 26, 18, 103, DateTimeKind.Local).AddTicks(8911), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Barangay Kagawad" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "DateCreated", "DateOfBirth", "DateUpdated", "Email", "FirstName", "Gender", "HasAgreedToTerms", "IsActive", "IsValidate", "LastName", "Nationality", "Occupation", "PIDNumber", "PImage", "Password", "PasswordResetToken", "PersonalDocumentId", "PhoneNumber", "Religion", "ResetTokenExpires", "Role", "SuffixName", "VerificationStatus", "VoterId", "VoterImages", "ZipCode" },
-                values: new object[] { new Guid("360eef18-f9ff-4f0e-9412-f6c71a1a4ae6"), "123 Main Street", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 4, 6, 1, 34, 13, 582, DateTimeKind.Utc).AddTicks(7826), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "garadojosephmartin98@gmail.com", "Joseph Martin", "Male", false, true, true, "Garado", "Filipino", "Admin", "", "", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", null, new Guid("1779ff36-4544-4daa-88a1-d7923bebb82a"), "09199431060", "Roman Catholic", null, 2, null, 0, 7394, "PathImages\\VoterImages\\admin picture.png", "1234" });
+                columns: new[] { "Id", "Address", "DateCreated", "DateOfBirth", "DateUpdated", "Email", "FirstName", "Gender", "HasAgreedToTerms", "IsActive", "IsValidate", "LastName", "Nationality", "Occupation", "PIDNumber", "PImage", "Password", "PasswordResetToken", "PersonalDocumentId", "PhoneNumber", "Religion", "ResetTokenExpires", "Role", "SuffixName", "Token", "VerificationStatus", "VoterId", "VoterImages", "ZipCode" },
+                values: new object[] { new Guid("3fdae0b8-99f7-4329-ba91-7e447b64afba"), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 4, 6, 5, 26, 18, 103, DateTimeKind.Utc).AddTicks(8663), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "garadojosephmartin98@gmail.com", "Joseph Martin", "", false, true, true, "Garado", "Filipino", "", "", "", "jZae727K08KaOmKSgOaGzww/XVqGr/PKEgIMkjrcbJI=", null, new Guid("1304212a-a625-4d56-913d-5b7f10c13be2"), "09199431060", "", null, 2, null, "", 0, 1647, "PathImages\\VoterImages\\admin picture.png", "" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ballots_ElectionId",

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Domain.Entity;
+using OnlineVotingSystem.Domain.Enum;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -9,11 +11,6 @@ namespace OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 
 public class Tokens
 {
-    private readonly IConfiguration configuration;
-    public Tokens(IConfiguration _configuration)
-    {
-        configuration = _configuration;
-    }
     public static int GenerateVoterID()
     {
         int _min = 1000;
@@ -47,5 +44,24 @@ public class Tokens
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public static string GenerateTokenV2(LoginVoterDto user, UserRole userRole, IConfiguration configuration)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Email),
+            new Claim(ClaimTypes.Role, userRole.ToString())
+        };
+        var token = new JwtSecurityToken(
+            configuration["Jwt:Issuer"],
+            configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: credentials
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
