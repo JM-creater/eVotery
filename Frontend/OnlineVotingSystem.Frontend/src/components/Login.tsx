@@ -46,7 +46,6 @@ const Login: React.FC = () => {
             recaptchaToken: recaptchaToken, 
         };
     
-
         if (values.voterIdOrEmail?.includes('@')) {
             loginRequest.email = values.voterIdOrEmail;
         } else {
@@ -153,18 +152,12 @@ const Login: React.FC = () => {
                     />
                 </Form.Item>
 
-                <Form.Item<LoginType>
-                    name="recaptchaToken"
-                    rules={[{ required: true, message: 'Please check that.' }]}
-                >
-                    <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
-                        <ReCAPTCHA
-                            sitekey={SITE_KEY}
-                            onChange={onReCAPTCHAChange}
-                        />
-                    </Flex>
-                </Form.Item>
-                
+                <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
+                    <ReCAPTCHA
+                        sitekey={SITE_KEY}
+                        onChange={onReCAPTCHAChange}
+                    />
+                </Flex>
 
                 <Form.Item>
                     <div className="form-remember-forgot">

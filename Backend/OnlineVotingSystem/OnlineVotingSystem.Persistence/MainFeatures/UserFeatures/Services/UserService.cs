@@ -373,7 +373,6 @@ public class UserService : IUserService
         return false;
     }
 
-
     public async Task<ApiResponse<User>> Validate(int id)
     {
         ApiResponse<User> response = new ApiResponse<User>();
@@ -621,6 +620,42 @@ public class UserService : IUserService
                 response.ErrorMessage = errorMessage;
                 throw new InvalidOperationException(errorMessage);
             }
+
+            context.Users.Remove(user);
+            await context.SaveChangesAsync();   
+            response.ResponseCode = 200;
+        }
+        catch (Exception e)
+        {
+            response.ResponseCode = 400;
+            response.ErrorMessage = e.Message;
+        }
+
+        return response;
+    }
+
+    public async Task<ApiResponse<User>> RememberMe(Guid id)
+    {
+        ApiResponse<User> response = new ApiResponse<User>();
+
+        try
+        {
+            var user = await context.Users
+                                      .Where(u => u.Id == id)
+                                      .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                string errorMessage = "No Id Found.";
+                response.ErrorMessage = errorMessage;
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            user.isRemember = true;
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+
+            response.ResponseCode = 200;    
         }
         catch (Exception e)
         {
