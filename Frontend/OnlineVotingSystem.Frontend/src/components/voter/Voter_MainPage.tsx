@@ -76,16 +76,20 @@ const Voter_MainPage: React.FC = () => {
 
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item><HomeOutlined /> Home</Breadcrumb.Item>
-                    {selectedItemMenu === '2' && (
-                        <React.Fragment>
-                            <Breadcrumb.Item>Election</Breadcrumb.Item>
-                        </React.Fragment>
-                    )}
-                    {selectedItemMenu === '3' && (
-                        <React.Fragment>
-                            <Breadcrumb.Item>Result</Breadcrumb.Item>
-                        </React.Fragment>
-                    )}
+                    {
+                        selectedItemMenu === '2' && (
+                            <React.Fragment>
+                                <Breadcrumb.Item>Election</Breadcrumb.Item>
+                            </React.Fragment>
+                        )
+                    }
+                    {
+                        selectedItemMenu === '3' && (
+                            <React.Fragment>
+                                <Breadcrumb.Item>Result</Breadcrumb.Item>
+                            </React.Fragment>
+                        )
+                    }
                 </Breadcrumb>
 
                 <div
@@ -96,7 +100,9 @@ const Voter_MainPage: React.FC = () => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
-                    {renderComponent()}
+                    {
+                        renderComponent()
+                    }
                 </div>
             </Content>
             
