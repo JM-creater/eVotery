@@ -10,6 +10,7 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import Reset_Password from './components/Reset_Password'
 import Not_FoundPage from './components/common/Not_FoundPage'
 import Voter_MainPage from './components/voter/Voter_MainPage'
+import PrivateRoute from './utils/private_route'
 
 function App() {
 
@@ -31,23 +32,16 @@ function App() {
       />
       <BrowserRouter>
         <Routes>
-          
-          {/* Main */}
 
           <Route index element={ <Login/> } />
           <Route path='/register-page' element={ <Register/> } />
           <Route path='/reset-password' element={ <Reset_Password/> } />
           <Route path='/forgot-password' element={ <Forgot_Password/> } />
 
-          {/* User */}
-
           <Route path='/home-page' element={ <Voter_MainPage/> } />
 
-          {/* Admin */}
+          <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } />
 
-          <Route path='/admin-main' element={ <Admin_Main/> } />
-
-          {/* Error */}
           <Route path="*" element={<Not_FoundPage />} />
 
         </Routes>
