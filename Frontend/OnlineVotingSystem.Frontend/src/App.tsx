@@ -10,44 +10,47 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import Reset_Password from './components/Reset_Password'
 import Not_FoundPage from './components/common/Not_FoundPage'
 import Voter_MainPage from './components/voter/Voter_MainPage'
+import { AuthProvider } from './utils/AuthProvider'
 import PrivateRoute from './utils/private_route'
 
 function App() {
 
   return (
-    <React.Fragment>
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop
-        limit={1}
-        transition={Zoom}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-      />
-      <BrowserRouter>
-        <Routes>
+    <AuthProvider>
+      <React.Fragment>
+        <ToastContainer
+          position="top-center"
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop
+          limit={1}
+          transition={Zoom}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+        />
+        <BrowserRouter>
+          <Routes>
 
-          <Route index element={ <Login/> } />
-          <Route path='/register-page' element={ <Register/> } />
-          <Route path='/reset-password' element={ <Reset_Password/> } />
-          <Route path='/forgot-password' element={ <Forgot_Password/> } />
+            <Route index element={ <Login/> } />
+            <Route path='/register-page' element={ <Register/> } />
+            <Route path='/reset-password' element={ <Reset_Password/> } />
+            <Route path='/forgot-password' element={ <Forgot_Password/> } />
 
-          <Route path='/home-page' element={ <Voter_MainPage/> } />
+            <Route path='/home-page' element={ <Voter_MainPage/> } />
 
-          <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } />
+            <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } />
 
-          <Route path="*" element={<Not_FoundPage />} />
+            <Route path="*" element={<Not_FoundPage />} />
 
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
 
-    </React.Fragment>
+      </React.Fragment>
+    </AuthProvider>
   )
 }
 

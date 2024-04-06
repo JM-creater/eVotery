@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.Helpers.EmailContent;
 using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
@@ -23,6 +25,7 @@ using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
+using System.Text;
 
 namespace OnlineVotingSystem.Persistence;
 
@@ -51,5 +54,28 @@ public static class ServiceExtensions
 
         services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,    
+                    ValidateLifetime = true,
+                    ValidAudience = configuration["JWT:Audience"],
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
+                };
+            });
     }
 }
