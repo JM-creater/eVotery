@@ -22,4 +22,5 @@ public interface IUserService
     Task<ApiResponse<User>> ResetPassword(ResetPasswordDto dto);
     Task<bool> IsResetTokenValid(string token);
     Task<ApiResponse<User>> Delete(Guid id);
+    Task<ApiResponse<User>> RememberMe(Guid id);
 }
