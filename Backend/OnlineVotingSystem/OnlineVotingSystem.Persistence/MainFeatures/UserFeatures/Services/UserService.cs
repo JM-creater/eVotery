@@ -248,25 +248,13 @@ public class UserService : IUserService
 
         try
         {
-            User voter = null;
+            User voter = await FindUser(dto);
 
-            if (dto.VoterId.HasValue)
+            if (voter == null)
             {
-                voter = await context.Users
-                                     .Where(v => v.VoterId.Equals(dto.VoterId.Value))
-                                     .FirstOrDefaultAsync();
-            }
-            else if (!string.IsNullOrWhiteSpace(dto.Email))
-            {
-                voter = await context.Users
-                                     .Where(v => v.Email.Equals(dto.Email))
-                                     .FirstOrDefaultAsync();
-            }
-            else
-            {
-                string errorMessage = "No valid identifier provided.";
-                response.ErrorMessage = errorMessage;
-                throw new ArgumentException(errorMessage);
+                response.ErrorMessage = "Voter not yet registered.";
+                response.ResponseCode = 404; 
+                return response;
             }
 
             if (voter == null)
@@ -297,8 +285,24 @@ public class UserService : IUserService
                 throw new InvalidOperationException(errorMessage);
             }
 
+            if (string.IsNullOrEmpty(voter.Token))
+            {
+                var token = Tokens.GenerateTokenV2(dto, voter.Role, configuration);
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    voter.Token = token;
+                }
+                else
+                {
+                    response.ErrorMessage = "Failed to generate authentication token.";
+                    response.ResponseCode = 500;
+                    return response;
+                }
+            }
+           
             response.ResponseCode = 200;
-            response.UserRole = voter.Role;
+            response.UserRole = GetUserRole(voter.VoterId);
             response.Result = voter;
         }
         catch (Exception e)
@@ -308,6 +312,39 @@ public class UserService : IUserService
         }
 
         return response;
+    }
+
+    private async Task<User> FindUser(LoginVoterDto dto)
+    {
+        if (dto.VoterId.HasValue)
+        {
+            return await context.Users
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(v => v.VoterId == dto.VoterId.Value);
+        }
+        else if (!string.IsNullOrWhiteSpace(dto.Email))
+        {
+            return await context.Users
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(v => v.Email == dto.Email);
+        }
+
+        return null;
+    }
+
+    public UserRole GetUserRole(int userId)
+    {
+        var role =  context.Users
+                           .Where(u => u.VoterId == userId)
+                           .Select(u => u.Role) 
+                           .FirstOrDefault();
+
+        if (role == null)
+        {
+            throw new KeyNotFoundException("User role not found.");
+        }
+
+        return role;
     }
 
     public async Task<ApiResponse<User>> Validate(int id)

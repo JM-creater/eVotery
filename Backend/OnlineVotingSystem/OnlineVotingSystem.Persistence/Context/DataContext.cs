@@ -72,15 +72,16 @@ public partial class DataContext : DbContext
                 IsActive = true,
                 IsValidate = true,
                 Role = Domain.Enum.UserRole.Admin,
-                Address = "123 Main Street",
-                Gender = "Male",
+                Address = string.Empty,
+                Gender = string.Empty,
                 PersonalDocumentId = Document_ID4,
                 Nationality = "Filipino",
-                Occupation = "Admin",
-                Religion = "Roman Catholic",
-                ZipCode = "1234",
-                PIDNumber = "",
-                PImage = ""
+                Occupation = string.Empty,
+                Religion = string.Empty,
+                ZipCode = string.Empty,
+                PIDNumber = string.Empty,
+                PImage = string.Empty,
+                Token = string.Empty
             }
         );
 
