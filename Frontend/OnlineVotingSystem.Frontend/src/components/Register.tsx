@@ -117,6 +117,7 @@ const Register: React.FC = () => {
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
     const [personalDocuments, setPersonalDocuments] = useState<DocumentType[]>([]);
+    const [form] = Form.useForm();
 
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -176,12 +177,12 @@ const Register: React.FC = () => {
 
             if (response.data.responseCode === 200) {
                 if (current < steps.length - 1) {
-
                     const getUserId = response.data.result.id;
 
                     localStorage.setItem('userId', getUserId);
 
                     setCurrent((prevCurrent) => prevCurrent + 1);
+                    form.resetFields();
                 }
             } else if (response.data.responseCode === 400) {
                 toast.error('Register failed. Please check your information.');
@@ -218,6 +219,7 @@ const Register: React.FC = () => {
             if (response.data.responseCode === 200) {
                 if (current < steps.length - 1) {
                     setCurrent((prevCurrent) => prevCurrent + 1);
+                    form.resetFields();
                 }
             } else if (response.data.responseCode === 400) {
                 toast.error('Register failed. Please check your information.');
@@ -252,6 +254,7 @@ const Register: React.FC = () => {
             if (response.data.responseCode === 200) {
                 if (current < steps.length - 1) {
                     setCurrent((prevCurrent) => prevCurrent + 1);
+                    form.resetFields();
                 }
             } else if (response.data.responseCode === 400) {
                 toast.error('Register failed. Please check your information.');

@@ -9,7 +9,6 @@ public class AutoMapperConfig : Profile
     public AutoMapperConfig()
     {
         // Voter
-        CreateMap<User, GetAllUserDto>();
         CreateMap<CreateVoterDto, User>();
         CreateMap<StepOneRegisterDto, User>();
         CreateMap<StepTwoRegisterDto, User>();

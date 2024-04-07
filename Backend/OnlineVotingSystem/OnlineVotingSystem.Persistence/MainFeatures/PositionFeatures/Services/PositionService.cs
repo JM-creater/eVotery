@@ -16,7 +16,10 @@ public class PositionService : IPositionService
     }
 
     public async Task<List<Position>> GetAll()
-        => await context.Positions.ToListAsync();
+        => await context.Positions
+                        .Include(p => p.Candidates)
+                        .AsNoTracking()
+                        .ToListAsync();
 
     public async Task<Position> GetById(Guid id)
         => await context.Positions

@@ -6,7 +6,7 @@ namespace OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 
 public interface IUserService
 {
-    Task<IEnumerable<GetAllUserDto>> GetAll();
+    Task<List<User>> GetAll();
     Task<User> GetById(int id);
     Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto);
     Task<ApiResponse<User>> StepTwoRegister(Guid id, StepTwoRegisterDto dto);

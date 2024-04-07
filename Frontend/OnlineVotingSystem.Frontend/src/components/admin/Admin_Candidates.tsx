@@ -117,6 +117,7 @@ const Admin_Candidates:React.FC = () => {
     const [form] = Form.useForm();
     const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null);
 
+
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const showDrawer = () => {
@@ -125,6 +126,7 @@ const Admin_Candidates:React.FC = () => {
 
     const closeDrawer = () => {
         setOpen(false);
+        form.resetFields();
     };
 
     const showEditDrawer = (values: CandidateType) => {
@@ -504,6 +506,7 @@ const Admin_Candidates:React.FC = () => {
                     }
                 >
                     <Form 
+                        form={form}
                         id="create-candidate-form" 
                         onFinish={handleCreateCandidate}
                         onFinishFailed={onFinishFailed}
