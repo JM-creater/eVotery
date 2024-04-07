@@ -33,17 +33,15 @@ public class UserService : IUserService
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<GetAllUserDto>> GetAll()
+    public async Task<List<User>> GetAll()
     {
         var student = await context.Users
-                                     .Where(u => u.Role == UserRole.Voter)
-                                     .AsNoTracking()
-                                     .OrderByDescending(v => v.DateCreated)
-                                     .ToListAsync();
+                                   .Where(u => u.Role == UserRole.Voter)
+                                   .AsNoTracking()
+                                   .OrderByDescending(v => v.DateCreated)
+                                   .ToListAsync();
 
-        var newStudents = mapper.Map<IEnumerable<GetAllUserDto>>(student);
-
-        return newStudents;
+        return student;
     }
 
     public async Task<User> GetById(int id)
@@ -92,7 +90,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -152,7 +150,7 @@ public class UserService : IUserService
         }
         catch (Exception e) 
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -186,7 +184,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -239,7 +237,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -399,7 +397,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -431,7 +429,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -463,7 +461,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -506,7 +504,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -544,7 +542,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -579,7 +577,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 
@@ -627,7 +625,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 

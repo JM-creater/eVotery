@@ -148,19 +148,7 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        var settings = new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore
-        };
-
-        var json = JsonConvert.SerializeObject(response, settings);
-
-        return new ContentResult
-        {
-            Content = json,
-            ContentType = "application/json",
-            StatusCode = (int)HttpStatusCode.OK
-        };
+        return Ok(response);
     }
 
     [HttpGet("get-by-id/{id}")]

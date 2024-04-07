@@ -76,6 +76,7 @@ public class CandidateService : ICandidateService
         => await context.Candidates
                         .Include(c => c.PartyAffiliation)
                         .OrderByDescending(c => c.DateCreated)
+                        .AsNoTracking()
                         .ToListAsync();
 
     public async Task<Candidate> GetById(Guid id)

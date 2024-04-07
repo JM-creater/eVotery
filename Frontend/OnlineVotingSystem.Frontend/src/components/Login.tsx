@@ -35,6 +35,7 @@ const Login: React.FC = () => {
     const [errorField, setErrorField] = useState<string>("");
     const { login } = useAuth();
     const [recaptchaToken, setRecaptchaToken] = useState<string>("");
+    const [form] = Form.useForm();
 
     // const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -70,6 +71,8 @@ const Login: React.FC = () => {
 
             login(tokenJson);
 
+            form.resetFields();
+
             if (response.data.responseCode === 200) {
                 switch(response.data.userRole) {
                     case 1: 
@@ -82,7 +85,7 @@ const Login: React.FC = () => {
                         console.log("Unknown role");
                         break;
                 } 
-            } else if (response.data.responseCode === 400) {
+            } else if (response.data.responseCode === 400 || response.data.responseCode === 500) {
                 const errorMessage = response.data.errorMessage;
                 setErrorField(errorMessage);
             } else {
