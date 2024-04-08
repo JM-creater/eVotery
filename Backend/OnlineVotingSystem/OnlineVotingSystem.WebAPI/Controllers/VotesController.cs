@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.MainFeatures.VotesFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
@@ -13,5 +14,14 @@ public class VotesController : ControllerBase
         service = _service;
     }
 
+    [HttpPost("submit-vote")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SubmitVote(SubmitVoteDto dto)
+    {
+        var response = await service.SubmitVote(dto);
 
+        return Ok(response);
+    }
 }

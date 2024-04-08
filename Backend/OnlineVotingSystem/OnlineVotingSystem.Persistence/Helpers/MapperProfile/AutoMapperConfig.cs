@@ -39,5 +39,8 @@ public class AutoMapperConfig : Profile
 
         // Personal Document
         CreateMap<SubStepThreeRegisterDto, PersonalDocument>();
+
+        // Votes
+        CreateMap<SubmitVoteDto, Vote>();
     }   
 }
