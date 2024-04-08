@@ -1,9 +1,8 @@
-﻿using OnlineVotingSystem.Domain.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class SubmitVoteDto
+public record SubmitVoteDto
 {
     [Required]
     public Guid UserId { get; set; }

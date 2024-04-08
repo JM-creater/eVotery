@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class CreatePartyAffiliationDto
+public record CreatePartyAffiliationDto
 {
     [Required]
     public string PartyName { get; set; } = string.Empty;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class SubStepThreeRegisterDto
+public record SubStepThreeRegisterDto
 {
     [Required]
     public string PIDNumber { get; set; }

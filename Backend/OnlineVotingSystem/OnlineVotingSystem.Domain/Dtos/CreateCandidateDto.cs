@@ -3,7 +3,7 @@ using OnlineVotingSystem.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class CreateCandidateDto
+public record CreateCandidateDto
 {
     [Required]
     public string FirstName { get; set; }

@@ -2,7 +2,7 @@
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class CreateVoterDto
+public record CreateVoterDto
 {
     public string FirstName { get; set; } 
     public string LastName { get; set; }

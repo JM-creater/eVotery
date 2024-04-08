@@ -1,6 +1,6 @@
 ﻿namespace OnlineVotingSystem.Domain.Dtos;
 
-public class UpdatePositionDto
+public record UpdatePositionDto
 {
     public string Name { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class LoginVoterDto
+public record LoginVoterDto
 {
     public int? VoterId { get; set; }
     public string Email { get; set; } 

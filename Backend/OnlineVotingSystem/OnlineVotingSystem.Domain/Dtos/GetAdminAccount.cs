@@ -3,7 +3,7 @@ using OnlineVotingSystem.Domain.Enum;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class GetAdminAccount
+public record GetAdminAccount
 {
     public int VoterId { get; set; }
     public string FirstName { get; set; } 
