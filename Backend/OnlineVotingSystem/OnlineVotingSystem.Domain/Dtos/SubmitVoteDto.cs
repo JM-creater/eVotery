@@ -6,7 +6,7 @@ namespace OnlineVotingSystem.Domain.Dtos;
 public class SubmitVoteDto
 {
     [Required]
-    public Guid VoterId { get; set; }
+    public Guid UserId { get; set; }
     [Required]
     public Guid CandidateId { get; set; }
 }

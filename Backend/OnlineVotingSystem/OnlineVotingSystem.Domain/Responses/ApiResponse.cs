@@ -11,4 +11,6 @@ public class ApiResponse<T>
     public string? ErrorMessage { get; set; }
     public UserRole? UserRole { get; set; }
     public string? Token { get; set; }
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public Guid? UserId { get; set; }
 }

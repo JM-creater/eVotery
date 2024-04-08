@@ -4,7 +4,7 @@ namespace OnlineVotingSystem.Domain.Entity;
 
 public class Vote : BaseEntity
 {
-    public Guid VoterId { get; set; }
+    public Guid UserId { get; set; }
     public virtual User Voter { get; set; }
 
     public Guid CandidateId { get; set; }

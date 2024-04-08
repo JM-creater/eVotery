@@ -24,19 +24,23 @@ public class VotesService : IVotesService
 
         try
         {
-            var votes = await context.Votes
-                                     .Where(v => v.VoterId == dto.VoterId ||
-                                                 v.CandidateId == dto.CandidateId)
-                                     .FirstOrDefaultAsync();
+            //var votes = await context.Votes
+            //                         .Where(v => v.UserId == dto.UserId &&
+            //                                     v.CandidateId == dto.CandidateId)
+            //                         .FirstOrDefaultAsync();
 
-            if (votes == null)
+            //if (votes == null)
+            //{
+            //    string errorMessage = "Vote already exists for this voter and candidate.";
+            //    response.ErrorMessage = errorMessage;
+            //    throw new KeyNotFoundException(errorMessage);
+            //}
+
+            var newVotes = new Vote
             {
-                string errorMessage = "Id not found.";
-                response.ErrorMessage = errorMessage;
-                throw new KeyNotFoundException(errorMessage);
-            }
-
-            var newVotes = mapper.Map<Vote>(votes);
+                UserId = dto.UserId,
+                CandidateId = dto.CandidateId
+            };
             newVotes.VotedAt = DateTime.Now;
             newVotes.DateCreated = DateTime.Now;
 
@@ -44,7 +48,6 @@ public class VotesService : IVotesService
             await context.SaveChangesAsync();
 
             response.ResponseCode = 200;
-            response.Result = newVotes;
         }
         catch (Exception e)
         {

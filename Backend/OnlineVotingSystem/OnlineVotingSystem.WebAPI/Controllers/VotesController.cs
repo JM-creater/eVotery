@@ -18,7 +18,7 @@ public class VotesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SubmitVote(SubmitVoteDto dto)
+    public async Task<IActionResult> SubmitVote([FromBody] SubmitVoteDto dto)
     {
         var response = await service.SubmitVote(dto);
 

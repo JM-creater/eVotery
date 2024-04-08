@@ -325,6 +325,7 @@ public class UserService : IUserService
             response.ResponseCode = 200;
             response.UserRole = GetUserRole(voter.VoterId);
             response.Result = voter;
+            response.UserId = voter.Id;
         }
         catch (Exception e)
         {

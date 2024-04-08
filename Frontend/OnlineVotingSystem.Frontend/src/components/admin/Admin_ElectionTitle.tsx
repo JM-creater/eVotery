@@ -267,7 +267,7 @@ const Admin_ElectionTitle:React.FC = () => {
             <div className='search-election-container'>
 
                 <Button className='button-addElection-content' onClick={showModal}>
-                    Add Ballot
+                    Add Election
                 </Button>
 
                 <Search 

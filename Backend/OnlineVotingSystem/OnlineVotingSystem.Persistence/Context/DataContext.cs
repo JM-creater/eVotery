@@ -269,7 +269,7 @@ public partial class DataContext : DbContext
         modelBuilder.Entity<Vote>()
             .HasOne(v => v.Voter)
             .WithMany(vt => vt.Votes)
-            .HasForeignKey(v => v.VoterId)
+            .HasForeignKey(v => v.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Vote>()
