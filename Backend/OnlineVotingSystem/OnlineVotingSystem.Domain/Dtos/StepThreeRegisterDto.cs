@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class StepThreeRegisterDto
+public record StepThreeRegisterDto
 {
     [Required]
     public Guid PersonalDocumentId { get; set; }

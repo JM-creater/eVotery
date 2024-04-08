@@ -1,6 +1,6 @@
 ﻿namespace OnlineVotingSystem.Domain.Dtos;
 
-public class GetAllUserDto
+public record GetAllUserDto
 {
     public int VoterId { get; set; }
     public Guid? PersonalDocumentId { get; set; }

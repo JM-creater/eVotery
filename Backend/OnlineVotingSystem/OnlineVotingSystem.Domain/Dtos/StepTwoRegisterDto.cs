@@ -2,7 +2,7 @@
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class StepTwoRegisterDto
+public record StepTwoRegisterDto
 {
     [Required]
     public string Occupation { get; set; }

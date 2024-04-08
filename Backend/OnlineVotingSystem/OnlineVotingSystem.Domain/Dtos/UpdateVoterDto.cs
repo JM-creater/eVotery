@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class UpdateVoterDto
+public record UpdateVoterDto
 {
     [Required]
     public string FirstName { get; set; } 

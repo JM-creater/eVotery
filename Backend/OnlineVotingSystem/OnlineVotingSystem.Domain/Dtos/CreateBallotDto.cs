@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class CreateBallotDto
+public record CreateBallotDto
 {
     [Required]
     public string BallotName { get; set; } 

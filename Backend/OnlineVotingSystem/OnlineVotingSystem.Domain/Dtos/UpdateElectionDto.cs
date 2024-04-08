@@ -2,7 +2,7 @@
 
 namespace OnlineVotingSystem.Domain.Dtos;
 
-public class UpdateElectionDto
+public record UpdateElectionDto
 {
     [Required]
     public string ElectionName { get; set; }
