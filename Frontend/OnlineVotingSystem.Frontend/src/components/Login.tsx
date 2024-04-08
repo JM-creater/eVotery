@@ -33,9 +33,9 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [loadings, setLoadings] = useState<boolean>(false);
     const [errorField, setErrorField] = useState<string>("");
-    const { login } = useAuth();
     const [recaptchaToken, setRecaptchaToken] = useState<string>("");
     const [form] = Form.useForm();
+    const { login } = useAuth();
 
     // const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -65,9 +65,11 @@ const Login: React.FC = () => {
             
             const resultJson = JSON.stringify(response.data.result);
             const tokenJson = response.data.token;
+            const userIdJson = response.data.userId;
 
             localStorage.setItem('result', resultJson);
             localStorage.setItem('token', tokenJson);
+            localStorage.setItem('userId', userIdJson);
 
             login(tokenJson);
 
