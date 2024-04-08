@@ -64,7 +64,7 @@ public class User : BaseEntity
     public string? PImage { get; set; }
 
     public bool? isRemember { get; set; }
-
+    public bool? isVoted { get; set; }
     public bool IsValidate { get; set; }
     public bool IsActive { get; set; }
     public VerifyStatus VerificationStatus { get; set; } 

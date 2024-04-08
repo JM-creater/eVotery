@@ -17,20 +17,21 @@ type PositionType = {
 }
 
 const GETAll_POSITION_URL = 'https://localhost:7196/Position/get-all';
+const SUBMITVOTE_URL = ''
 
 const Voter_ElectionPage = () => {
 
   const [position, setPosition] = useState<PositionType[]>([]);
-  const [defaultActiveKey, setDefaultActiveKey] = useState<string[]>([]);
+  const [activeKeys, setActiveKeys] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchPosition = async () => {
       try {
         const response = await axios.get(GETAll_POSITION_URL);
         setPosition(response.data);
-        if (response.data.length > 0) {
-          setDefaultActiveKey([response.data[0].id]);
-        }
+
+        const positionIds = response.data.map((pos: PositionType) => pos.id);
+        setActiveKeys(positionIds);
       } catch (error) {
         console.error(error);
       }
@@ -38,10 +39,6 @@ const Voter_ElectionPage = () => {
 
     fetchPosition();
   }, []);
-
-  const onChange = (key: string | string[]) => {
-    console.log(key);
-  };
 
   const items = position.map(pos => ({
     key: pos.id,
@@ -79,7 +76,7 @@ const Voter_ElectionPage = () => {
         </Typography.Title>
       </Flex>
 
-      <Collapse onChange={onChange} items={items} defaultActiveKey={defaultActiveKey} />
+      <Collapse items={items} activeKey={activeKeys} />
       
     </React.Fragment>
   )
