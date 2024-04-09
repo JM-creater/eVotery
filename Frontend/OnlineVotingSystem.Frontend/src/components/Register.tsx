@@ -562,13 +562,13 @@ const Register: React.FC = () => {
 
                                         <Input
                                             size="large"
-                                            maxLength={15}
+                                            maxLength={11}
                                             prefix={
                                                 <PhoneOutlined className="site-form-item-icon" />
                                             }
                                             count={{
                                                 show: true,
-                                                max: 12,
+                                                max: 11,
                                             }}
                                             placeholder="Phone Number"
                                             onKeyPress={(event) => {

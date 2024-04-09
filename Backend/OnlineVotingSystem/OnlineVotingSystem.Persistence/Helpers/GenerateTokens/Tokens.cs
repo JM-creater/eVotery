@@ -46,7 +46,7 @@ public class Tokens
         return tokenHandler.WriteToken(token);
     }
 
-    public static string GenerateTokenV2(LoginVoterDto user, UserRole userRole, IConfiguration configuration)
+    public static string GenerateTokenLogin(LoginVoterDto user, UserRole userRole, IConfiguration configuration)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -70,7 +70,28 @@ public class Tokens
             configuration["Jwt:Issuer"],
             configuration["Jwt:Audience"],
             claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.Now.AddHours(24),
+            signingCredentials: credentials
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public static string GenerateTokenSubmitVote(SubmitVoteDto vote, IConfiguration configuration)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim("UserId", vote.UserId.ToString()),
+            new Claim("CandidateId", vote.CandidateId.ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            configuration["Jwt:Issuer"],
+            configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddHours(24),
             signingCredentials: credentials
         );
         return new JwtSecurityTokenHandler().WriteToken(token);

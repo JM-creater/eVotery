@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Badge, Breadcrumb, Layout, Menu, theme } from 'antd';
 import '../admin/Admin_Main.css'
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/samples/Logo.png'
@@ -22,6 +22,8 @@ import Admin_BallotPosition from './Admin_BallotPosition';
 import Admin_ElectionTitle from './Admin_ElectionTitle';
 import Admin_Profile from './Admin_Profile';
 import Admin_Party from './Admin_Party';
+import { useAuth } from '../../utils/AuthContext';
+import axios from 'axios';
 
 type AdminType = {
   firstName?: string;
@@ -31,24 +33,41 @@ type AdminType = {
 
 const { Header, Content, Sider } = Layout;
 
+const GETVOTERS_COUNT_URL = 'https://localhost:7196/User/get-voters';
+
 const Admin_Main: React.FC = () => {
 
   const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
   const [admin, setAdmin] = useState<AdminType | null>(null);
+  const [countVoters, setCountVoters] = useState<number>(0);
   const navigate = useNavigate();
+  const { setLogout } = useAuth();
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const handleLogout = () => {
-    localStorage.removeItem('result');
+    setLogout();
     navigate('/');
   };
 
   const handleMenuClick = (menuItem: string) => {
     setSelectedItemMenu(menuItem);
   };
+
+  useEffect(() => {
+    const fetchVotersCount = async () => {
+      try {
+        const response = await axios.get(GETVOTERS_COUNT_URL);
+        setCountVoters(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    } 
+
+    fetchVotersCount();
+  }, []);
 
   useEffect(() => {
     const item = localStorage.getItem('result');
@@ -113,7 +132,7 @@ const Admin_Main: React.FC = () => {
           </Menu.SubMenu>
 
           <Menu.SubMenu key="manage" title="Manage">
-            <Menu.Item key="3"><GroupOutlined /> Voters</Menu.Item>
+            <Menu.Item key="3"><GroupOutlined /> Voters <Badge count={countVoters ?? 0}/> </Menu.Item>
             <Menu.Item key="4"><UnorderedListOutlined /> Position</Menu.Item>
             <Menu.Item key="5"><UsergroupAddOutlined /> Candidates</Menu.Item>
             <Menu.Item key="6"><UsergroupAddOutlined/> Party</Menu.Item>

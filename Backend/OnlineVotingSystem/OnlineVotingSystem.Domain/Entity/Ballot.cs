@@ -17,6 +17,7 @@ public class Ballot : BaseEntity
 
     public DateTime EndDate { get; set; }
     public bool IsActive { get; set; }
+    public bool SaveResponse { get; set; }
 
     public ICollection<Candidate> Candidates { get; set; } = new List<Candidate>();
 }

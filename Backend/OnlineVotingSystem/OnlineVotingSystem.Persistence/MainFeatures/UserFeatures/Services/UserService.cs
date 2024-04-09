@@ -44,9 +44,9 @@ public class UserService : IUserService
         return student;
     }
 
-    public async Task<User> GetById(int id)
+    public async Task<User> GetById(Guid id)
      => await context.Users
-                     .Where(v => v.VoterId.Equals(id))
+                     .Where(v => v.Id.Equals(id))
                      .FirstOrDefaultAsync();
 
     public async Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto)
@@ -306,12 +306,13 @@ public class UserService : IUserService
 
             if (string.IsNullOrEmpty(voter.Token))
             {
-                var token = Tokens.GenerateTokenV2(dto, voter.Role, configuration);
+                var token = Tokens.GenerateTokenLogin(dto, voter.Role, configuration);
 
                 if (!string.IsNullOrEmpty(token))
                 {
                     voter.Token = token;
                     response.Token = token;
+                    await context.SaveChangesAsync();
                 }
                 else
                 {
@@ -664,4 +665,7 @@ public class UserService : IUserService
 
         return response;
     }
+
+    public int GetVotersCount()
+        => context.Users.Count(u => u.Role == UserRole.Voter && (!u.IsValidate || u.Role != UserRole.Voter));
 }

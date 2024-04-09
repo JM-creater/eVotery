@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }: Props) => {
 
     const setLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('result');
         setAuthToken(null);
     };
 

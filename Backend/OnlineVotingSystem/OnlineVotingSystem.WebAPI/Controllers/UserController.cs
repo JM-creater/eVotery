@@ -155,7 +155,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var response = await service.GetById(id);
 
@@ -163,6 +163,17 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
+
+        return Ok(response);
+    }
+
+    [HttpGet("get-voters")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GetVoters()
+    {
+        var response = service.GetVotersCount();
 
         return Ok(response);
     }

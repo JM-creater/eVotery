@@ -7,7 +7,7 @@ namespace OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
 public interface IUserService
 {
     Task<List<User>> GetAll();
-    Task<User> GetById(int id);
+    Task<User> GetById(Guid id);
     Task<ApiResponse<User>> StepOneRegister(StepOneRegisterDto dto);
     Task<ApiResponse<User>> StepTwoRegister(Guid id, StepTwoRegisterDto dto);
     Task<ApiResponse<User>> StepThreeRegister(Guid id, StepThreeRegisterDto dto);
@@ -23,4 +23,5 @@ public interface IUserService
     Task<bool> IsResetTokenValid(string token);
     Task<ApiResponse<User>> Delete(Guid id);
     Task<ApiResponse<User>> RememberMe(Guid id);
+    int GetVotersCount();
 }
