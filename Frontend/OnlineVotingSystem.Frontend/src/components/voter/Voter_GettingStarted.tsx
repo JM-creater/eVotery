@@ -2,7 +2,7 @@ import { Button, Flex, Result } from "antd"
 import Voter_ElectionPage from "./Voter_ElectionPage";
 import React, { useState } from "react";
 
-const Voter_GettingStarted = () => {
+const Voter_GettingStarted: React.FC = () => {
 
     const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
 

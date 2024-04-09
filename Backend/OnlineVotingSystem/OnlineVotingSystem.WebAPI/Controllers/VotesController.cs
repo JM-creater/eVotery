@@ -24,4 +24,15 @@ public class VotesController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("get-all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAllVotes()
+    {
+        var response = await service.GetSubmitVoteList();
+
+        return Ok(response);    
+    }
 }

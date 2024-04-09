@@ -6,5 +6,6 @@ namespace OnlineVotingSystem.Persistence.MainFeatures.VotesFeatures.IServices;
 
 public interface IVotesService
 {
-    Task<ApiResponse<Vote>> SubmitVote(SubmitVoteDto dto);
+    Task<SubmitVoteResponse<Vote>> SubmitVote(SubmitVoteDto dto);
+    Task<List<Vote>> GetSubmitVoteList();
 }

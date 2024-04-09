@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, Collapse, Flex, Typography } from "antd";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Voter_VotingComplete from './Voter_VotingComplete';
 
 type CandidateType = {
   id: string;
@@ -17,17 +18,26 @@ type PositionType = {
   candidates: CandidateType[];
 }
 
+type UserType = {
+  id?: string;
+  isVoted?: boolean;
+}
+
 const GETAll_POSITION_URL = 'https://localhost:7196/Position/get-all';
 const SUBMITVOTE_URL = 'https://localhost:7196/Votes/submit-vote';
+const GET_USERID_URL = 'https://localhost:7196/User/get-by-id/';
 
-const Voter_ElectionPage = () => {
+const Voter_ElectionPage: React.FC = () => {
 
   const [position, setPosition] = useState<PositionType[]>([]);
   const [activeKeys, setActiveKeys] = useState<string[]>([]);
   const [selectedVotes, setSelectedVotes] = useState<{[candidateId: string]: boolean}>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     const fetchPosition = async () => {
+
       try {
         const response = await axios.get(GETAll_POSITION_URL);
         setPosition(response.data);
@@ -42,6 +52,21 @@ const Voter_ElectionPage = () => {
     fetchPosition();
   }, []);
 
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const userId = localStorage.getItem('userId');
+
+      try {
+        const response = await axios.get(`${GET_USERID_URL}${userId}`);
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUserId();
+  }, []);
+  
   const handleVoteChange = (candidateId: string, checked: boolean) => {
     setSelectedVotes({
       ...selectedVotes,
@@ -84,46 +109,75 @@ const Voter_ElectionPage = () => {
   }));
 
   const handleSubmitVote = async () => {
+    setIsLoading(true);
+
+    const hasSelectedVotes = Object.entries(selectedVotes).some(checked => checked);
+    if(!hasSelectedVotes) {
+      toast.error('Please select at least one candidate to vote for.');
+      setIsLoading(false);
+      return;
+    }
+
     const userId = localStorage.getItem('userId');
 
     const votePromises = Object.entries(selectedVotes).filter(([, checked]) => checked).map(async ([candidateId]) => {
-      const response = await axios.post(SUBMITVOTE_URL, {
-        UserId: userId,
-        CandidateId: candidateId,
-      });
-      return response.data;
+      try {
+        const response = await axios.post(SUBMITVOTE_URL, {
+          UserId: userId,
+          CandidateId: candidateId,
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error submitting vote for candidateId:", candidateId, error);
+        throw error; 
+      }
     });
 
-    Promise.all(votePromises).then(() => {
+    try {
+      await Promise.all(votePromises);
       toast.success('Vote submitted');
       setSelectedVotes({});
-    }).catch((error) => {
-      console.error(error);
-    });
+      if (currentUser) {
+        setCurrentUser({ ...currentUser, isVoted: true });
+      }
+    } catch (error) {
+      console.error("Error submitting votes:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <React.Fragment>
-
-      <Flex justify='center' align='center'>
-        <Typography.Title level={1}>
-          ELECTION 2024
-        </Typography.Title>
-      </Flex>
-
-      <Collapse items={items} activeKey={activeKeys} />
-
-      <Flex justify='center' align='center'>
-        <Button
-          size='large'
-          style={{  width: '40vh', margin: 30 }}
-          type='primary'
-          onClick={handleSubmitVote}
-        >
-          Submit
-        </Button>
-      </Flex>
+      {
+        !currentUser?.isVoted ? (
+          <React.Fragment>
+            <Flex justify='center' align='center'>
+              <Typography.Title level={1}>
+                ELECTION 2024
+              </Typography.Title>
+            </Flex>
       
+            <Collapse items={items} activeKey={activeKeys} />
+      
+            <Flex justify='center' align='center'>
+              <Button
+                size='large'
+                style={{  width: '40vh', margin: 30 }}
+                type='primary'
+                onClick={handleSubmitVote}
+                loading={isLoading}
+              >
+                Submit
+              </Button>
+            </Flex>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Voter_VotingComplete />
+          </React.Fragment>
+        )
+      }
     </React.Fragment>
   )
 }

@@ -1,6 +1,6 @@
-// import React from 'react'
+import React from 'react'
 
-const Voter_HomePage = () => {
+const Voter_HomePage: React.FC = () => {
   return (
     <div>Voter_HomePage</div>
   )
