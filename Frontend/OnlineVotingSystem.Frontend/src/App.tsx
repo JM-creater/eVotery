@@ -11,7 +11,7 @@ import Reset_Password from './components/Reset_Password'
 import Not_FoundPage from './components/common/Not_FoundPage'
 import Voter_MainPage from './components/voter/Voter_MainPage'
 import { AuthProvider } from './utils/AuthProvider'
-import PrivateRoute from './utils/private_route'
+// import PrivateRoute from './utils/private_route'
 
 function App() {
 
@@ -42,7 +42,7 @@ function App() {
 
             <Route path='/home-page' element={ <Voter_MainPage/> } />
 
-            <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } />
+            <Route path='/admin-main' element={ <Admin_Main/> } />
 
             <Route path="*" element={<Not_FoundPage />} />
 
