@@ -12,7 +12,6 @@ using OnlineVotingSystem.Persistence.Helpers.EmailContent;
 using OnlineVotingSystem.Persistence.Helpers.GenerateTokens;
 using OnlineVotingSystem.Persistence.Helpers.Security;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.Services;
