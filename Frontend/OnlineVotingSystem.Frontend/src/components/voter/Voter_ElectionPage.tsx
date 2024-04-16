@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Checkbox, Collapse, Flex, Typography } from "antd";
+import { Badge, Button, Checkbox, Collapse, Descriptions, Flex, Modal, Space, Typography } from "antd";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Voter_VotingComplete from './Voter_VotingComplete';
+import '../voter/Voter_ElectionPage.css'
+import { CaretRightOutlined, SearchOutlined } from '@ant-design/icons';
+import type { DescriptionsProps } from 'antd';
 
 type CandidateType = {
   id: string;
@@ -34,6 +37,86 @@ const Voter_ElectionPage: React.FC = () => {
   const [selectedVotes, setSelectedVotes] = useState<{[candidateId: string]: boolean}>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const descriptionItems: DescriptionsProps['items'] = [
+    {
+      key: '1',
+      label: 'Product',
+      children: 'Cloud Database',
+    },
+    {
+      key: '2',
+      label: 'Billing Mode',
+      children: 'Prepaid',
+    },
+    {
+      key: '3',
+      label: 'Automatic Renewal',
+      children: 'YES',
+    },
+    {
+      key: '4',
+      label: 'Order time',
+      children: '2018-04-24 18:00:00',
+    },
+    {
+      key: '5',
+      label: 'Usage Time',
+      span: 2,
+      children: '2019-04-24 18:00:00',
+    },
+    {
+      key: '6',
+      label: 'Status',
+      span: 3,
+      children: <Badge status="processing" text="Running" />,
+    },
+    {
+      key: '7',
+      label: 'Negotiated Amount',
+      children: '$80.00',
+    },
+    {
+      key: '8',
+      label: 'Discount',
+      children: '$20.00',
+    },
+    {
+      key: '9',
+      label: 'Official Receipts',
+      children: '$60.00',
+    },
+    {
+      key: '10',
+      label: 'Config Info',
+      children: (
+        <>
+          Data disk type: MongoDB
+          <br />
+          Database version: 3.4
+          <br />
+          Package: dds.mongo.mid
+          <br />
+          Storage space: 10 GB
+          <br />
+          Replication factor: 3
+          <br />
+          Region: East China 1
+          <br />
+        </>
+      ),
+    },
+  ];
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const exitModal = () => {
+    setIsModalOpen(false);
+  };
+
 
   useEffect(() => {
     const fetchPosition = async () => {
@@ -76,7 +159,7 @@ const Voter_ElectionPage: React.FC = () => {
 
   const items = position.map(pos => ({
     key: pos.id,
-    label: pos.name,
+    label: <div className="position-label"><CaretRightOutlined />{pos.name}</div>, 
     showArrow: false,
     children: pos.candidates.length > 0 ? (
       <React.Fragment>
@@ -88,7 +171,7 @@ const Voter_ElectionPage: React.FC = () => {
                   key={cand.id}
                   justify='flex-start'
                   align='center'
-                  gap='middle'
+                  gap='large'
                 >
                   <Checkbox 
                     onChange={(e) => handleVoteChange(cand.id, e.target.checked)}
@@ -100,7 +183,17 @@ const Voter_ElectionPage: React.FC = () => {
                     width={150}
                     style={{ maxWidth: '100%' }}
                   />
-                  <h1>{`${cand.firstName} ${cand.lastName}`}</h1>
+                  <Flex align='center' vertical>
+                    <h1>{`${cand.firstName} ${cand.lastName}`}</h1>
+                    <Button 
+                      size='small' 
+                      type="primary" 
+                      icon={<SearchOutlined />}
+                      onClick={showModal}
+                    >
+                      Read More
+                    </Button>
+                  </Flex>
                 </Flex>
               </div>
             ))
@@ -113,8 +206,6 @@ const Voter_ElectionPage: React.FC = () => {
       </Flex>
     )
   }));
-  
-  
 
   const handleSubmitVote = async () => {
     setIsLoading(true);
@@ -157,35 +248,55 @@ const Voter_ElectionPage: React.FC = () => {
 
   return (
     <React.Fragment>
-      {
-        !currentUser?.isVoted ? (
-          <React.Fragment>
-            <Flex justify='center' align='center'>
-              <Typography.Title level={1}>
-                ELECTION 2024
-              </Typography.Title>
-            </Flex>
-      
-            <Collapse items={items} activeKey={activeKeys} />
-      
-            <Flex justify='center' align='center'>
-              <Button
-                size='large'
-                style={{  width: '40vh', margin: 30 }}
-                type='primary'
-                onClick={handleSubmitVote}
-                loading={isLoading}
-              >
-                Submit
+      <React.Fragment>
+        {
+          !currentUser?.isVoted ? (
+            <React.Fragment>
+              <Flex justify='center' align='center'>
+                <Typography.Title level={1}>
+                  ELECTION 2024
+                </Typography.Title>
+              </Flex>
+        
+              <Collapse items={items} activeKey={activeKeys} />
+        
+              <Flex justify='center' align='center'>
+                <Button
+                  size='large'
+                  style={{  width: '40vh', margin: 30 }}
+                  type='primary'
+                  onClick={handleSubmitVote}
+                  loading={isLoading}
+                >
+                  Submit
+                </Button>
+              </Flex>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Voter_VotingComplete />
+            </React.Fragment>
+          )
+        }
+      </React.Fragment>
+
+      <Modal
+        open={isModalOpen}
+        onCancel={exitModal}
+        centered
+        footer={
+          <Space>
+              <Button type="primary" onClick={exitModal}>
+                  Okay
               </Button>
-            </Flex>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Voter_VotingComplete />
-          </React.Fragment>
-        )
-      }
+          </Space>
+        }
+        width={800}
+      >
+        <Descriptions title="User Info" layout="vertical" bordered items={descriptionItems} />
+      </Modal>
+
+
     </React.Fragment>
   )
 }
