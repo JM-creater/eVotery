@@ -1,0 +1,10 @@
+.stats-container,
+.button-download-container {
+    margin-bottom: 25px;
+}
+
+.title-vote-tally {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
