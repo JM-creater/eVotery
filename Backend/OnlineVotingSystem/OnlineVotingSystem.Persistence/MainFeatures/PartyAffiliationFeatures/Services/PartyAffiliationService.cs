@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using Microsoft.EntityFrameworkCore;
 using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Domain.Dtos;
@@ -7,7 +6,6 @@ using OnlineVotingSystem.Domain.Entity;
 using OnlineVotingSystem.Domain.Responses;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.IServices;
-using static System.Collections.Specialized.BitVector32;
 
 namespace OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.Services;
 
@@ -62,6 +60,7 @@ public class PartyAffiliationService : IPartyAffiliationService
 
     public async Task<List<PartyAffiliation>> GetAll()
         => await context.PartyAffiliations
+                        .AsNoTracking()
                         .OrderByDescending(pa => pa.DateCreated)
                         .ToListAsync();
 

@@ -15,7 +15,7 @@ import {
     Input, 
     Upload, 
     UploadProps, 
-    message 
+    message
 } from 'antd';
 import axios from 'axios';
 import Search from 'antd/es/input/Search';
@@ -70,6 +70,8 @@ const Admin_Party: React.FC = () => {
     const[isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const[isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const[selectedParty, setSelectedParty] = useState<PartyAffiliationType | null>(null);
+    const[errorFields, setErrorFields] = useState<string>("");
+    const[form] = Form.useForm();
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
 
@@ -114,17 +116,28 @@ const Admin_Party: React.FC = () => {
     };
 
     const exitModal = () => {
+        form.resetFields();
         setIsModalOpen(false);
     };
 
     const showEditModal = (record: PartyAffiliationType) => {
         setSelectedParty(record);
+        form.setFieldsValue({
+            partyName: record.partyName,
+            logoImage: record.logoImage ? [{
+                uid: '-1',
+                name: record.logoImage,
+                status: 'done',
+                url: `https://localhost:7196/${record.logoImage}`
+            }] : []
+        });
         setIsEditModalOpen(true);
-    }
+    };
 
     const exitEditModal = () => {
+        form.resetFields();
         setIsEditModalOpen(false);
-    }
+    };
 
     const handleAddParty = async (values: PartyAffiliationType) => {
         try {
@@ -148,15 +161,16 @@ const Admin_Party: React.FC = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+            
             if (response.data.responseCode === 200) {
+                form.resetFields();
                 const newParty = response.data.result;
                 setParty(prevParty => [...prevParty, newParty]);
-
-                toast.success('Successfully Created a Party.');
+                setFilteredParty(prevParty => [...prevParty, newParty]);
                 setIsModalOpen(false);
-            } else if (response.data.responseCode === 400) {
-                toast.error('Create a party failed.');
+            } else if (response.data.responseCode === 400 || response.data.responseCode === 500) {
+                const message = response.data.errorMessage;
+                setErrorFields(message);
             } else {
                 toast.error('An error occurred. Please try again later.');
             }
@@ -380,9 +394,11 @@ const Admin_Party: React.FC = () => {
                     </Space>
                 }
                 width={600}
+                maskClosable={false}
             >
 
                 <Form
+                    form={form}
                     initialValues={{ remember: true }}
                     id='create-party-form'
                     onFinish={handleAddParty}
@@ -401,7 +417,15 @@ const Admin_Party: React.FC = () => {
                                     label='Party Name'
                                     rules={[{
                                         required: true,
-                                        message: 'Please enter party name'
+                                        message: (
+                                            <React.Fragment>
+                                                errorFields && (
+                                                    errorFields
+                                                ) : (
+                                                    <p>Please enter party name</p>
+                                                )
+                                            </React.Fragment>
+                                        )
                                     }]}
                                 >
                                     <Input
@@ -463,10 +487,12 @@ const Admin_Party: React.FC = () => {
                     </Space>
                 }
                 width={600}
+                maskClosable={false}
             >
                 {
                     selectedParty && (
                         <Form
+                            form={form}
                             initialValues={{ remember: true }}
                             id='update-party-form'
                             onFinish={(values: PartyAffiliationType) => handleUpdateParty(selectedParty.id as string, values)}
@@ -505,7 +531,6 @@ const Admin_Party: React.FC = () => {
                                         <Form.Item<PartyAffiliationType>
                                         name='logoImage'
                                         label='Logo Image'
-                                        initialValue={selectedParty.logoImage ? [{ uid: '-1', name: selectedParty.logoImage, status: 'done', url: `https://localhost:7196/${selectedParty.logoImage}` }] : []}
                                         rules={[{ 
                                             required: true, 
                                             message: 'Please upload an image.' 
@@ -514,11 +539,8 @@ const Admin_Party: React.FC = () => {
                                         getValueFromEvent={(e) => {
                                             if (Array.isArray(e)) {
                                                 return e;
-                                            } else if (e && e.fileList && Array.isArray(e.fileList)) {
-                                                return e.fileList;
-                                            } else {
-                                                return [];
                                             }
+                                            return e && e.fileList;
                                         }}
                                     >
                                         <Upload {...props} listType="picture">

@@ -624,7 +624,10 @@ const Register: React.FC = () => {
                                     <Form.Item<StepTwoType>
                                         name="confirmPassword"
                                         rules={[
-                                            { required: true, message: 'Please confirm your password.' },
+                                            { 
+                                                required: true, 
+                                                message: 'Please confirm your password.' 
+                                            },
                                             ({ getFieldValue }) => ({
                                                 validator(_, value) {
                                                     if (!value || getFieldValue('password') === value) {

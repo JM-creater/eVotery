@@ -136,7 +136,10 @@ const Login: React.FC = () => {
 
                 <Form.Item<VoterType>
                     name="voterIdOrEmail"
-                    rules={[{ required: true, message: 'Please input your Voter ID or Email.' }]}
+                    rules={[{ 
+                        required: true, 
+                        message: 'Please input your Voter ID or Email.' 
+                    }]}
                 >
                     <Input 
                         size='large' 

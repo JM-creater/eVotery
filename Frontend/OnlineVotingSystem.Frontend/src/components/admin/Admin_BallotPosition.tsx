@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 
 const GETBALLOT_URL = 'https://localhost:7196/Ballot/getall-ballots';
 const CREATE_BALLOT_URL = 'https://localhost:7196/Ballot/create-ballot';
-const DELETE_BALLOT_URL = 'https://localhost:7196/Ballot/delete-ballot/'
+const DELETE_BALLOT_URL = 'https://localhost:7196/Ballot/delete-ballot/';
 const GETALLELECTION_URL = 'https://localhost:7196/Election/getall-elections';
 const SEARCHBALLOT_URL = 'https://localhost:7196/Search/search-ballot?searchQuery=';
 const UPDATE_BALLOT_URL = 'https://localhost:7196/Ballot/update-ballot/';
@@ -49,6 +49,7 @@ const Admin_BallotPosition:React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [election, setElection] = useState<ElectionType[]>([]);
     const [selectedBallot, setSelectedBallot] = useState<BallotType | null>(null);
+    const [form] = Form.useForm();
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
 
@@ -98,6 +99,10 @@ const Admin_BallotPosition:React.FC = () => {
         fetchElection();
     }, []);
 
+    useEffect(() => {
+        
+    }, []);
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -111,6 +116,7 @@ const Admin_BallotPosition:React.FC = () => {
     };
 
     const exitModal = () => {
+        form.resetFields();
         setIsModalOpen(false);
     };
 
@@ -120,6 +126,7 @@ const Admin_BallotPosition:React.FC = () => {
     };
 
     const exitEditModal = () => {
+        form.resetFields();
         setIsEditModalOpen(false);
     };
 
@@ -185,11 +192,10 @@ const Admin_BallotPosition:React.FC = () => {
             });
 
             if (response.data.responseCode === 200) {
+                form.resetFields();
                 const newBallot = response.data.result;
                 setBallot(prevBallots => [...prevBallots, newBallot]);
                 setFilteredBallots(prevBallots => [...prevBallots, newBallot]);
-
-                toast.success('Successfully Created a Ballot.');
                 setIsModalOpen(false);
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a ballot failed.');
@@ -235,11 +241,10 @@ const Admin_BallotPosition:React.FC = () => {
             });
     
             if (response.data.responseCode === 200) {
+                form.resetFields();
                 const updatedResponse = await axios.get(GETBALLOT_URL);
                 setBallot(updatedResponse.data);
                 setFilteredBallots(updatedResponse.data);
-    
-                toast.success('Successfully Updated a Ballot.');
                 setIsEditModalOpen(false);
             } else if (response.data.responseCode === 400) {
                 toast.error('Update a ballot failed.');
@@ -346,9 +351,11 @@ const Admin_BallotPosition:React.FC = () => {
                     </Space>
                 }
                 width={800}
+                maskClosable={false}
             >
 
                 <Form
+                    form={form}
                     id="create-ballot-form" 
                     onFinish={handleCreateBallot}
                     onFinishFailed={onFinishFailed}
@@ -471,6 +478,7 @@ const Admin_BallotPosition:React.FC = () => {
                 {
                     selectedBallot && (
                         <Form
+                            form={form}
                             id="update-candidate-form" 
                             onFinish={(values: BallotType) => handleUpdateBallot(selectedBallot.id as string, values)}
                             onFinishFailed={onFinishFailed}
