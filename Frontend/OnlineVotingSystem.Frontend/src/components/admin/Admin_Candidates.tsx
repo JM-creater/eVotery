@@ -117,9 +117,6 @@ const Admin_Candidates:React.FC = () => {
     const [form] = Form.useForm();
     const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null);
 
-
-    const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
-
     const showDrawer = () => {
         setOpen(true);
     };
@@ -224,12 +221,9 @@ const Admin_Candidates:React.FC = () => {
             if (response.data.responseCode === 200) {
                 const newCandidate = response.data.result;
                 setCandidates(prevCandidate => [...prevCandidate, newCandidate ]);
-
-                toast.success('Successfully Created a Candidate.');
+                setFilteredCandidates(prevCandidate => [...prevCandidate, newCandidate])
                 setOpen(false);
                 form.resetFields();
-                await delay(300);
-                window.location.reload();
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a candidate failed.');
             } else {
@@ -468,7 +462,7 @@ const Admin_Candidates:React.FC = () => {
                                         avatar={
                                             <Avatar 
                                                 src={
-                                                    candidate.gender === "Female"
+                                                    candidate.gender === "1"
                                                     ? "https://api.dicebear.com/7.x/miniavs/svg?seed=9" 
                                                     : "https://api.dicebear.com/7.x/miniavs/svg?seed=8"} 
                                                 />
@@ -485,6 +479,7 @@ const Admin_Candidates:React.FC = () => {
                 {/* Add Drawer */}
 
                 <Drawer 
+                    maskClosable={false}
                     title="Create a new candidate" 
                     onClose={closeDrawer} 
                     open={open}
@@ -666,6 +661,7 @@ const Admin_Candidates:React.FC = () => {
                 {/* Edit Drawer */}
 
                 <Drawer 
+                    maskClosable={false}
                     title="Create a new candidate" 
                     onClose={closeEditDrawer} 
                     open={editOpen}
@@ -690,6 +686,7 @@ const Admin_Candidates:React.FC = () => {
                         selectedCandidate && (
                             <Form 
                                 id="create-candidate-form" 
+                                key={selectedCandidate.id}
                                 onFinish={(values: CandidateType) => handleUpdateCandidate(selectedCandidate.id as string, values)}
                                 onFinishFailed={onFinishFailed}
                                 layout="vertical"

@@ -30,7 +30,6 @@ const Admin_Position: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [newPosition, setNewPosition] = useState<string>('');
 
-
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
 
     const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
@@ -113,14 +112,8 @@ const Admin_Position: React.FC = () => {
             title: 'Active Position',
             dataIndex: 'isActive',
             key: 'isActive',
-            render: (record: PositionType) => (
-                <span>
-                    {
-                        record.isActive 
-                        ? 'Not Active'
-                        : 'Active'
-                    }
-                </span>
+            render: (isActive: boolean) => (
+                <span>{isActive ? 'Active' : 'Not Active'}</span>
             )
         },
         {
@@ -261,7 +254,7 @@ const Admin_Position: React.FC = () => {
     };
 
     const handleSearchEnter = async (searchQuery: string | null | undefined) => {
-        if (searchQuery === null || searchQuery === undefined) {
+        if (searchQuery === null || searchQuery === undefined || searchQuery.trim() === '') {
             return setFilteredPosition([]);
         }
 

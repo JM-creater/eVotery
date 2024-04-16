@@ -28,6 +28,7 @@ const Admin_ElectionTitle:React.FC = () => {
     const[isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const[isLoading, setIsLoading] = useState<boolean>(false);
     const[selectedElection, setSelectedElection] = useState<ElectionType | null>(null);
+    const [form] = Form.useForm();
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />
 
@@ -69,6 +70,7 @@ const Admin_ElectionTitle:React.FC = () => {
     };
 
     const exitModal = () => {
+        form.resetFields();
         setIsModalOpen(false);
     };
 
@@ -78,6 +80,7 @@ const Admin_ElectionTitle:React.FC = () => {
     };
 
     const exitEditModal = () => {
+        form.resetFields();
         setIsEditModalOpen(false);
     };
 
@@ -152,11 +155,10 @@ const Admin_ElectionTitle:React.FC = () => {
             });
 
             if (response.data.responseCode === 200) {
+                form.resetFields();
                 const newElection = response.data.result;
                 setElection(prevElections => [...prevElections, newElection]);
                 setFilteredElections(prevElections => [...prevElections, newElection]);
-
-                toast.success('Successfully Created a Election.');
                 setIsModalOpen(false);
             } else if (response.data.responseCode === 400) {
                 toast.error('Create a election failed.');
@@ -187,8 +189,6 @@ const Admin_ElectionTitle:React.FC = () => {
                 const updatedResponse = await axios.get(GETALL_ELECTION_URL);
                 setElection(updatedResponse.data);
                 setFilteredElections(updatedResponse.data);
-    
-                toast.success('Successfully Updated a Election.');
                 setIsEditModalOpen(false);
             } else if (response.data.responseCode === 400) {
                 toast.error('Update a election failed.');
@@ -312,9 +312,11 @@ const Admin_ElectionTitle:React.FC = () => {
                     </Space>
                 }
                 width={800}
+                maskClosable={false}
             >
 
                 <Form
+                    form={form}
                     id="create-election-form" 
                     onFinish={handleCreateElection}
                     onFinishFailed={onFinishFailed}
