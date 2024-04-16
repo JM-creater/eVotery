@@ -66,7 +66,15 @@ const Admin_Main: React.FC = () => {
       }
     } 
 
-    fetchVotersCount();
+    const handleFocus = () => {
+      fetchVotersCount();
+    }
+
+    window.addEventListener("focus", handleFocus);
+    
+    return () => {
+      window.removeEventListener("focus", handleFocus)
+    }
   }, []);
 
   useEffect(() => {
