@@ -408,18 +408,12 @@ const Admin_VotersList: React.FC = () => {
                                                 } 
                                             />
                                         </Form.Item>
-
                                     </Form>
-
                                 </div>
-
                             </React.Fragment>
-
                         )
                     }
-                    
                 </div>
-                
             </Modal>
             
         </React.Fragment>
