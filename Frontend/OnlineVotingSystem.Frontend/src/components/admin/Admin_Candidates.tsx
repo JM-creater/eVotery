@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons'
 import { 
     Avatar, 
+    Badge, 
     Button, 
     Card, 
     Col, 
@@ -53,7 +54,7 @@ type CandidateType = {
     partyAffiliationId?: string;
     gender?: string;
     biography?: string;
-    status?: CandidateStataus[];
+    status?: CandidateStataus;
 }
 
 type FileType = {
@@ -416,61 +417,77 @@ const Admin_Candidates:React.FC = () => {
                     {
                         filteredCandidates.map(
                             candidate => (
-                                <Card
-                                    key={candidate.id}
-                                    hoverable
-                                    style={{ width: 300 }}
-                                    cover={
-                                        <div 
-                                            style={{ 
-                                                height: 160,
-                                                overflow: 'hidden'
-                                            }}
+                                <React.Fragment key={candidate.id}>
+                                    <Badge.Ribbon 
+                                        text={candidate.status === CandidateStataus.Active ? (
+                                                'Active' 
+                                            ) : (
+                                                'Not Active'
+                                            )}
+                                        color={candidate.status === CandidateStataus.Active ? (
+                                            'green'
+                                        ) : (
+                                            'red'
+                                        )}
+                                    >
+                                        <Card
+                                            key={candidate.id}
+                                            hoverable
+                                            style={{ width: 300 }}
+                                            cover={
+                                                <div 
+                                                    style={{ 
+                                                        height: 160,
+                                                        overflow: 'hidden'
+                                                    }}
+                                                >
+                                                    <img
+                                                        alt="candidate-image"
+                                                        src={`https://localhost:7196/${candidate.image}`}
+                                                        style={{ 
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            objectFit: 'cover'
+                                                        }}
+                                                    />
+                                                </div>
+                                            }
+                                            actions={[
+                                                <Popconfirm
+                                                    title="Delete Candidate"
+                                                    description="Are you sure you want to delete this candidates?"
+                                                    onConfirm={() => handleDeleteCandidate(candidate.id as string)}
+                                                    onCancel={handleCancel}
+                                                    okText="Confirm"
+                                                    cancelText="Cancel"
+                                                >
+                                                    <SettingOutlined key="setting" />,
+                                                </Popconfirm>,
+                                                <EditOutlined 
+                                                    key="edit" 
+                                                    onClick={() => showEditDrawer(candidate as CandidateType)} 
+                                                />,
+                                                <Dropdown overlay={menu} placement="bottom" arrow>  
+                                                    <EllipsisOutlined key="ellipsis" />
+                                                </Dropdown>
+                                            ]}
                                         >
-                                            <img
-                                                alt="candidate-image"
-                                                src={`https://localhost:7196/${candidate.image}`}
-                                                style={{ 
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    objectFit: 'cover'
-                                                }}
+                                            <Meta
+                                                avatar={
+                                                    <Avatar 
+                                                        src={
+                                                            candidate.gender === "1"
+                                                            ? "https://api.dicebear.com/7.x/miniavs/svg?seed=9" 
+                                                            : "https://api.dicebear.com/7.x/miniavs/svg?seed=8"} 
+                                                        />
+                                                }
+                                                title={`${candidate.firstName} ${candidate.lastName}`}
+                                                description={getPositionName(candidate.positionId as string)}
                                             />
-                                        </div>
-                                    }
-                                    actions={[
-                                        <Popconfirm
-                                            title="Delete Candidate"
-                                            description="Are you sure you want to delete this candidates?"
-                                            onConfirm={() => handleDeleteCandidate(candidate.id as string)}
-                                            onCancel={handleCancel}
-                                            okText="Confirm"
-                                            cancelText="Cancel"
-                                        >
-                                            <SettingOutlined key="setting" />,
-                                        </Popconfirm>,
-                                        <EditOutlined 
-                                            key="edit" 
-                                            onClick={() => showEditDrawer(candidate as CandidateType)} 
-                                        />,
-                                        <Dropdown overlay={menu} placement="bottom" arrow>  
-                                            <EllipsisOutlined key="ellipsis" />
-                                        </Dropdown>
-                                    ]}
-                                >
-                                    <Meta
-                                        avatar={
-                                            <Avatar 
-                                                src={
-                                                    candidate.gender === "1"
-                                                    ? "https://api.dicebear.com/7.x/miniavs/svg?seed=9" 
-                                                    : "https://api.dicebear.com/7.x/miniavs/svg?seed=8"} 
-                                                />
-                                        }
-                                        title={`${candidate.firstName} ${candidate.lastName}`}
-                                        description={getPositionName(candidate.positionId as string)}
-                                    />
-                                </Card>
+                                        </Card>
+                                    </Badge.Ribbon>
+                                </React.Fragment>
+                                
                             )
                         )
                     }
