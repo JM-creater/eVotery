@@ -55,23 +55,23 @@ const Admin_Dashboard: React.FC = () => {
             <div className='stats-container'>   
                 <Row gutter={16}>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
-                            <Statistic title="Active Users" value={112893} formatter={formatter} />
+                        <Card title="Election Positions" bordered={false}>
+                            <Statistic title="Total Positions" value={112893} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
-                            <Statistic title="Active Users" value={112893} formatter={formatter} />
+                        <Card title="Election Candidates" bordered={false}>
+                            <Statistic title="Total Candidates" value={112893} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
-                            <Statistic title="Active Users" value={112893} formatter={formatter} />
+                        <Card title="Registered Voters" bordered={false}>
+                            <Statistic title="Total Registered Voters" value={112893} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
-                            <Statistic title="Active Users" value={112893} formatter={formatter} />
+                        <Card title="Voting Participation" bordered={false}>
+                            <Statistic title="Voters Participated" value={112893} formatter={formatter} />
                         </Card>
                     </Col>
                 </Row>
