@@ -5,16 +5,17 @@ import { Button, Space, Table, Spin, Tooltip, Modal, Image, Form, Input, Switch 
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import Search from 'antd/es/input/Search';
+import admin_image from '../../assets/samples/admin image.png';
 
 const GETALLVOTERS_URL = 'https://localhost:7196/User/get-all';
-const GETBYVOTERSID_URL = 'https://localhost:7196/User/get-by-id/';
+const GETBY_ID_URL = 'https://localhost:7196/User/get-by-id/';
 const VALIDATION_URL = 'https://localhost:7196/User/validate/';
 const SEARCHVOTER_URL = 'https://localhost:7196/Search/search-voter?searchQuery=';
 const ACTIVATE_URL = 'https://localhost:7196/User/activated/';
 const DEACTIVATE_URL = 'https://localhost:7196/User/deactivated/';
 
 type VoterType = {
-    key?: string;
+    id?: string;
     voterId?: number;
     firstName?: string;
     lastName?: string;
@@ -84,6 +85,24 @@ const Admin_VotersList: React.FC = () => {
         
         fetchVoters();
     }, []);
+
+    const handleFetchVotersById = async (id: string) => {
+        setIsModalOpen(true);
+
+        try {
+            const response = await axios.get(`${GETBY_ID_URL}${id}`);
+
+            if (response.status === 200) { 
+                setSelectedVoter(response.data); 
+            } else if (response.status === 404) {
+                toast.error('Voters Id not found.');
+            } else {
+                toast.error('An error occurred. Please try again later.');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
     
     const columns = [
         {
@@ -98,7 +117,12 @@ const Admin_VotersList: React.FC = () => {
                         height={50}
                     />
                 ) : (
-                    <span>No Image Found</span>
+                    <img 
+                        src={admin_image} 
+                        alt="admin" 
+                        width={50} 
+                        height={50} 
+                    />
                 )
             )
         },
@@ -138,7 +162,7 @@ const Admin_VotersList: React.FC = () => {
                             type="primary" 
                             shape="circle" 
                             icon={<SearchOutlined />} 
-                            onClick={() => handleFetchVotersById(record.voterId as number)}
+                            onClick={() => handleFetchVotersById(record.id as string)}
                         />
                     </Tooltip>
 
@@ -161,24 +185,6 @@ const Admin_VotersList: React.FC = () => {
             ),
         },
     ];
-
-    const handleFetchVotersById = async (voterId: number) => {
-        setIsModalOpen(true);
-
-        try {
-            const response = await axios.get(`${GETBYVOTERSID_URL}${voterId}`);
-
-            if (response.status === 200) { 
-                setSelectedVoter(response.data); 
-            } else if (response.status === 404) {
-                toast.error('Voters Id not found.');
-            } else {
-                toast.error('An error occurred. Please try again later.');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const handleValidate = async (voterId: VoterType) => {
         try {
@@ -327,13 +333,26 @@ const Admin_VotersList: React.FC = () => {
 
                             <React.Fragment>
 
-                                <Image
-                                    width={400}
-                                    height={400}    
-                                    src={
-                                        `https://localhost:7196/${selectedVoter.voterImages}` 
+                                <React.Fragment>
+                                    {
+                                        selectedVoter.voterImages ? (
+                                            <Image
+                                                width={400}
+                                                height={400}    
+                                                src={
+                                                    `https://localhost:7196/${selectedVoter.voterImages}` 
+                                                }
+                                            />
+                                        ) : (
+                                            <img 
+                                                src={admin_image} 
+                                                alt="admin" 
+                                                width={300} 
+                                                height={300} 
+                                            />
+                                        )
                                     }
-                                />
+                                </React.Fragment>
 
                                 <div className="div-information-container">
                                     <Form>

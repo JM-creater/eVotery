@@ -70,7 +70,7 @@ const Admin_Party: React.FC = () => {
     const[isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const[isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const[selectedParty, setSelectedParty] = useState<PartyAffiliationType | null>(null);
-    const[errorFields, setErrorFields] = useState<string>("");
+    const[, setErrorFields] = useState<string>("");
     const[form] = Form.useForm();
 
     const antIcon = <LoadingOutlined style={{ fontSize: 50 }} spin />

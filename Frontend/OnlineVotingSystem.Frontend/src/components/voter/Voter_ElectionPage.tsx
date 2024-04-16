@@ -78,35 +78,43 @@ const Voter_ElectionPage: React.FC = () => {
     key: pos.id,
     label: pos.name,
     showArrow: false,
-    children: pos.candidates.length > 0 ? pos.candidates.map(cand => (
+    children: pos.candidates.length > 0 ? (
       <React.Fragment>
-        <Flex
-          key={cand.id}
-          justify='flex-start'
-          align='center'
-          gap='middle'
-        >
-          <Checkbox 
-            onChange={(e) => handleVoteChange(cand.id, e.target.checked)}
-            checked={!!selectedVotes[cand.id]}
-          />
-          <img
-            src={`https://localhost:7196/${cand.image}`}
-            alt={`${cand.firstName} ${cand.lastName}`}
-            width={150}
-            style={{ maxWidth: '100%' }}
-          />
-          <h1>{`${cand.firstName} ${cand.lastName}`}</h1>
+        <div className="candidate-select-container">
+          {
+            pos.candidates.map(cand => (
+              <div className='candidate-select-content'> 
+                <Flex
+                  key={cand.id}
+                  justify='flex-start'
+                  align='center'
+                  gap='middle'
+                >
+                  <Checkbox 
+                    onChange={(e) => handleVoteChange(cand.id, e.target.checked)}
+                    checked={!!selectedVotes[cand.id]}
+                  />
+                  <img
+                    src={`https://localhost:7196/${cand.image}`}
+                    alt={`${cand.firstName} ${cand.lastName}`}
+                    width={150}
+                    style={{ maxWidth: '100%' }}
+                  />
+                  <h1>{`${cand.firstName} ${cand.lastName}`}</h1>
+                </Flex>
+              </div>
+            ))
+          }
+        </div>
+      </React.Fragment>
+    ) : (
+      <Flex justify='center' align='center'>
+        <p>No candidates for this position.</p>
       </Flex>
-      </React.Fragment>
-    )) : (
-      <React.Fragment>
-        <Flex justify='center' align='center'>
-          <p>No candidates for this position.</p>
-        </Flex>
-      </React.Fragment>
     )
   }));
+  
+  
 
   const handleSubmitVote = async () => {
     setIsLoading(true);

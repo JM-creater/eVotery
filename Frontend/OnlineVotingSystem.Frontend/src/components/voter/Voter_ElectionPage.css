@@ -1,0 +1,11 @@
+.candidate-select-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.candidate-select-content {
+    padding: 12px;
+    flex: 1 0 45%;
+    max-width: 45%;
+}
