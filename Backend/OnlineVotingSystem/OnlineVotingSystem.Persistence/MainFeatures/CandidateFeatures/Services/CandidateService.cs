@@ -75,6 +75,7 @@ public class CandidateService : ICandidateService
     public async Task<List<Candidate>> GetAll()
         => await context.Candidates
                         .Include(c => c.PartyAffiliation)
+                        .Include(c => c.Votes)
                         .OrderByDescending(c => c.DateCreated)
                         .AsNoTracking()
                         .ToListAsync();
@@ -82,7 +83,21 @@ public class CandidateService : ICandidateService
     public async Task<Candidate> GetById(Guid id)
         => await context.Candidates
                         .Where(c => c.Id == id)
-                        .FirstOrDefaultAsync(); 
+                        .FirstOrDefaultAsync();
+    
+    public async Task<int> GetCountVotes(Guid id)
+    {
+        var candidateExists = await context.Candidates.AnyAsync(c => c.Id == id);
+
+        if (!candidateExists)
+        {
+            throw new InvalidOperationException("Candidate Not Found");
+        }
+
+        int countVotes = await context.Votes.CountAsync(v => v.CandidateId == id);
+
+        return countVotes;
+    }
 
     public async Task<ApiResponse<Candidate>> Update(Guid id, UpdateCandidateDto dto)
     {
