@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import Logo from '../../assets/samples/Logo.png'
+// import Logo from '../../assets/samples/Logo.png'
 import { useNavigate } from 'react-router-dom';
 import '../voter/Voter_MainPage.css'
 import { HomeOutlined } from '@ant-design/icons';
@@ -13,7 +13,7 @@ const { Header, Content } = Layout;
 const Voter_MainPage: React.FC = () => {
 
     const navigate = useNavigate();
-    const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
+    const [selectedItemMenu, setSelectedItemMenu] = useState<number>(1);
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -23,17 +23,40 @@ const Voter_MainPage: React.FC = () => {
         navigate('/');
     };
 
-    const handleMenuClick = (menuItem: string) => {
+    const handleMenuClick = (menuItem: number) => {
         setSelectedItemMenu(menuItem);
     };
 
+    const menuItems = [
+        {
+            key: '1',
+            label: 'Home',
+            onClick: () => handleMenuClick(1),
+        },
+        {
+            key: '2',
+            label: 'Election',
+            onClick: () => handleMenuClick(2),
+        },
+        {
+            key: '3',
+            label: 'Result',
+            onClick: () => handleMenuClick(3),
+        },
+        {
+            key: '4',
+            label: 'Logout',
+            onClick: handleLogout,
+        },
+    ];
+
     const renderComponent = () => {
         switch (selectedItemMenu) {
-            case '1':
+            case 1:
                 return <Voter_HomePage/>
-            case '2':
+            case 2:
                 return <Voter_GettingStarted/>
-            case '3': 
+            case 3: 
                 return <Voter_ResultPage/>
             default:
                 return null;
@@ -58,39 +81,38 @@ const Voter_MainPage: React.FC = () => {
                     theme="dark" 
                     mode="horizontal" 
                     style={{ flex: 1, minWidth: 0 }}
-                    onClick={({ key }) => handleMenuClick(key as string)}
-                >
-                    <div className="image-home-container">
-                        <img src={Logo} width={80} height={30} alt='image-home' />
-                    </div>
-
-                    <Menu.Item key="1">Home</Menu.Item>
-                    <Menu.Item key="2">Election</Menu.Item>
-                    <Menu.Item key="3">Result</Menu.Item>
-                    <Menu.Item key="4" onClick={handleLogout}>Logout</Menu.Item>
-                    
-                </Menu>
+                    items={menuItems}
+                />
+                {/* <div className="image-home-container">
+                    <img src={Logo} width={80} height={30} alt='image-home' />
+                </div> */}
             </Header>
 
             <Content style={{ padding: '0 48px' }}>
 
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item><HomeOutlined /> Home</Breadcrumb.Item>
+            <Breadcrumb
+                style={{ margin: '16px 0' }}
+                separator=">"
+                items={[
                     {
-                        selectedItemMenu === '2' && (
+                        onClick: () => handleMenuClick(1),
+                        title: (
                             <React.Fragment>
-                                <Breadcrumb.Item>Election</Breadcrumb.Item>
+                                <HomeOutlined />
+                                <span className="breadcrumb-item">Home</span>
                             </React.Fragment>
-                        )
-                    }
-                    {
-                        selectedItemMenu === '3' && (
-                            <React.Fragment>
-                                <Breadcrumb.Item>Result</Breadcrumb.Item>
-                            </React.Fragment>
-                        )
-                    }
-                </Breadcrumb>
+                        ),
+                    },
+                    ...(selectedItemMenu === 2 ? [{
+                        onClick: () => handleMenuClick(2),
+                        title: <span className="breadcrumb-item">Election</span>,
+                    }] : []),
+                    ...(selectedItemMenu === 3 ? [{
+                        onClick: () => handleMenuClick(3),
+                        title: <span className="breadcrumb-item">Result</span>,
+                    }] : [])
+                ]}
+            />
 
                 <div
                     style={{

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Badge, Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
 import '../admin/Admin_Main.css'
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/samples/Logo.png'
@@ -31,13 +31,13 @@ type AdminType = {
   voterImages?: string;
 }
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 
 const GETVOTERS_COUNT_URL = 'https://localhost:7196/User/get-voters';
 
 const Admin_Main: React.FC = () => {
 
-  const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
+  const [selectedItemMenu, setSelectedItemMenu] = useState<number>(1);
   const [admin, setAdmin] = useState<AdminType | null>(null);
   const [countVoters, setCountVoters] = useState<number>(0);
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Admin_Main: React.FC = () => {
     navigate('/');
   };
 
-  const handleMenuClick = (menuItem: string) => {
+  const handleMenuClick = (menuItem: number) => {
     setSelectedItemMenu(menuItem);
   };
 
@@ -88,28 +88,107 @@ const Admin_Main: React.FC = () => {
 
   const renderComponent = () => {
     switch (selectedItemMenu) {
-      case '1':
+      case 1:
         return <Admin_Dashboard/>
-      case '2':
+      case 2:
         return <Admin_Votes/>
-      case '3':
+      case 3:
         return <Admin_VotersList/>
-      case '4':
+      case 4:
         return <Admin_Position/>
-      case '5':
+      case 5:
         return <Admin_Candidates/>
-      case '6':
+      case 6:
         return <Admin_Party/>
-      case '7':
+      case 7:
         return <Admin_BallotPosition/>
-      case '8':
+      case 8:
         return <Admin_ElectionTitle/>
-      case '9':
+      case 9:
         return <Admin_Profile/>
       default:
         return null;
     }
   };
+
+  const items: MenuProps['items'] = [
+    {
+      key: 'reports',
+      label: 'Reports',
+      icon: <DashboardOutlined />,
+      children: [
+        { 
+          key: '1', 
+          label: 'Dashboard', 
+          icon: <DashboardOutlined /> 
+        },
+        { 
+          key: '2', 
+          label: 'Votes', 
+          icon: <InboxOutlined /> 
+        },
+      ],
+    },
+    {
+      key: 'manage',
+      label: 'Manage',
+      icon: <GroupOutlined />,
+      children: [
+        { 
+          key: '3', 
+          label: (
+            <React.Fragment>
+              <span>Voters <Badge count={countVoters ?? 0}/></span> 
+            </React.Fragment>
+          ), 
+          icon: <GroupOutlined /> 
+        },
+        { 
+          key: '4', 
+          label: 'Position', 
+          icon: <UnorderedListOutlined /> 
+        },
+        { 
+          key: '5', 
+          label: 'Candidates', 
+          icon: <UsergroupAddOutlined /> 
+        },
+        { 
+          key: '6', 
+          label: 'Party', 
+          icon: <UsergroupAddOutlined /> 
+        },
+      ],
+    },
+    {
+      key: 'settings',
+      label: 'Settings',
+      icon: <InboxOutlined />,
+      children: [
+        { 
+          key: '7', 
+          label: 'Ballot', 
+          icon: <InboxOutlined /> 
+        },
+        { 
+          key: '8', 
+          label: 'Election', 
+          icon: <FontColorsOutlined /> 
+        },
+        { 
+          key: '9', 
+          label: 'Profile', 
+          icon: <UserOutlined /> 
+        },
+      ],
+    },
+    {
+      key: '10',
+      label: 'Logout',
+      icon: <LogoutOutlined />,
+      onClick: () => handleLogout(),
+    },
+  ];
 
   return (
     <Layout hasSider>
@@ -125,37 +204,16 @@ const Admin_Main: React.FC = () => {
       >
         <div className="demo-logo-vertical" />
 
+        <div className="image-dashboard-container">
+          <img src={Logo} width={80} height={30} alt='image-dashboard' />
+        </div>
+
         <Menu
           theme="dark"
           mode="inline"
-          onClick={({ key }) => handleMenuClick(key as string)}
-        >
-          <div className="image-dashboard-container">
-            <img src={Logo} width={80} height={30} alt='image-dashboard' />
-          </div>
-
-          <Menu.SubMenu key="reports" title="Reports">
-            <Menu.Item key="1"><DashboardOutlined /> Dashboard</Menu.Item>
-            <Menu.Item key="2"><InboxOutlined /> Votes</Menu.Item>
-          </Menu.SubMenu>
-
-          <Menu.SubMenu key="manage" title="Manage">
-            <Menu.Item key="3"><GroupOutlined /> Voters <Badge count={countVoters ?? 0}/> </Menu.Item>
-            <Menu.Item key="4"><UnorderedListOutlined /> Position</Menu.Item>
-            <Menu.Item key="5"><UsergroupAddOutlined /> Candidates</Menu.Item>
-            <Menu.Item key="6"><UsergroupAddOutlined/> Party</Menu.Item>
-          </Menu.SubMenu>
-
-          <Menu.SubMenu key="settings" title="Settings">
-            <Menu.Item key="7"><InboxOutlined /> Ballot</Menu.Item>
-            <Menu.Item key="8"><FontColorsOutlined /> Election</Menu.Item>
-            <Menu.Item key="9"><UserOutlined /> Profile</Menu.Item>
-          </Menu.SubMenu>
-
-          <Menu.Item key="10" onClick={handleLogout} icon={<LogoutOutlined />}>
-            Logout
-          </Menu.Item>
-        </Menu>
+          onClick={({ key }) => handleMenuClick(parseInt(key))}
+          items={items}
+        />
       </Sider>
 
       <Layout style={{ marginLeft: 200 }}>
@@ -180,49 +238,53 @@ const Admin_Main: React.FC = () => {
         </Header>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 
-        <Breadcrumb style={{ margin: '0 0 10px' }}>
-          <Breadcrumb.Item><DashboardOutlined /> Dashboard</Breadcrumb.Item>
-          {selectedItemMenu === '2' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Votes</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '3' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Voters</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '4' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Position</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '5' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Candidates</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '6' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Party</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '7' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Ballot</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '8' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Election</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-          {selectedItemMenu === '9' && (
-              <React.Fragment>
-                  <Breadcrumb.Item>Profile</Breadcrumb.Item>
-              </React.Fragment>
-          )}
-        </Breadcrumb>
+        <Breadcrumb
+          style={{ margin: '0 0 10px' }}
+          separator=">"
+          items={[
+            {
+              onClick: () => handleMenuClick(1),
+              title: (
+                  <React.Fragment>
+                      <DashboardOutlined />
+                      <span className="breadcrumb-item-admin">Home</span>
+                  </React.Fragment>
+              ),
+            },
+            ...(selectedItemMenu === 2 ? [{
+              onClick: () => handleMenuClick(2),
+              title: <span className="breadcrumb-item-admin">Votes</span>,
+            }] : []),
+            ...(selectedItemMenu === 3 ? [{
+              onClick: () => handleMenuClick(3),
+              title: <span className="breadcrumb-item-admin">Voters</span>,
+            }] : []),
+            ...(selectedItemMenu === 4 ? [{
+              onClick: () => handleMenuClick(4),
+              title: <span className="breadcrumb-item-admin">Position</span>,
+            }] : []),
+            ...(selectedItemMenu === 5 ? [{
+              onClick: () => handleMenuClick(5),
+              title: <span className="breadcrumb-item-admin">Candidates</span>,
+            }] : []),
+            ...(selectedItemMenu === 6 ? [{
+              onClick: () => handleMenuClick(6),
+              title: <span className="breadcrumb-item-admin">Party</span>,
+            }] : []),
+            ...(selectedItemMenu === 7 ? [{
+              onClick: () => handleMenuClick(7),
+              title: <span className="breadcrumb-item-admin">Ballot</span>,
+            }] : []),
+            ...(selectedItemMenu === 8 ? [{
+              onClick: () => handleMenuClick(8),
+              title: <span className="breadcrumb-item-admin">Election</span>,
+            }] : []),
+            ...(selectedItemMenu === 9 ? [{
+              onClick: () => handleMenuClick(9),
+              title: <span className="breadcrumb-item-admin">Profile</span>,
+            }] : []),
+          ]}
+        />
 
           <div
             style={{
@@ -235,13 +297,13 @@ const Admin_Main: React.FC = () => {
             {renderComponent()}
           </div>
         </Content>
-        {/* <Footer 
+        <Footer 
           style={{ 
             textAlign: 'center'
           }}
         >
           eVotery ©{new Date().getFullYear()} Created by Joseph Martin Garado
-        </Footer> */}
+        </Footer>
       </Layout>
     </Layout>
   );

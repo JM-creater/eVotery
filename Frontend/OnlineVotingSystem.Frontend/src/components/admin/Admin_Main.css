@@ -27,3 +27,8 @@
     margin-left: 10px;
     font-size: 15px;
 }
+
+.breadcrumb-item-admin:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

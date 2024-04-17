@@ -173,9 +173,9 @@ const Login: React.FC = () => {
                         </Form.Item>
 
                         <Link to={'/reset-password'}>
-                            <a className="login-form-forgot">
+                            <div className="login-form-forgot">
                                 Forgot password
-                            </a>
+                            </div>
                         </Link>
                     </div>
                 </Form.Item>
@@ -198,7 +198,7 @@ const Login: React.FC = () => {
                             <span className='title-no-account'>No account?</span>
                             
                             <Link to={'/register-page'}>
-                                <a className='register-title'>Register now!</a>
+                                <div className='register-title'>Register now!</div>
                             </Link>
                         </div>
                     </div>
