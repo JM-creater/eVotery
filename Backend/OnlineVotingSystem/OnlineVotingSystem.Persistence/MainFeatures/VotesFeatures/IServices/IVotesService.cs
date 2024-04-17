@@ -8,4 +8,5 @@ public interface IVotesService
 {
     Task<SubmitVoteResponse<Vote>> SubmitVote(SubmitVoteDto dto);
     Task<List<Vote>> GetSubmitVoteList();
+
 }

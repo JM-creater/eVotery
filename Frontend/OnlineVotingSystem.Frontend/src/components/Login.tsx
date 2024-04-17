@@ -1,7 +1,7 @@
 import { Alert, Button, Checkbox, Flex, Form, Input } from 'antd'
 import React, { useState } from 'react'
 import '../components/Login.css'
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -36,8 +36,6 @@ const Login: React.FC = () => {
     const [recaptchaToken, setRecaptchaToken] = useState<string>("");
     const [form] = Form.useForm();
     const { login } = useAuth();
-
-    // const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms));
 
     const handleLogin = async (values: VoterType) => {
         setLoadings(true);
@@ -152,12 +150,13 @@ const Login: React.FC = () => {
                     name="password"
                     rules={[{ required: true, message: 'Please input your Password.' }]}
                 >
-                    <Input
-                    size='large'
-                        prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder="Password"
-                    />
+                    <Input.Password
+                        size='large'
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            type="password"
+                            placeholder="Password"
+                            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                        />
                 </Form.Item>
 
                 <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>

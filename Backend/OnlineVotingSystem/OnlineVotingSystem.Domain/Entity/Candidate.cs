@@ -37,6 +37,7 @@ public class Candidate : BaseEntity
     public virtual Position Position { get; set; }
 
     public CandidateStatus Status { get; set; }
+    public bool CurrentUserVoted { get; set; }
 
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
 }
