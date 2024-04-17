@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using OnlineVotingSystem.Persistence.MainFeatures.AdminFeatures.IServices;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
@@ -16,6 +17,7 @@ public class AdminController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [EnableRateLimiting("fixed")]
     public async Task<IActionResult> GetAccountInfo()
     {
         var response = await service.GetAdminAccountInfo();

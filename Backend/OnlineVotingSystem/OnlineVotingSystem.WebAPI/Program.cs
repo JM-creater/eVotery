@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OnlineVotingSystem.Application;
@@ -5,6 +6,7 @@ using OnlineVotingSystem.Application.ImageDirectory;
 using OnlineVotingSystem.Persistence;
 using OnlineVotingSystem.Persistence.Context;
 using OnlineVotingSystem.WebAPI.Extensions;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 var jwtSettings = builder.Configuration.GetSection("JWT");
@@ -48,6 +50,15 @@ builder.Services.Configure<ImagePathOptions>(builder.Configuration.GetSection("I
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddRateLimiter(_ => _
+       .AddFixedWindowLimiter(policyName: "fixed", options =>
+       {
+           options.PermitLimit = 4;
+           options.Window = TimeSpan.FromSeconds(12);
+           options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+           options.QueueLimit = 2;
+       }));
+
 var app = builder.Build();
 
 app.MapHealthChecks("/health");
@@ -63,6 +74,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRateLimiter();
 
 app.UseErrorHandler();
 
