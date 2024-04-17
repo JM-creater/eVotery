@@ -4,3 +4,8 @@
     align-items: center;
     margin-right: 15px;
 }
+
+.breadcrumb-item:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
