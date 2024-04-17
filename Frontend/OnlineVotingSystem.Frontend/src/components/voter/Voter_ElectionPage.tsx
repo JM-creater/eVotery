@@ -11,8 +11,13 @@ type CandidateType = {
   id: string;
   firstName?: string;
   lastName?: string;
+  gender?: string;
   image?: string;
   positionId?: string;
+  partyAffiliationId?: string;
+  biography?: string;
+  status?: CandidateStatus;
+  ballotId?: string;
 }
 
 type PositionType = {
@@ -21,14 +26,34 @@ type PositionType = {
   candidates: CandidateType[];
 }
 
+type PartyAffiliationType = {
+  id?: string;
+  partyName?: string;
+}
+
 type UserType = {
   id?: string;
   isVoted?: boolean;
 }
 
+type BallotType = {
+  id?: string;
+  ballotName?: string;
+}
+
+enum CandidateStatus {
+  Active = 1,
+  InActive = 2,
+  Disqualified = 3
+}
+
 const GETAll_POSITION_URL = 'https://localhost:7196/Position/get-all';
 const SUBMITVOTE_URL = 'https://localhost:7196/Votes/submit-vote';
 const GET_USERID_URL = 'https://localhost:7196/User/get-by-id/';
+const GET_CANDIDATES_BYID = 'https://localhost:7196/Candidate/';
+const GET_PARTYAFFILATION_URL = 'https://localhost:7196/PartyAffiliation/getall-party';
+const GET_BALLOT_URL = 'https://localhost:7196/Ballot/getall-ballots';
+const GET_COUNTVOTES_URL = 'https://localhost:7196/Candidate/count-votes/';
 
 const Voter_ElectionPage: React.FC = () => {
 
@@ -38,85 +63,29 @@ const Voter_ElectionPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedCandidate, setSelectedCandidate] = useState<CandidateType | null>(null);
+  const [partyAffiliation, setPartyAffiliation] = useState<PartyAffiliationType[]>([]);
+  const [ballot, setBallot] = useState<BallotType[]>([]);
+  const [countVotes, setCountVotes] = useState<number>(0);
 
-  const descriptionItems: DescriptionsProps['items'] = [
-    {
-      key: '1',
-      label: 'Product',
-      children: 'Cloud Database',
-    },
-    {
-      key: '2',
-      label: 'Billing Mode',
-      children: 'Prepaid',
-    },
-    {
-      key: '3',
-      label: 'Automatic Renewal',
-      children: 'YES',
-    },
-    {
-      key: '4',
-      label: 'Order time',
-      children: '2018-04-24 18:00:00',
-    },
-    {
-      key: '5',
-      label: 'Usage Time',
-      span: 2,
-      children: '2019-04-24 18:00:00',
-    },
-    {
-      key: '6',
-      label: 'Status',
-      span: 3,
-      children: <Badge status="processing" text="Running" />,
-    },
-    {
-      key: '7',
-      label: 'Negotiated Amount',
-      children: '$80.00',
-    },
-    {
-      key: '8',
-      label: 'Discount',
-      children: '$20.00',
-    },
-    {
-      key: '9',
-      label: 'Official Receipts',
-      children: '$60.00',
-    },
-    {
-      key: '10',
-      label: 'Config Info',
-      children: (
-        <>
-          Data disk type: MongoDB
-          <br />
-          Database version: 3.4
-          <br />
-          Package: dds.mongo.mid
-          <br />
-          Storage space: 10 GB
-          <br />
-          Replication factor: 3
-          <br />
-          Region: East China 1
-          <br />
-        </>
-      ),
-    },
-  ];
+  const getCandidateById = async (id: string) => {
+    try {
+      const response = await axios.get(`${GET_CANDIDATES_BYID}${id}`);
+      setSelectedCandidate(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const showModal = () => {
+  const showModal = (id: string) => {
     setIsModalOpen(true);
+    getCandidateById(id);
+    getCountVotes(id);
   };
 
   const exitModal = () => {
     setIsModalOpen(false);
   };
-
 
   useEffect(() => {
     const fetchPosition = async () => {
@@ -149,6 +118,32 @@ const Voter_ElectionPage: React.FC = () => {
 
     fetchUserId();
   }, []);
+
+  useEffect(() => {
+    const fetchParty = async () => {
+      try {
+        const response = await axios.get(GET_PARTYAFFILATION_URL);
+        setPartyAffiliation(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchParty();
+  }, []);
+
+  useEffect(() => {
+    const fetchBallot = async () => {
+      try {
+        const response = await axios.get(GET_BALLOT_URL);
+        setBallot(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchBallot();
+  }, []);
   
   const handleVoteChange = (candidateId: string, checked: boolean) => {
     setSelectedVotes({
@@ -156,6 +151,130 @@ const Voter_ElectionPage: React.FC = () => {
       [candidateId]: checked
     });
   };
+
+  const getPartyAffiliationName = (partyId: string) => {
+    const party = partyAffiliation.find(p => p.id === partyId);
+    return party ? party.partyName : 'No Party Found';
+  };
+
+  const getPositionName = (positionId: string) => {
+    const pos = position.find(p => p.id === positionId);
+    return pos ? pos.name : 'No Position Found';
+  };
+
+  const getBallotName = (ballotId: string) => {
+    const bal = ballot.find(b => b.id === ballotId);
+    return bal ? bal.ballotName : 'No Ballot Found';
+  };
+
+  const getCountVotes = async (id: string) => {
+    try {
+      const response = await axios.get(`${GET_COUNTVOTES_URL}${id}`);
+      setCountVotes(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const descriptionItems: DescriptionsProps['items'] = [
+    {
+      key: '1',
+      label: 'First Name',
+      children: (
+        selectedCandidate?.firstName
+      ),
+    },
+    {
+      key: '2',
+      label: 'Last Name',
+      children: (
+        selectedCandidate?.lastName
+      ),
+    },
+    {
+      key: '3',
+      label: 'Gender',
+      children: (
+        selectedCandidate?.gender === '1' ? (
+          <p>Female</p>
+        ) : (
+          <p>Male</p>
+        )
+      ),
+    },
+    {
+      key: '4',
+      label: 'Party Affiliate',
+      children: (
+        getPartyAffiliationName(selectedCandidate?.partyAffiliationId as string)
+      ),
+    },
+    {
+      key: '5',
+      label: 'Position',
+      span: 2,
+      children: (
+        getPositionName(selectedCandidate?.positionId as string)
+      ),
+    },
+    {
+      key: '6',
+      label: 'Biography',
+      span: 3,
+      children: (
+        selectedCandidate?.biography
+      ),
+    },
+    {
+      key: '7',
+      label: 'Status',
+      children: (
+        <Badge 
+          status={selectedCandidate?.status === CandidateStatus.Active ? (
+              'success'
+            ) : (
+              'error'
+            )
+          } 
+          text={selectedCandidate?.status === CandidateStatus.Active ? (
+              'Active'
+            ) : (
+              'Not Active'
+            )
+          } 
+        />
+      ),
+    },
+    {
+      key: '8',
+      label: 'Election Ballot',
+      children: (
+        getBallotName(selectedCandidate?.ballotId as string)
+      ),
+    },
+    {
+      key: '9',
+      label: 'No. of Votes',
+      children: (
+        countVotes ?? 0
+      ),
+    },
+    {
+      key: '10',
+      label: 'Candidate Image',
+      children: (
+        <React.Fragment>
+          <img 
+            src={`https://localhost:7196/${selectedCandidate?.image}`} 
+            alt="image-candidate" 
+            width={150}
+            style={{ maxWidth: '100%' }}
+          />
+        </React.Fragment>
+      ),
+    },
+  ];
+
 
   const items = position.map(pos => ({
     key: pos.id,
@@ -165,8 +284,13 @@ const Voter_ElectionPage: React.FC = () => {
       <React.Fragment>
         <div className="candidate-select-container">
           {
-            pos.candidates.map(cand => (
-              <div className='candidate-select-content'> 
+            pos.candidates
+            .filter(cand => cand.status === CandidateStatus.InActive ? 
+                            !CandidateStatus.Active : 
+                            CandidateStatus.Disqualified
+                    )
+            .map(cand => (
+              <div className='candidate-select-content' key={cand.id}> 
                 <Flex
                   key={cand.id}
                   justify='flex-start'
@@ -189,7 +313,7 @@ const Voter_ElectionPage: React.FC = () => {
                       size='small' 
                       type="primary" 
                       icon={<SearchOutlined />}
-                      onClick={showModal}
+                      onClick={() => showModal(cand.id as string)}
                     >
                       Read More
                     </Button>
@@ -287,16 +411,17 @@ const Voter_ElectionPage: React.FC = () => {
         footer={
           <Space>
               <Button type="primary" onClick={exitModal}>
-                  Okay
+                  Proceed
               </Button>
           </Space>
         }
         width={800}
       >
-        <Descriptions title="User Info" layout="vertical" bordered items={descriptionItems} />
+        <Descriptions 
+          title="User Info" 
+          layout="vertical" 
+          bordered items={descriptionItems} />
       </Modal>
-
-
     </React.Fragment>
   )
 }

@@ -13,4 +13,5 @@ public interface ICandidateService
     Task<ApiResponse<Candidate>> Delete(Guid id);
     Task<ApiResponse<Candidate>> ActivateCandidate(Guid id);
     Task<ApiResponse<Candidate>> DeactivateCandidate(Guid id);
+    Task<int> GetCountVotes(Guid id);
 }

@@ -56,6 +56,17 @@ public class CandidateController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("count-votes/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetCountVotesByUser(Guid id)
+    {
+        var response = await servvice.GetCountVotes(id);
+
+        return Ok(response);
+    }
+
     [HttpPut("update-candidate/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
