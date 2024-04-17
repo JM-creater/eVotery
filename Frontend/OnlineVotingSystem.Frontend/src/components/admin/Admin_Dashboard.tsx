@@ -1,10 +1,16 @@
 import { DownloadOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Flex, Row, Statistic, StatisticProps } from 'antd'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CountUp from 'react-countup';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import '../admin/Admin_Dashboard.css'
 import Title from 'antd/es/typography/Title';
+import axios from 'axios';
+
+const GET_TOTALCANDIDATES_URL = 'https://localhost:7196/Total/total-candidates';
+const GET_TOTALPOSITIONS_URL = 'https://localhost:7196/Total/total-positions';
+const GET_TOTALVOTERS_URL = 'https://localhost:7196/Total/total-voters';
+const GET_TOTALVOTES_URL = 'https://localhost:7196/Total/total-votes';
 
 const data = [
     {
@@ -46,6 +52,34 @@ const data = [
 
 const Admin_Dashboard: React.FC = () => {
 
+    const [totalCandidates, setTotalCandidates] = useState<number>(0);
+    const [totalPositions, setTotalPositions] = useState<number>(0);
+    const [totalVoters, setTotalVoters] = useState<number>(0);
+    const [totalVotes, setTotalVotes] = useState<number>(0);
+
+    useEffect(() => {
+        const fetchTotals = async () => {
+            try {
+                const candidateResponse = await axios.get(GET_TOTALCANDIDATES_URL);
+                setTotalCandidates(candidateResponse.data);
+
+                const positionResponse = await axios.get(GET_TOTALPOSITIONS_URL);
+                setTotalPositions(positionResponse.data);
+
+                const voterResponse = await axios.get(GET_TOTALVOTERS_URL);
+                setTotalVoters(voterResponse.data);
+
+                const votesResponse = await axios.get(GET_TOTALVOTES_URL);
+                setTotalVotes(votesResponse.data);
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchTotals();
+    }, []);
+
     const formatter: StatisticProps['formatter'] = (value) => {
         return <CountUp end={value as number} separator="," />;
     };
@@ -56,22 +90,22 @@ const Admin_Dashboard: React.FC = () => {
                 <Row gutter={16}>
                     <Col span={6}>
                         <Card title="Election Positions" bordered={false}>
-                            <Statistic title="Total Positions" value={112893} formatter={formatter} />
+                            <Statistic title="Total Positions" value={totalCandidates ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
                         <Card title="Election Candidates" bordered={false}>
-                            <Statistic title="Total Candidates" value={112893} formatter={formatter} />
+                            <Statistic title="Total Candidates" value={totalPositions ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
                         <Card title="Registered Voters" bordered={false}>
-                            <Statistic title="Total Registered Voters" value={112893} formatter={formatter} />
+                            <Statistic title="Total Registered Voters" value={totalVoters ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
                         <Card title="Voting Participation" bordered={false}>
-                            <Statistic title="Voters Participated" value={112893} formatter={formatter} />
+                            <Statistic title="Voters Participated" value={totalVotes ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                 </Row>

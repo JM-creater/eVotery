@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.RateLimiting;
 using OnlineVotingSystem.Domain.Dtos;
 using OnlineVotingSystem.Persistence.Helpers.CaptchaResponse;
 using OnlineVotingSystem.Persistence.MainFeatures.VoterFeatures.IServices;
-using System.Net;
 
 namespace OnlineVotingSystem.WebAPI.Controllers;
 
@@ -139,6 +138,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [EnableRateLimiting("fixed")]
     public async Task<IActionResult> GetAll()
     {
         var response = await service.GetAll();
