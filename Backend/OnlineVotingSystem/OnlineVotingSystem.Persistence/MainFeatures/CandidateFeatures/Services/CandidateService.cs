@@ -74,10 +74,10 @@ public class CandidateService : ICandidateService
 
     public async Task<List<Candidate>> GetAll()
         => await context.Candidates
+                        .AsNoTracking()
                         .Include(c => c.PartyAffiliation)
                         .Include(c => c.Votes)
                         .OrderByDescending(c => c.DateCreated)
-                        .AsNoTracking()
                         .ToListAsync();
 
     public async Task<Candidate> GetById(Guid id)

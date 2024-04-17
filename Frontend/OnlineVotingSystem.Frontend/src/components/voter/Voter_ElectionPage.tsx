@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Checkbox, Collapse, Descriptions, Flex, Modal, Space, Typography } from "antd";
+import { 
+  Badge, 
+  Button, 
+  Checkbox, 
+  Collapse, 
+  Descriptions, 
+  Flex, 
+  Modal, 
+  Space, 
+  Typography 
+} from "antd";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Voter_VotingComplete from './Voter_VotingComplete';

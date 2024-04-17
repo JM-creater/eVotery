@@ -27,6 +27,7 @@ public class VotesService : IVotesService
         {
             await GetUserVoted(dto.UserId);
             await GetSaveResponse(dto.CandidateId);
+            await GetCurrentUserVoted(dto.CandidateId);
 
             var newVotes = new Vote
             {
@@ -124,8 +125,28 @@ public class VotesService : IVotesService
         }
     }
 
+    public async Task<Candidate> GetCurrentUserVoted(Guid id)
+    {
+        var candidate = await context.Candidates
+                                     .Where(c => c.Id == id)
+                                     .FirstOrDefaultAsync();
+
+        if (candidate == null)
+        {
+            string errorMessage = "Candidate's ID not found.";
+            throw new KeyNotFoundException(errorMessage);
+        }
+
+        candidate.CurrentUserVoted = true;
+        await context.SaveChangesAsync();
+
+        return candidate;
+    }
+
     public async Task<List<Vote>> GetSubmitVoteList()
         => await context.Votes
                         .AsNoTracking()
                         .ToListAsync();
+
+
 }
