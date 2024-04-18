@@ -77,6 +77,7 @@ public class CandidateService : ICandidateService
                         .AsNoTracking()
                         .Include(c => c.PartyAffiliation)
                         .Include(c => c.Votes)
+                        .Include(c => c.Position) 
                         .OrderByDescending(c => c.DateCreated)
                         .ToListAsync();
 
