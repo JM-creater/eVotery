@@ -428,7 +428,7 @@ const Voter_ElectionPage: React.FC = () => {
         width={800}
       >
         <Descriptions 
-          title="User Info" 
+          title="Candidate Information" 
           layout="vertical" 
           bordered items={descriptionItems} />
       </Modal>

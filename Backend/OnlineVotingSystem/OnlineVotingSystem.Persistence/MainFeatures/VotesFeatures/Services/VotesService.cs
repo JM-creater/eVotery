@@ -145,6 +145,8 @@ public class VotesService : IVotesService
 
     public async Task<List<Vote>> GetSubmitVoteList()
         => await context.Votes
+                        .Include(v => v.Candidate)
+                            .ThenInclude(c => c.Position)
                         .AsNoTracking()
                         .ToListAsync();
 

@@ -261,7 +261,7 @@ const Admin_VotersList: React.FC = () => {
             const response = await axios.put(`${ACTIVATE_URL}${voterId}`);
 
             if (response.data.responseCode === 200) {
-                setSelectedVoter(prevVoter => ({ ...prevVoter, isActive: true }));
+                setSelectedVoter({ isActive: false });
                 toast.success('Account activated successfully.');
             } else if (response.data.responseCode === 400) {
                 toast.error('Voters Id not found.');
@@ -279,7 +279,7 @@ const Admin_VotersList: React.FC = () => {
             const response = await axios.put(`${DEACTIVATE_URL}${voterId}`);
 
             if (response.data.responseCode === 200) {
-                setSelectedVoter(prevVoter => ({ ...prevVoter, isActive: false }));
+                setSelectedVoter({ isActive: false });
                 toast.success('Account deactivated successfully.');
             } else if (response.data.responseCode === 400) {
                 toast.error('Voters Id not found.');

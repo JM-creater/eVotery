@@ -347,7 +347,6 @@ const Admin_Candidates:React.FC = () => {
         } 
     };
     
-
     const getPositionName = (positionId: string) => {
         const position = positions.find(p => p.id == positionId)  
         return position ? position.name : 'No Position Found';
