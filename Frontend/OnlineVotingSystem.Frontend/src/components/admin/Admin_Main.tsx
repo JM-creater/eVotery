@@ -31,7 +31,7 @@ type AdminType = {
   voterImages?: string;
 }
 
-const { Header, Content, Sider, Footer } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const GETVOTERS_COUNT_URL = 'https://localhost:7196/User/get-voters';
 
@@ -297,13 +297,7 @@ const Admin_Main: React.FC = () => {
             {renderComponent()}
           </div>
         </Content>
-        <Footer 
-          style={{ 
-            textAlign: 'center'
-          }}
-        >
-          eVotery ©{new Date().getFullYear()} Created by Joseph Martin Garado
-        </Footer>
+        
       </Layout>
     </Layout>
   );

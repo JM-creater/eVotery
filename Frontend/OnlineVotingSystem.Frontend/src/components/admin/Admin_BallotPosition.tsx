@@ -328,7 +328,7 @@ const Admin_BallotPosition:React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <Table columns={columns} dataSource={filteredBallots} />
+                        <Table columns={columns} dataSource={filteredBallots} rowKey="id" />
                     )
                 }
             </React.Fragment>
