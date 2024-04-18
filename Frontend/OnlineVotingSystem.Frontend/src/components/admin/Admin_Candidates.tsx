@@ -11,12 +11,10 @@ import {
     Button, 
     Card, 
     Col, 
-    Drawer, 
-    Dropdown, 
+    Drawer,  
     FloatButton, 
     Form, 
-    Input, 
-    Menu,  
+    Input,  
     Popconfirm,  
     Radio, 
     Row, 
@@ -355,35 +353,6 @@ const Admin_Candidates:React.FC = () => {
         return position ? position.name : 'No Position Found';
     };
 
-    const items = [
-        {
-            key: "1",
-            label: (
-                <a onClick={() => handleActivateCandidate(selectedCandidate?.id as string)}>
-                    Activate
-                </a>
-            ),
-        },
-        {
-            key: "2",
-            label: (
-                <a onClick={() => handleDeactivateCandidate(selectedCandidate?.id as string)}>
-                    Deactivate
-                </a>
-            ),
-        },
-    ];
-
-    const menu: React.ReactElement = (
-        <Menu>
-            {items.map(item => (
-                <Menu.Item key={item.key}>
-                    {item.label}
-                </Menu.Item>
-            ))}
-        </Menu>
-    );
-
     return (
         <React.Fragment>
 
@@ -467,9 +436,16 @@ const Admin_Candidates:React.FC = () => {
                                                     key="edit" 
                                                     onClick={() => showEditDrawer(candidate as CandidateType)} 
                                                 />,
-                                                <Dropdown overlay={menu} placement="bottom" arrow>  
+                                                <Popconfirm
+                                                    title="Candidate's Status"
+                                                    description="Are you sure you want to change the status?"
+                                                    onConfirm={() => handleActivateCandidate(candidate?.id as string)}
+                                                    onCancel={() => handleDeactivateCandidate(candidate?.id as string)}
+                                                    okText="Activate"
+                                                    cancelText="Deactivate"
+                                                >
                                                     <EllipsisOutlined key="ellipsis" />
-                                                </Dropdown>
+                                                </Popconfirm>,
                                             ]}
                                         >
                                             <Meta

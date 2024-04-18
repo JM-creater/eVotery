@@ -346,7 +346,7 @@ const Admin_Position: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <Table columns={columns} dataSource={filteredPosition} />
+                        <Table columns={columns} dataSource={filteredPosition} rowKey="id" />
                     )
                 }
             </React.Fragment>

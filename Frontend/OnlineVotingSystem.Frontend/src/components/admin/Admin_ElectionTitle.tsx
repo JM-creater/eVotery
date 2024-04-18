@@ -289,7 +289,7 @@ const Admin_ElectionTitle:React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <Table columns={columns} dataSource={filteredElections} />
+                        <Table columns={columns} dataSource={filteredElections} rowKey="id" />
                     )
                 }
             </React.Fragment>

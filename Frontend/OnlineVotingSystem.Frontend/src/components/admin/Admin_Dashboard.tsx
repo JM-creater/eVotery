@@ -90,12 +90,12 @@ const Admin_Dashboard: React.FC = () => {
                 <Row gutter={16}>
                     <Col span={6}>
                         <Card title="Election Positions" bordered={false}>
-                            <Statistic title="Total Positions" value={totalCandidates ?? 0} formatter={formatter} />
+                            <Statistic title="Total Positions" value={totalPositions ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
                         <Card title="Election Candidates" bordered={false}>
-                            <Statistic title="Total Candidates" value={totalPositions ?? 0} formatter={formatter} />
+                            <Statistic title="Total Candidates" value={totalCandidates ?? 0} formatter={formatter} />
                         </Card>
                     </Col>
                     <Col span={6}>
