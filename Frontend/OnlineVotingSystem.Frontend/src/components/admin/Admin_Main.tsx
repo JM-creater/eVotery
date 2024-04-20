@@ -10,7 +10,6 @@ import {
   InboxOutlined, 
   LogoutOutlined, 
   UnorderedListOutlined,
-  UserOutlined,
   UsergroupAddOutlined, 
 } from '@ant-design/icons';
 import Admin_Votes from './Admin_Votes';
@@ -42,6 +41,8 @@ const Admin_Main: React.FC = () => {
   const [countVoters, setCountVoters] = useState<number>(0);
   const navigate = useNavigate();
   const { setLogout } = useAuth();
+
+  console.log(admin);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -175,11 +176,11 @@ const Admin_Main: React.FC = () => {
           label: 'Election', 
           icon: <FontColorsOutlined /> 
         },
-        { 
-          key: '9', 
-          label: 'Profile', 
-          icon: <UserOutlined /> 
-        },
+        // { 
+        //   key: '9', 
+        //   label: 'Profile', 
+        //   icon: <UserOutlined /> 
+        // },
       ],
     },
     {
