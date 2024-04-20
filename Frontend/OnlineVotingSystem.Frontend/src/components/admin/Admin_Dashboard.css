@@ -8,3 +8,22 @@
     justify-content: center;
     align-items: center;
 }
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    grid-gap: 1rem;
+    align-items: start;
+}
+
+.charts-content {
+    flex-wrap: wrap;
+}
+
+.no-votes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
