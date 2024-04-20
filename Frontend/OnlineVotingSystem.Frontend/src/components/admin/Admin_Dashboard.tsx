@@ -1,8 +1,24 @@
 import { DownloadOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Flex, Row, Statistic, StatisticProps } from 'antd'
+import { 
+    Button, 
+    Card, 
+    Col, 
+    Flex, 
+    Row, 
+    Statistic, 
+    StatisticProps 
+} from 'antd'
 import React, { useEffect, useState } from 'react'
 import CountUp from 'react-countup';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import { 
+    Bar, 
+    BarChart, 
+    CartesianGrid, 
+    Legend, 
+    Tooltip, 
+    XAxis, 
+    YAxis 
+} from 'recharts';
 import '../admin/Admin_Dashboard.css'
 import Title from 'antd/es/typography/Title';
 import axios from 'axios';
@@ -11,44 +27,28 @@ const GET_TOTALCANDIDATES_URL = 'https://localhost:7196/Total/total-candidates';
 const GET_TOTALPOSITIONS_URL = 'https://localhost:7196/Total/total-positions';
 const GET_TOTALVOTERS_URL = 'https://localhost:7196/Total/total-voters';
 const GET_TOTALVOTES_URL = 'https://localhost:7196/Total/total-votes';
+const GET_POSITION_URL = 'https://localhost:7196/Position/get-all';
+const GET_CANDIDATES_URL = 'https://localhost:7196/Candidate/get-all';
 
-const data = [
-    {
-        "name": "Page A",
-        "uv": 4000,
-        "pv": 2400
-    },
-    {
-        "name": "Page B",
-        "uv": 3000,
-        "pv": 1398
-    },
-    {
-        "name": "Page C",
-        "uv": 2000,
-        "pv": 9800
-    },
-    {
-        "name": "Page D",
-        "uv": 2780,
-        "pv": 3908
-    },
-    {
-        "name": "Page E",
-        "uv": 1890,
-        "pv": 4800
-    },
-    {
-        "name": "Page F",
-        "uv": 2390,
-        "pv": 3800
-    },
-    {
-        "name": "Page G",
-        "uv": 3490,
-        "pv": 4300
-    }
-]
+type PositionType = {
+    id?: string;
+    name?: string;
+}
+
+type CandidateType = {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    positionId?: string;
+    votes: VotesType[];
+}
+
+type VotesType = {
+    id?: string;
+    userId?: string;
+    candidateId?: string;
+}
+
 
 const Admin_Dashboard: React.FC = () => {
 
@@ -56,6 +56,8 @@ const Admin_Dashboard: React.FC = () => {
     const [totalPositions, setTotalPositions] = useState<number>(0);
     const [totalVoters, setTotalVoters] = useState<number>(0);
     const [totalVotes, setTotalVotes] = useState<number>(0);
+    const [position, setPosition] = useState<PositionType[]>([]);
+    const [candidate, setCandidate] = useState<CandidateType[]>([]);
 
     useEffect(() => {
         const fetchTotals = async () => {
@@ -80,10 +82,30 @@ const Admin_Dashboard: React.FC = () => {
         fetchTotals();
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const positionResponse = await axios.get(GET_POSITION_URL);
+                setPosition(positionResponse.data);
+                const candidateResponse = await axios.get(GET_CANDIDATES_URL);
+                setCandidate(candidateResponse.data.map((cand: { votes: string | CandidateType[]; }) => ({
+                    ...cand,
+                    Votes: cand.votes.length 
+                })));
+                
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+
     const formatter: StatisticProps['formatter'] = (value) => {
         return <CountUp end={value as number} separator="," />;
     };
-
+    
     return (
         <React.Fragment>
             <div className='stats-container'>   
@@ -111,7 +133,6 @@ const Admin_Dashboard: React.FC = () => {
                 </Row>
             </div>
 
-            
             <Flex justify='space-between' align='center'>
                 <div className="title-vote-tally">
                     <Title level={4}>Vote Tally</Title>
@@ -124,50 +145,45 @@ const Admin_Dashboard: React.FC = () => {
                 </div>
             </Flex>
             
+            <div className="chart-grid">
+                <React.Fragment>
+                    {
+                        position.map((pos: PositionType) => {
 
-            <Flex justify='center' align='center' wrap='wrap' gap='large'>
+                            const candidateForPosition = candidate.filter(c => c.positionId === pos.id);
+                            const hasVotes = candidateForPosition.some(cand => cand.votes.length > 0);
 
-                <BarChart width={600} height={300} data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="pv" fill="#38B6FF" />
-                    <Bar dataKey="uv" fill="#001529" />
-                </BarChart>
-
-                <BarChart width={600} height={300} data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="pv" fill="#38B6FF" />
-                    <Bar dataKey="uv" fill="#001529" />
-                </BarChart>
-
-                <BarChart width={600} height={300} data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="pv" fill="#38B6FF" />
-                    <Bar dataKey="uv" fill="#001529" />
-                </BarChart>
-
-                <BarChart width={600} height={300} data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="pv" fill="#38B6FF" />
-                    <Bar dataKey="uv" fill="#001529" />
-                </BarChart>
-
-            </Flex>
+                            return (
+                                <div className='charts-content' key={pos.id}> 
+                                    <Title level={5} style={{ textAlign: 'left' }}>{pos.name}</Title>
+                                    {
+                                        hasVotes ? (
+                                            <BarChart width={600} height={300} data={candidateForPosition}>
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="lastName" />
+                                                <YAxis 
+                                                    allowDecimals={false}
+                                                    domain={[0, 'dataMax + 10']}
+                                                    allowDataOverflow
+                                                />
+                                                <Tooltip />
+                                                <Legend />
+                                                <Bar dataKey="Votes" fill="#38B6FF" />
+                                            </BarChart>
+                                        ) : (
+                                            <React.Fragment>
+                                                <div className="no-votes-container">
+                                                    <span>No votes yet.</span>
+                                                </div>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                </React.Fragment>
+            </div>
 
         </React.Fragment>
     )

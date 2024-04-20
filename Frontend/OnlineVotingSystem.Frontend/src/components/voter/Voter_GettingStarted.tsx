@@ -12,11 +12,11 @@ type UserType = {
 
 const Voter_GettingStarted: React.FC = () => {
 
-    const [selectedItemMenu, setSelectedItemMenu] = useState<string>('1');
+    const [selectedItemMenu, setSelectedItemMenu] = useState<number>(1);
     const [user, setUser] = useState<UserType | null>(null);
 
     const handleGetStartedClick = () => {
-        setSelectedItemMenu("2");
+        setSelectedItemMenu(2);
     };
 
     useEffect(() => {
@@ -28,8 +28,9 @@ const Voter_GettingStarted: React.FC = () => {
                 setUser(response.data);
 
                 if (response.data.isVoted) {
-                    setSelectedItemMenu("2");
+                    setSelectedItemMenu(2);
                 }
+                
             } catch (error) {
                 console.error(error);
             }
@@ -43,7 +44,7 @@ const Voter_GettingStarted: React.FC = () => {
     return (
         <React.Fragment>
             {
-                selectedItemMenu === "1" && !user?.isVoted ? (
+                selectedItemMenu === 1 && !user?.isVoted ? (
                     <Flex justify="center" align="center">
                         <Result
                             status="success"
@@ -56,7 +57,7 @@ const Voter_GettingStarted: React.FC = () => {
                             ]}
                         />
                     </Flex>
-                ) : selectedItemMenu === "2" ? (
+                ) : selectedItemMenu === 2 ? (
                     <Voter_ElectionPage />
                 ) : null
             }
