@@ -10,7 +10,7 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import Reset_Password from './components/Reset_Password'
 import Not_FoundPage from './components/common/Not_FoundPage'
 import { AuthProvider } from './utils/AuthProvider'
-// import PrivateRoute from './utils/private_route'
+import PrivateRoute from './utils/private_route'
 import Voter_MainPage from './components/voter/Voter_MainPage'
 import PrivatePassRoute from './utils/private_passroute'
 
@@ -41,11 +41,9 @@ function App() {
             <Route path='/reset-password' element={ <Reset_Password/> } />
             <Route path='/forgot-password' element={ <PrivatePassRoute> <Forgot_Password/> </PrivatePassRoute> } />
 
-            {/* <Route path='/home-page' element={ <PrivateRoute> <Voter_MainPage/> </PrivateRoute> } /> */}
-            <Route path='/home-page' element={ <Voter_MainPage/> } />
+            <Route path='/home-page' element={ <PrivateRoute> <Voter_MainPage/> </PrivateRoute> } />
 
-            {/* <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } /> */}
-            <Route path='/admin-main' element={ <Admin_Main/> } />
+            <Route path='/admin-main' element={ <PrivateRoute> <Admin_Main/> </PrivateRoute> } />
 
             <Route path="*" element={<Not_FoundPage />} />
 
