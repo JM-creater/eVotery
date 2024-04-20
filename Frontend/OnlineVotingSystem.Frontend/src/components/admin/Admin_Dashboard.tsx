@@ -22,6 +22,10 @@ import {
 import '../admin/Admin_Dashboard.css'
 import Title from 'antd/es/typography/Title';
 import axios from 'axios';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+
 
 const GET_TOTALCANDIDATES_URL = 'https://localhost:7196/Total/total-candidates';
 const GET_TOTALPOSITIONS_URL = 'https://localhost:7196/Total/total-positions';
@@ -31,8 +35,8 @@ const GET_POSITION_URL = 'https://localhost:7196/Position/get-all';
 const GET_CANDIDATES_URL = 'https://localhost:7196/Candidate/get-all';
 
 type PositionType = {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 
 type CandidateType = {
@@ -41,12 +45,31 @@ type CandidateType = {
     lastName?: string;
     positionId?: string;
     votes: VotesType[];
+    status: CandidateStatus;
 }
 
 type VotesType = {
     id?: string;
     userId?: string;
     candidateId?: string;
+}
+
+type TableRow = [
+    string,  
+    string,
+    string, 
+    number,  
+    string 
+];
+
+enum CandidateStatus {
+    Active = 1,
+    InActive = 2,
+    Disqualified = 3
+}
+
+interface jsPDFCustom extends jsPDF {
+    autoTable: (options: UserOptions) => void;
 }
 
 const Admin_Dashboard: React.FC = () => {
@@ -104,6 +127,49 @@ const Admin_Dashboard: React.FC = () => {
     const formatter: StatisticProps['formatter'] = (value) => {
         return <CountUp end={value as number} separator="," />;
     };
+
+    const getPositionName = (positionId?: string): string => {
+        if (!positionId) return "No Position Assigned";
+        const positions = position.find(p => p.id === positionId);
+        return positions ? positions.name : "Position Not Found";
+    };
+    
+    const getStatusLabel = (status: CandidateStatus) => {
+        switch (status) {
+            case CandidateStatus.Active:
+                return "Active";
+            case CandidateStatus.InActive:
+                return "InActive";
+            case CandidateStatus.Disqualified:
+                return "Disqualified";
+            default:
+                return "Unknown";
+        }
+    };
+
+    const generatePDF = () => {
+        const doc = new jsPDF() as jsPDFCustom;
+
+        const tableColumn = ["Id", "Candidate", "Position", "No. of Votes", "Status"];
+        const tableRows: TableRow[] = candidate.map(cand => [
+            cand.id ?? "Unknown", 
+            `${cand.firstName} ${cand.lastName}`,
+            getPositionName(cand.positionId),
+            cand.votes.length,
+            getStatusLabel(cand.status)
+        ]);
+    
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 20
+        });
+        
+        const date = Date().split(" ");
+        const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
+        doc.text("eVotery Reports for this Month", 14, 15);
+        doc.save(`report_${dateStr}.pdf`);
+    };
     
     return (
         <React.Fragment>
@@ -138,7 +204,11 @@ const Admin_Dashboard: React.FC = () => {
                 </div>
 
                 <div className="button-download-container">
-                    <Button type="default" icon={<DownloadOutlined />} size='middle'>
+                    <Button 
+                        type="default" 
+                        icon={<DownloadOutlined />} 
+                        size='middle' onClick={generatePDF}
+                    >
                         Download
                     </Button>
                 </div>
