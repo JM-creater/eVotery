@@ -49,7 +49,6 @@ type VotesType = {
     candidateId?: string;
 }
 
-
 const Admin_Dashboard: React.FC = () => {
 
     const [totalCandidates, setTotalCandidates] = useState<number>(0);
@@ -173,7 +172,7 @@ const Admin_Dashboard: React.FC = () => {
                                         ) : (
                                             <React.Fragment>
                                                 <div className="no-votes-container">
-                                                    <span>No votes yet.</span>
+                                                    This postion has not received any votes for candidates.
                                                 </div>
                                             </React.Fragment>
                                         )

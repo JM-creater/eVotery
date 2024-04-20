@@ -47,7 +47,7 @@ const Voter_HerSection: React.FC = () => {
                                                 <p>{item.content}</p>
                                                 <div className="btnHolder">
                                                     <Button type="primary" size="large" onClick={handleSelectedMenu}>Vote Now</Button>
-                                                    <Button size="large" onClick={handleDemoClick}><i className="fas fa-desktop"></i> Watch a Demo</Button>
+                                                    <Button size="large" onClick={handleDemoClick}> Watch a Video</Button>
                                                 </div>
                                             </div>
                                         </div>  
