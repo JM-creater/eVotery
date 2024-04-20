@@ -303,23 +303,20 @@ public class UserService : IUserService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            if (string.IsNullOrEmpty(voter.Token))
-            {
-                var token = Tokens.GenerateTokenLogin(dto, voter.Role, configuration);
+            var token = Tokens.GenerateTokenLogin(dto, voter.Role, configuration);
 
-                if (!string.IsNullOrEmpty(token))
-                {
-                    voter.Token = token;
-                    response.Token = token;
-                    await context.SaveChangesAsync();
-                }
-                else
-                {
-                    string errorMessage = "Failed to generate authentication token.";
-                    response.ErrorMessage = errorMessage;
-                    response.ResponseCode = 500;
-                    throw new InvalidOperationException(errorMessage);
-                }
+            if (!string.IsNullOrEmpty(token))
+            {
+                voter.Token = token;
+                response.Token = token;
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                string errorMessage = "Failed to generate authentication token.";
+                response.ErrorMessage = errorMessage;
+                response.ResponseCode = 500;
+                throw new InvalidOperationException(errorMessage);
             }
 
             response.ResponseCode = 200;
@@ -658,7 +655,7 @@ public class UserService : IUserService
         }
         catch (Exception e)
         {
-            response.ResponseCode = 400;
+            response.ResponseCode = 500;
             response.ErrorMessage = e.Message;
         }
 

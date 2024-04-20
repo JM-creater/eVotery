@@ -21,6 +21,8 @@ using OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.IServ
 using OnlineVotingSystem.Persistence.MainFeatures.PartyAffiliationFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.PositionFeatures.Services;
+using OnlineVotingSystem.Persistence.MainFeatures.ResultFeatures.IServices;
+using OnlineVotingSystem.Persistence.MainFeatures.ResultFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.IServices;
 using OnlineVotingSystem.Persistence.MainFeatures.SearchFeatures.Services;
 using OnlineVotingSystem.Persistence.MainFeatures.TotalFeatures.IServices;
@@ -52,6 +54,7 @@ public static class ServiceExtensions
         services.AddScoped<IPersonalDocumentsService, PersonalDocumentsService>();
         services.AddScoped<IVotesService, VotesService>();
         services.AddScoped<ITotalService, TotalService>();
+        services.AddScoped<IResultService, ResultService>();
 
         services.AddScoped<Tokens>();
         services.AddScoped<EmailContentProvider>();
