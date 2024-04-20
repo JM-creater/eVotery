@@ -19,31 +19,26 @@ public class Tokens
         return _rdm.Next(_min, _max);
     }
 
-    public static string GenerateToken(User user, IConfiguration configuration)
+    public static string GenerateTokenPassword(User user, IConfiguration configuration)
     {
-        var secret = configuration["JWT:Secret"];
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        if (string.IsNullOrEmpty(secret))
+        var claims = new List<Claim>
         {
-            throw new InvalidOperationException("JWT Secret is not configured properly.");
-        }
-
-        var key = Encoding.ASCII.GetBytes(secret);
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Expiration, DateTime.Now.AddHours(24).ToString())
-            }),
-            Expires = DateTime.Now.AddHours(24),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            new Claim(ClaimTypes.Name, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
         };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+
+        var token = new JwtSecurityToken(
+            configuration["Jwt:Issuer"],
+            configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddHours(24),
+            signingCredentials: credentials
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     public static string GenerateTokenLogin(LoginVoterDto user, UserRole userRole, IConfiguration configuration)
