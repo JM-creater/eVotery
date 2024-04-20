@@ -164,7 +164,7 @@ const Login: React.FC = () => {
                         sitekey={SITE_KEY}
                         onChange={onReCAPTCHAChange}
                     />
-                </Flex>
+                </Flex> 
 
                 <Form.Item>
                     <div className="form-remember-forgot">

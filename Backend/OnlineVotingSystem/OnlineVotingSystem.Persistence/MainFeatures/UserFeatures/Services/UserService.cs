@@ -526,7 +526,7 @@ public class UserService : IUserService
                 throw new InvalidOperationException(errorMessage);
             }
 
-            user.PasswordResetToken = Tokens.GenerateToken(user, configuration);
+            user.PasswordResetToken = Tokens.GenerateTokenPassword(user, configuration);
             user.ResetTokenExpires = DateTime.Now.AddHours(24);
 
             context.Users.Update(user);

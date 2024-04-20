@@ -34,6 +34,8 @@ const Reset_Password: React.FC = () => {
 
             if (response.data.responseCode === 200) {
                 navigate('/');
+                localStorage.removeItem('result');
+                localStorage.removeItem('userId');
             } else if (response.data.responseCode === 400) {
                 toast.error('Email not yet registered.');
             } else {
