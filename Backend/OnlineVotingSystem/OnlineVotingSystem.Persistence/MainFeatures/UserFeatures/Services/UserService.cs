@@ -228,6 +228,9 @@ public class UserService : IUserService
             user.Role = UserRole.Voter;
             user.DateCreated = DateTime.Now;
 
+            var emailProvider = new EmailContentProvider(configuration);
+            await emailProvider.SendVoterIdInformation(user.Email, user.VoterId);
+
             context.Users.Update(user);
             await context.SaveChangesAsync();
             response.ResponseCode = 200;
