@@ -46,7 +46,7 @@ const Voter_MainPage: React.FC = () => {
         {
             key: '4',
             label: 'Logout',
-            onClick: handleLogout,
+            onClick: () => handleLogout,
         },
     ];
 
