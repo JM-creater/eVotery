@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using OnlineVotingSystem.Domain.Enum;
 using System.ComponentModel.DataAnnotations;
 namespace OnlineVotingSystem.Domain.Dtos;
 

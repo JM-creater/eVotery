@@ -152,6 +152,8 @@ const Register: React.FC = () => {
         fetchDocuments();
     }, []);
 
+
+
     // * First Step Register Handle
     const handleStepOneRegister = async (values: StepOneType) => {
         setLoadings(true);
@@ -341,7 +343,6 @@ const Register: React.FC = () => {
                             </div>
 
                             <div className="first-last-container">
-
                                 <Form.Item<StepOneType>
                                     name="lastName"
                                     rules={[{ required: true, message: 'Enter your Last Name.' }]}

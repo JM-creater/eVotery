@@ -9,8 +9,9 @@ import Logo from '../assets/samples/Logo.png';
 import { useAuth } from '../utils/AuthContext';
 import ReCAPTCHA from "react-google-recaptcha";
 
+const siteApiUrl = import.meta.env.SITE_URL_KEY;
 const LOGIN_URL = 'https://localhost:7196/User/login';
-const SITE_KEY = '6LeM5qopAAAAAFMOsMBMtR0daKkvrgAbjvwcZk51';
+const SITE_URL_KEY = siteApiUrl;
 
 type VoterType = {
     voterIdOrEmail?: string;
@@ -103,7 +104,6 @@ const Login: React.FC = () => {
         setRecaptchaToken(token || "");
     };
 
-
     return (
         
         <div className="login-main-container">
@@ -114,6 +114,7 @@ const Login: React.FC = () => {
                 onFinish={handleLogin}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                form={form}
             >
                 
                 <div className="image-container">
@@ -161,7 +162,7 @@ const Login: React.FC = () => {
 
                 <Flex justify='center' align='center' style={{ marginBottom: '8px' }}>
                     <ReCAPTCHA
-                        sitekey={SITE_KEY}
+                        sitekey={SITE_URL_KEY}
                         onChange={onReCAPTCHAChange}
                     />
                 </Flex> 
